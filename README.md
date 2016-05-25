@@ -1,6 +1,9 @@
 Px-Vis-Timeseries
 -----------------------------------------------
 
+# This component is not yet released.
+
+
 ## Overview
 
 Px-Vis-Timeseries is a Predix Experience ('Px') component
