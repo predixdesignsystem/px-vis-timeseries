@@ -1,0 +1,26 @@
+{
+    "name": "px-vis-timeseries",
+    "version": "0.0.1",
+    "main": [
+        "px-vis-timeseries.html"
+    ],
+    "ignore": [
+        ".*",
+        "npm-debug.log",
+        "Gruntfile.js",
+        "sass",
+        "bower_components",
+        "node_modules",
+        "test"
+    ],
+    "dependencies": {
+        "polymer": "~1.4.0",
+        "px-theme": "~0.7.0",
+        "px-vis": "https://github.com/PredixDev/px-vis.git"
+    },
+    "devDependencies": {
+        "iron-component-page" : "PolymerElements/iron-component-page#~v1.1.0",
+        "px-demo-data": "~0.0.1",
+        "px-starter-kit-design": "~0.4.9"
+    }
+}
