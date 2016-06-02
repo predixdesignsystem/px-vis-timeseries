@@ -18,6 +18,7 @@
 <link rel="import" href="../px-vis/px-vis-register.html"/>
 <link rel="import" href="../px-vis/px-vis-threshold.html"/>
 <link rel="import" href="../px-vis/px-vis-zoom.html"/>
+<link rel="import" href="../px-vis/px-vis-clip-path.html"/>
 
 
 <!--
@@ -61,10 +62,12 @@ Creates an interactive timeseries chart
             width="[[width]]"
             type="horizontal"
             tooltip-data=[[tooltipData]]
-            muted-series="[[mutedSeries]]">
+            muted-series="[[mutedSeries]]"
+            chart-data="[[chartData]]">
           </px-vis-register>
         </template>
         <px-vis-scale
+          svg="[[svg]]"
           x-scale="time"
           y-scale="linear"
           width="[[width]]"
@@ -79,6 +82,15 @@ Creates an interactive timeseries chart
           margin="[[margin]]">
         </px-vis-svg>
 
+        <px-vis-clip-path
+          svg="[[svg]]"
+          x="[[x]]"
+          y="[[y]]"
+          width="[[width]]"
+          height="[[height]]"
+          margin="[[margin]]">
+        </px-vis-clip-path>
+
         <template is="dom-repeat" items="[[chartData]]">
           <template is="dom-if" if="[[_chartTypeLine(item.type)]]">
             <px-vis-line
@@ -90,6 +102,7 @@ Creates an interactive timeseries chart
               y="[[y]]"
               current-domain-x="[[currentDomainX]]"
               current-domain-y="[[currentDomainY]]"
+              clip-path="[[clipPath]]"
               muted-series="[[mutedSeries]]">
             </px-vis-line>
           </template>
@@ -103,6 +116,7 @@ Creates an interactive timeseries chart
               y="[[y]]"
               current-domain-x="[[currentDomainX]]"
               current-domain-y="[[currentDomainY]]"
+              clip-path="[[clipPath]]"
               muted-series="[[mutedSeries]]">
             </px-vis-scatter>
           </template>
@@ -117,7 +131,8 @@ Creates an interactive timeseries chart
             y="[[y]]"
             event-config="[[eventConfig]]"
             current-domain-x="[[currentDomainX]]"
-            current-domain-y="[[currentDomainY]]">
+            current-domain-y="[[currentDomainY]]"
+            clip-path="[[clipPath]]">
           </px-vis-event>
         </template>
 
@@ -224,7 +239,8 @@ Creates an interactive timeseries chart
           height="[[height]]"
           units="Hz"
           tooltip-data=[[tooltipData]]
-          muted-series="[[mutedSeries]]">
+          muted-series="[[mutedSeries]]"
+          chart-data="[[chartData]]">
         </px-vis-register>
       </template>
     </div>
