@@ -11,27 +11,29 @@
         <link rel="import" href="../px-theme/px-theme.html"/>
         <link rel="import" href="px-vis-timeseries.html"/>
 
+        <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries.css"/>
+
     </head>
 
     <body>
       <template is="dom-bind">
         <px-vis-timeseries
           options = '{
-            "width": "800",
+            "width": "1000",
             "height": "500",
             "series": [{
               "type":"line",
               "name":"blahblah",
                 "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
               },{
-                "type":"scatter",
+                "type":"line",
                 "url":"/bower_components/px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
             }],
             "events": [{
                 "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
             }],
-            "registerLocation":"side",
-            "enableTooltip":false,
+            "registerLocation":"both",
+            "enableTooltip":true,
             "eventConfig": {
               "Recalibrate":{
                 "color": "blue",
@@ -59,7 +61,7 @@
               { "for":"hpt-acc-position-cruise", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
-            "navSeriesLimit":1
+            "navSeriesLimit":0
           }'
           ></px-vis-timeseries>
 
