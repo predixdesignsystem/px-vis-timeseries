@@ -36,9 +36,8 @@ Creates an interactive timeseries chart
 <dom-module id="px-vis-timeseries">
   <link rel="import" type="css" href="css/px-vis-timeseries.css"/>
   <template>
-    <div class="flex--row u-m safariFlex safariFlexDirectionRow" >
-      <div>
-        <div class="flex flex--col safariFlexDirectionCol" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;"> <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. -->
+    <div class="flex--row u-m safariFlex safariFlexDirectionRow flex" >
+        <div class="inline--flex flex--col safariFlexDirectionCol" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;"> <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
           <px-vis-data
             id = "seriesAjax"
             request-data = "[[series]]"
@@ -58,16 +57,14 @@ Creates an interactive timeseries chart
             lists = "flat">
           </px-vis-data>
           <template is="dom-if" if="[[_topRegister(registerLocation)]]">
-            <div class="flex__item">
-              <px-vis-register
-                height="50"
-                width="[[width]]"
-                type="horizontal"
-                tooltip-data=[[tooltipData]]
-                muted-series="[[mutedSeries]]"
-                chart-data="[[chartData]]">
-              </px-vis-register>
-            </div>
+            <px-vis-register
+              height="50"
+              width="[[width]]"
+              type="horizontal"
+              tooltip-data=[[tooltipData]]
+              muted-series="[[mutedSeries]]"
+              chart-data="[[chartData]]">
+            </px-vis-register>
           </template>
           <px-vis-scale
             x-scale="time"
@@ -78,13 +75,11 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             selected-domain="[[selectedDomain]]">
           </px-vis-scale>
-          <div class="flex__item">
-            <px-vis-svg
-              width="[[width]]"
-              height="[[height]]"
-              margin="[[margin]]">
-            </px-vis-svg>
-          </div>
+          <px-vis-svg
+            width="[[width]]"
+            height="[[height]]"
+            margin="[[margin]]">
+          </px-vis-svg>
 
           <px-vis-clip-path
             svg="[[svg]]"
@@ -212,22 +207,19 @@ Creates an interactive timeseries chart
             tooltip-data="[[tooltipData]]">
           </px-vis-cursor>
 
-          <div class="flex__item">
-            <px-vis-chart-navigator
-              x-scale="time"
-              y-scale="linear"
-              width="[[width]]"
-              height="100"
-              margin="[[marginNav]]"
-              chart-data="[[chartData]]"
-              nav-series-limit="[[navSeriesLimit]]"
-              chart-domain-x="[[currentDomainX]]"
-              chart-domain-y="[[currentDomainY]]"
-              selected-domain="[[selectedDomain]]">
-            </px-vis-chart-navigator>
-          </div>
+          <px-vis-chart-navigator
+            x-scale="time"
+            y-scale="linear"
+            width="[[width]]"
+            height="100"
+            margin="[[marginNav]]"
+            chart-data="[[chartData]]"
+            nav-series-limit="[[navSeriesLimit]]"
+            chart-domain-x="[[currentDomainX]]"
+            chart-domain-y="[[currentDomainY]]"
+            selected-domain="[[selectedDomain]]">
+          </px-vis-chart-navigator>
         </div>
-      </div>
       <px-vis-zoom
         svg="[[svg]]"
         margin="[[margin]]"
@@ -243,16 +235,14 @@ Creates an interactive timeseries chart
         </px-vis-tooltip>
       </template>
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
-        <div class="flex__item">
-          <px-vis-register
-            height="[[height]]"
-            width="250"
-            units="Hz"
-            tooltip-data=[[tooltipData]]
-            muted-series="[[mutedSeries]]"
-            chart-data="[[chartData]]">
-          </px-vis-register>
-        </div>
+        <px-vis-register
+          height="[[height]]"
+          width="250"
+          units="Hz"
+          tooltip-data=[[tooltipData]]
+          muted-series="[[mutedSeries]]"
+          chart-data="[[chartData]]">
+        </px-vis-register>
       </template>
     </div>
   </template>
@@ -297,8 +287,6 @@ Creates an interactive timeseries chart
             type:Array
           },
           /**
-           *
-           *
            *
            * @type Array
            */

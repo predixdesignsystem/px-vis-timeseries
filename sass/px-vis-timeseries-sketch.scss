@@ -35,6 +35,10 @@ Predix branding rules go in px-vis-timeseries-predix.scss, not in this file.
 .safariFlex {
   display: -webkit-flex;
 }
+.safariInlineFlex {
+  display: -webkit-inline-flex;
+}
+
 .safariFlexDirectionRow {
   -webkit-flex-direction:row;
 }

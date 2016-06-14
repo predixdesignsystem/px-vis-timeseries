@@ -564,6 +564,9 @@ a {
 .safariFlex {
   display: -webkit-flex; }
 
+.safariInlineFlex {
+  display: -webkit-inline-flex; }
+
 .safariFlexDirectionRow {
   -webkit-flex-direction: row; }
 
