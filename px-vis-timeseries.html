@@ -221,9 +221,9 @@ Creates an interactive timeseries chart
           </px-vis-chart-navigator>
         </div>
       <px-vis-zoom
-        svg="[[svg]]"
         margin="[[margin]]"
-        extents-data="[[extentsData]]">
+        extents-data="[[extentsData]]"
+        px-svg-elem=[[pxSvgElem]]>
       </px-vis-zoom>
       <template is="dom-if" if="[[enableTooltip]]">
         <px-vis-tooltip
@@ -231,7 +231,8 @@ Creates an interactive timeseries chart
           width="250"
           margin="[[margin]]"
           chart-data="[[chartData]]"
-          tooltip-data="[[tooltipData]]">
+          tooltip-data="[[tooltipData]]"
+          px-svg-elem=[[pxSvgElem]]>
         </px-vis-tooltip>
       </template>
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
@@ -400,6 +401,10 @@ Creates an interactive timeseries chart
             type: Boolean,
             notify: true,
             value: false
+          },
+          pxSvgElem : {
+            type: Object,
+            value: function() { return {};}
           }
         },
 
@@ -420,7 +425,7 @@ Creates an interactive timeseries chart
 
           var keys = Object.keys(this.options);
           for(var i = 0; i < keys.length; i++){
-            var key = keys[i]
+            var key = keys[i];
             this.set(key, this.options[key]);
           }
         },
