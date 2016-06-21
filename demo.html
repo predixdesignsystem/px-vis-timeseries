@@ -21,19 +21,8 @@
           options = '{
             "width": "1000",
             "height": "500",
-            "series": [{
-              "type":"scatter",
-              "name":"blahblah",
-                "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-              },{
-                "type":"line",
-                "url":"/bower_components/px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
-            }],
-            "events": [{
-                "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
-            }],
-            "registerLocation":"both",
             "enableTooltip":true,
+            "registerLocation":"both",
             "eventConfig": {
               "Recalibrate":{
                 "color": "blue",
@@ -61,10 +50,35 @@
               { "for":"hpt-acc-position-cruise", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
-            "navSeriesLimit":0
+            "navSeriesLimit":0,
+              "showThresholdBox":false
           }'
-          ></px-vis-timeseries>
-
+          chart-data="[[chartData]]"
+          event-data="[[eventData]]">
+        </px-vis-timeseries>
+        <px-vis-data
+          id = "seriesAjax"
+          request-data = '[{
+            "type":"scatter",
+            "name":"blahblah",
+              "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+            },{
+              "type":"line",
+              "url":"/bower_components/px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          }]'
+          data-var="chartData"
+          lists="append"
+          response-data="{{chartData}}">
+        </px-vis-data>
+        <px-vis-data
+          id = "eventAjax"
+          request-data = '[{
+              "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
+          }]'
+          data-var="eventData"
+          lists = "flat"
+          response-data="{{eventData}}">
+        </px-vis-data>
 
           <!-- <px-vis-timeseries
             id="chartCustom"

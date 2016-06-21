@@ -37,25 +37,8 @@ Creates an interactive timeseries chart
   <link rel="import" type="css" href="css/px-vis-timeseries.css"/>
   <template>
     <div class="flex--row u-m safariFlex safariFlexDirectionRow flex" >
-        <div class="inline--flex flex--col safariFlexDirectionCol" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;"> <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
-          <px-vis-data
-            id = "seriesAjax"
-            request-data = "[[series]]"
-            data-var="chartData"
-            lists="append">
-          </px-vis-data>
-          <px-vis-data
-            id = "eventAjax"
-            request-data = "[[events]]"
-            data-var="eventData"
-            lists = "flat">
-          </px-vis-data>
-          <px-vis-data
-            id = "thresholdAjax"
-            request-data = "[[thresholds]]"
-            data-var="thresholdData"
-            lists = "flat">
-          </px-vis-data>
+      <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
+        <div class="inline--flex flex--col safariFlexDirectionCol" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;">
           <template is="dom-if" if="[[_topRegister(registerLocation)]]">
             <px-vis-register
               height="50"
@@ -227,12 +210,11 @@ Creates an interactive timeseries chart
       </px-vis-zoom>
       <template is="dom-if" if="[[enableTooltip]]">
         <px-vis-tooltip
-          svg="[[svg]]"
+          px-svg-elem=[[pxSvgElem]]
           width="250"
           margin="[[margin]]"
           chart-data="[[chartData]]"
-          tooltip-data="[[tooltipData]]"
-          px-svg-elem=[[pxSvgElem]]>
+          tooltip-data="[[tooltipData]]">
         </px-vis-tooltip>
       </template>
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
