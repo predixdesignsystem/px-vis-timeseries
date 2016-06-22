@@ -1,14 +1,14 @@
 {
     "name": "px-vis-timeseries",
     "author": "General Electric",
-    "description": "A Px component",
+    "description": "A Px visualization timeseries chart",
     "version": "0.0.1",
     "private": true,
     "extName" : null,
     "repository" :
     {
         "type": "git",
-        "url": "https://github.com/PredixDev/change-this-in-package.json-please.git"
+        "url": "https://github.com/PredixDev/px-vis-timeseries.git"
     },
     "homepage": "http://predix.io/",
     "devDependencies": {
