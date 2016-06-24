@@ -21,7 +21,7 @@
           options = '{
             "width": "1000",
             "height": "500",
-            "enableTooltip":true,
+            "enableTooltip":false,
             "registerLocation":"both",
             "eventConfig": {
               "Recalibrate":{
@@ -58,7 +58,10 @@
                 "name": "mySeries",
                 "x": 0
               },
-              "1":{"type":"line"}
+              "1":{
+                "type":"line",
+                "name": "hpt-acc-position-cruise"
+              }
             }
           }'
           chart-data="[[chartData]]"
