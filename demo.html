@@ -51,7 +51,15 @@
               { "for":"", "type":"quartile", "value":17 }
             ],
             "navSeriesLimit":0,
-              "showThresholdBox":false
+            "showThresholdBox":false,
+            "seriesConfig":{
+              "0":{
+                "type": "scatter",
+                "name": "mySeries",
+                "x": 0
+              },
+              "1":{"type":"line"}
+            }
           }'
           chart-data="[[chartData]]"
           event-data="[[eventData]]">

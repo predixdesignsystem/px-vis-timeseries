@@ -46,6 +46,7 @@ Creates an interactive timeseries chart
               type="horizontal"
               tooltip-data=[[tooltipData]]
               muted-series="[[mutedSeries]]"
+              series-config="[[seriesConfig]]"
               chart-data="[[chartData]]">
             </px-vis-register>
           </template>
@@ -56,6 +57,7 @@ Creates an interactive timeseries chart
             height="[[height]]"
             margin="[[margin]]"
             chart-data="[[chartData]]"
+            series-config="[[seriesConfig]]"
             selected-domain="[[selectedDomain]]">
           </px-vis-scale>
           <px-vis-svg
@@ -73,13 +75,13 @@ Creates an interactive timeseries chart
             margin="[[margin]]">
           </px-vis-clip-path>
 
-          <template is="dom-repeat" items="[[chartData]]">
-            <template is="dom-if" if="[[_chartTypeLine(item.type)]]">
+          <template is="dom-repeat" items="[[_returnKeys(seriesConfig)]]">
+            <template is="dom-if" if="[[_chartTypeLine(item,seriesConfig)]]">
               <px-vis-line
                 svg="[[svg]]"
-                series-id="[[item.name]]"
-                series-number="[[item.seriesNumber]]"
-                chart-data="[[item]]"
+                series-id="[[item]]"
+                chart-data="[[chartData]]"
+                series-config="[[seriesConfig]]"
                 x="[[x]]"
                 y="[[y]]"
                 current-domain-x="[[currentDomainX]]"
@@ -88,12 +90,12 @@ Creates an interactive timeseries chart
                 muted-series="[[mutedSeries]]">
               </px-vis-line>
             </template>
-            <template is="dom-if" if="[[_chartTypeScatter(item.type)]]">
+            <template is="dom-if" if="[[_chartTypeScatter(item,seriesConfig)]]">
               <px-vis-scatter
                 svg="[[svg]]"
-                series-id="[[item.name]]"
-                series-number="[[item.seriesNumber]]"
-                chart-data="[[item]]"
+                series-id="[[item]]"
+                chart-data="[[chartData]]"
+                series-config="[[seriesConfig]]"
                 x="[[x]]"
                 y="[[y]]"
                 current-domain-x="[[currentDomainX]]"
@@ -120,6 +122,7 @@ Creates an interactive timeseries chart
 
           <px-vis-threshold
             svg="[[svg]]"
+            series-config="[[seriesConfig]]"
             chart-data="[[thresholdData]]"
             x="[[x]]"
             y="[[y]]"
@@ -161,7 +164,7 @@ Creates an interactive timeseries chart
             margin="[[margin]]"
             title="Hz"
             orientation="left"
-            chart-data=[[chartData]]
+            series-config="[[seriesConfig]]"
             muted-series=[[mutedSeries]]
             current-domain="[[currentDomainY]]">
           </px-vis-axis>
@@ -184,6 +187,7 @@ Creates an interactive timeseries chart
             width="[[width]]"
             height="[[height]]"
             margin="[[margin]]"
+            series-config="[[seriesConfig]]"
             chart-data="[[chartData]]"
             horizontal-line="full"
             vertical-line="full"
@@ -223,6 +227,7 @@ Creates an interactive timeseries chart
           height="[[height]]"
           width="250"
           units="Hz"
+          series-config="[[seriesConfig]]"
           tooltip-data=[[tooltipData]]
           muted-series="[[mutedSeries]]"
           chart-data="[[chartData]]">
