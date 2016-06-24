@@ -47,7 +47,8 @@ Creates an interactive timeseries chart
               tooltip-data=[[tooltipData]]
               muted-series="[[mutedSeries]]"
               series-config="[[seriesConfig]]"
-              chart-data="[[chartData]]">
+              chart-data="[[chartData]]"
+              x-axis-type="time">
             </px-vis-register>
           </template>
           <px-vis-scale
@@ -179,7 +180,8 @@ Creates an interactive timeseries chart
             y="[[y]]"
             current-domain-x="[[currentDomainX]]"
             current-domain-y="[[currentDomainY]]"
-            selection-type="xAxis">
+            selection-type="xAxis"
+            x-axis-time>
           </px-vis-interaction-space>
 
           <px-vis-cursor
@@ -219,7 +221,8 @@ Creates an interactive timeseries chart
           width="250"
           margin="[[margin]]"
           chart-data="[[chartData]]"
-          tooltip-data="[[tooltipData]]">
+          tooltip-data="[[tooltipData]]"
+          x-axis-type="time">
         </px-vis-tooltip>
       </template>
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
@@ -230,7 +233,8 @@ Creates an interactive timeseries chart
           series-config="[[seriesConfig]]"
           tooltip-data=[[tooltipData]]
           muted-series="[[mutedSeries]]"
-          chart-data="[[chartData]]">
+          chart-data="[[chartData]]"
+          x-axis-type="time">
         </px-vis-register>
       </template>
     </div>
