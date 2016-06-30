@@ -58,7 +58,7 @@ Creates an interactive timeseries chart
             height="[[height]]"
             margin="[[margin]]"
             chart-data="[[chartData]]"
-            series-config="[[seriesConfig]]"
+            complete-series-config="[[completeSeriesConfig]]"
             include-all-series="[[includeAllSeries]]"
             default-series-config="[[defaultSeriesConfig]]"
             selected-domain="[[selectedDomain]]">
@@ -262,10 +262,11 @@ Creates an interactive timeseries chart
           PxVisBehaviorD3.axis,
           PxVisBehaviorD3.selectedDomain,
           PxVisBehavior.dataset,
-          PxVisBehavior.seriesConfig,
-          PxVisBehaviorChart.chartCommon,
+          PxVisBehavior.completeSeriesConfig,
           PxVisBehaviorD3.interaction,
-          commonColors
+          commonColors,
+          PxVisBehavior.commonMethods,
+          PxVisBehaviorChart.chartCommon,
         ],
 
         /**

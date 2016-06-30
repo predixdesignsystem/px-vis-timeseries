@@ -54,27 +54,33 @@
             "showThresholdBox":false,
             "includeAllSeries": true
           }'
-          default-series-config='{
+          series-config='{
+            "0":{
               "type": "line",
-              "x": "0",
-              "xExtMin": "dynamic",
-              "xExtMax": "dynamic",
-              "yExtMin": "dynamic",
-              "yExtMax": "dynamic"
-            }'
+              "name": "mySeries"
+            },
+            "1":{
+              "type":"scatter",
+              "name": "hpt-acc-position-cruise"
+            }
+          }'
           chart-data="[[chartData]]"
           event-data="[[eventData]]">
-          </px-vis-timeseries>
-          <px-vis-data
+        </px-vis-timeseries>
+        <px-vis-data
           id = "seriesAjax"
           request-data = '[{
-              "url":"/bower_components/px-demo-data/demo-data/apm/timeseries.json"
-            }]'
+            "type":"line",
+            "name":"blahblah",
+              "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+            },{
+              "type":"line",
+              "url":"/bower_components/px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          }]'
           data-var="chartData"
-          lists="flat"
+          lists="append"
           response-data="{{chartData}}">
-          </px-vis-data>
-
+        </px-vis-data>
 
 
           <!-- series-config='{
