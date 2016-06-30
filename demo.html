@@ -10,6 +10,8 @@
         <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
         <link rel="import" href="../px-theme/px-theme.html"/>
         <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../px-vis/px-vis-data.html"/>
+        <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
 
         <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries.css"/>
 
@@ -21,7 +23,7 @@
           options = '{
             "width": "1000",
             "height": "500",
-            "enableTooltip":false,
+            "enableTooltip":true,
             "registerLocation":"both",
             "eventConfig": {
               "Recalibrate":{
@@ -44,26 +46,17 @@
               }
             },
             "thresholdData":[
-              { "for":"0", "type":"max", "value":35.4784 },
-              { "for":"0", "type":"min", "value":7.6531 },
-              { "for":"0", "type":"mean", "value":15.330657585139331 },
-              { "for":"1", "type":"mean", "value":75 },
+              { "for":"blahblah", "type":"max", "value":35.4784 },
+              { "for":"blahblah", "type":"min", "value":7.6531 },
+              { "for":"blahblah", "type":"mean", "value":15.330657585139331 },
+              { "for":"hpt-acc-position-cruise", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
             "navSeriesLimit":1,
             "showThresholdBox":false,
-            "includeAllSeries": true
+            "includeAllSeries": false
           }'
-          series-config='{
-            "0":{
-              "type": "line",
-              "name": "mySeries"
-            },
-            "1":{
-              "type":"scatter",
-              "name": "hpt-acc-position-cruise"
-            }
-          }'
+          series-config='[[seriesConfig]]'
           chart-data="[[chartData]]"
           event-data="[[eventData]]">
         </px-vis-timeseries>
@@ -77,10 +70,17 @@
               "type":"line",
               "url":"/bower_components/px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
           }]'
-          data-var="chartData"
+          data-var="originalData"
           lists="append"
-          response-data="{{chartData}}">
+          response-data="{{originalData}}">
         </px-vis-data>
+        <px-vis-data-converter
+          data-key = "series"
+          id-key = "name"
+          original-data = '[[originalData]]'
+          series-config="{{seriesConfig}}"
+          chart-data="{{chartData}}">
+        </px-vis-data-converter>
 
 
           <!-- series-config='{
