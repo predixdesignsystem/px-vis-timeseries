@@ -57,6 +57,14 @@
             "includeAllSeries": false,
             "selectionType": "xAxis"
           }'
+          default-series-config='{
+              "type": "scatter",
+              "x": "0",
+              "xMin": "dynamic",
+              "xMax": "dynamic",
+              "yMin": 0,
+              "yMax": "dynamic"
+            }'
           series-config='[[seriesConfig]]'
           chart-data="[[chartData]]"
           event-data="[[eventData]]">
