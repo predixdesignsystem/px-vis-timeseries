@@ -3,6 +3,7 @@
 <link rel="import" href="../px-vis/px-vis-behavior-common.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-d3.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-chart.html" />
+<link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
 <link rel="import" href="../px-vis/px-vis-svg.html"/>
 <link rel="import" href="../px-vis/px-vis-line.html"/>
 <link rel="import" href="../px-vis/px-vis-scatter.html"/>
@@ -207,6 +208,7 @@ Creates an interactive timeseries chart
             margin="[[marginNav]]"
             default-series-config="[[defaultSeriesConfig]]"
             series-config="[[seriesConfig]]"
+            include-all-series="[[includeAllSeries]]"
             chart-data="[[chartData]]"
             nav-series-limit="[[navSeriesLimit]]"
             chart-domain-x="[[currentDomainX]]"
