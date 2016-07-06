@@ -41,6 +41,7 @@ Creates an interactive timeseries chart
           <template is="dom-if" if="[[_topRegister(registerLocation)]]">
             <px-vis-register
               height="50"
+              units="[[units]]"
               width="[[width]]"
               type="horizontal"
               tooltip-data=[[tooltipData]]
@@ -232,7 +233,7 @@ Creates an interactive timeseries chart
         <px-vis-register
           height="[[height]]"
           width="250"
-          units="Hz"
+          units="[[units]]"
           complete-series-config="[[completeSeriesConfig]]"
           tooltip-data=[[tooltipData]]
           muted-series="[[mutedSeries]]"
@@ -267,7 +268,8 @@ Creates an interactive timeseries chart
           commonColors,
           PxVisBehavior.commonMethods,
           PxVisBehaviorChart.chartCommon,
-          PxVisBehavior.zoomSelection
+          PxVisBehavior.zoomSelection,
+          PxVisBehavior.units
         ],
 
         /**
