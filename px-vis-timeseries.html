@@ -181,8 +181,7 @@ Creates an interactive timeseries chart
             y="[[y]]"
             current-domain-x="[[currentDomainX]]"
             current-domain-y="[[currentDomainY]]"
-            selection-type="xAxis"
-            x-axis-time>
+            selection-type=[[selectionType]]>
           </px-vis-interaction-space>
 
           <px-vis-cursor
@@ -267,7 +266,12 @@ Creates an interactive timeseries chart
           PxVisBehaviorD3.interaction,
           commonColors,
           PxVisBehavior.commonMethods,
+<<<<<<< HEAD
           PxVisBehaviorChart.chartCommon
+=======
+          PxVisBehaviorChart.chartCommon,
+          PxVisBehavior.zoomSelection
+>>>>>>> a7e714a04e314e93476fa9e5394aa3b65ec051dd
         ],
 
         /**
@@ -406,7 +410,6 @@ Creates an interactive timeseries chart
             value: function() { return {};}
           }
         },
-
 
         ready:function(){
           this._calcMargins();
