@@ -58,6 +58,15 @@
             "selectionType": "xAxis"
           }'
           series-config='[[seriesConfig]]'
+          units="Hz"
+          default-series-config='{
+              "type": "line",
+              "x": "TimeStamp",
+              "xMin": "dynamic",
+              "xMax": "dynamic",
+              "yMin": 0,
+              "yMax": "dynamic"
+            }'
           chart-data="[[chartData]]"
           event-data="[[eventData]]">
         </px-vis-timeseries>
