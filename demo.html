@@ -46,9 +46,9 @@
               }
             },
             "thresholdData":[
-              { "for":"blahblah", "type":"max", "value":35.4784 },
-              { "for":"blahblah", "type":"min", "value":7.6531 },
-              { "for":"blahblah", "type":"mean", "value":15.330657585139331 },
+              { "for":"mySeries", "type":"max", "value":35.4784 },
+              { "for":"mySeries", "type":"min", "value":7.6531 },
+              { "for":"mySeries", "type":"mean", "value":15.330657585139331 },
               { "for":"hpt-acc-position-cruise", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
@@ -57,77 +57,7 @@
             "includeAllSeries": true,
             "selectionType": "xAxis"
           }'
-          default-series-config='{
-              "type": "line",
-              "x": "TimeStamp",
-              "xMin": "dynamic",
-              "xMax": "dynamic",
-              "yMin": 0,
-              "yMax": "dynamic"
-            }'
-          series-config='{
-            "a":{
-              "type": "scatter",
-              "y": "TTXD1_1" }
-          }'
-          chart-data="[[chartData]]"
-          event-data="[[eventData]]">
-          </px-vis-timeseries>
-          <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"/bower_components/px-demo-data/demo-data/apm/timeseries.json"
-            }]'
-          data-var="chartData"
-          lists="flat"
-          response-data="{{chartData}}">
-          </px-vis-data>
-
-
-          <!-- series-config='{
-            "y":{
-              "type": "line",
-              "name": "mySeries",
-              "x":"x"
-            }
-          }'
-          chart-data="[[chartData]]"
-          event-data="[[eventData]]">
-          </px-vis-timeseries>
-          <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-            }]'
-          data-var="chartData"
-          lists="flat"
-          response-data="{{chartData}}">
-          </px-vis-data> -->
-
-          <!-- default-series-config='{
-              "type": "line",
-              "x": "TimeStamp",
-              "xMin": "dynamic",
-              "xMax": "dynamic",
-              "yMin": 0,
-              "yMax": "dynamic"
-            }'
-          series-config='{"TTXD1_1":{}}'
-          chart-data="[[chartData]]"
-          event-data="[[eventData]]">
-          </px-vis-timeseries>
-          <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"/bower_components/px-demo-data/demo-data/apm/timeseries.json"
-            }]'
-          data-var="chartData"
-          lists="flat"
-          response-data="{{chartData}}">
-          </px-vis-data> -->
-
-
-          <!-- series-config='[[seriesConfig]]'
+          series-config='[[seriesConfig]]'
           chart-data="[[chartData]]"
           event-data="[[eventData]]">
         </px-vis-timeseries>
@@ -135,7 +65,7 @@
           id = "seriesAjax"
           request-data = '[{
             "type":"line",
-            "name":"blahblah",
+            "name":"mySeries",
               "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
             },{
               "type":"line",
@@ -151,7 +81,7 @@
           original-data = '[[originalData]]'
           series-config="{{seriesConfig}}"
           chart-data="{{chartData}}">
-        </px-vis-data-converter> -->
+        </px-vis-data-converter>
         <px-vis-data
           id = "eventAjax"
           request-data = '[{
@@ -161,6 +91,79 @@
           lists = "flat"
           response-data="{{eventData}}">
         </px-vis-data>
+
+
+        <px-vis-timeseries
+          width = "1000"
+          height = "500"
+          include-all-series
+          selection-type= "xy"
+          chart-data="[[chartData2]]">
+        </px-vis-timeseries>
+        <px-vis-data
+          id = "seriesAjax"
+          request-data = '[{
+              "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
+            }]'
+          data-var="chartData2"
+          lists="flat"
+          response-data="{{chartData2}}">
+        </px-vis-data>
+
+        <px-vis-timeseries
+          width = "1000"
+          height = "500"
+          selection-type= "yAxis"
+          series-config='{
+            "y":{
+              "type": "scatter",
+              "name": "mySeries",
+              "x":"x",
+              "y":"y"
+            }
+          }'
+          chart-data="[[chartData3]]">
+        </px-vis-timeseries>
+        <px-vis-data
+          id = "seriesAjax"
+          request-data = '[{
+              "url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
+            }]'
+          data-var="chartData3"
+          lists="flat"
+          response-data="{{chartData3}}">
+        </px-vis-data>
+
+        <!-- <px-vis-timeseries
+          options = '{
+            "width": "1000",
+            "height": "500",
+            "enableTooltip":true,
+            "registerLocation":"none",
+            "navSeriesLimit":1,
+            "includeAllSeries": true,
+            "selectionType": "xAxis"
+          }'
+          default-series-config='{
+              "type": "line",
+              "x": "TimeStamp",
+              "xMin": "dynamic",
+              "xMax": "dynamic",
+              "yMin": 0,
+              "yMax": "dynamic"
+            }'
+          chart-data="[[apmData]]">
+          </px-vis-timeseries>
+          <px-vis-data
+          id = "seriesAjax"
+          request-data = '[{
+              "url":"/bower_components/px-demo-data/demo-data/apm/timeseries.json"
+            }]'
+          data-var="chartData"
+          lists="flat"
+          response-data="{{apmData}}">
+          </px-vis-data> -->
+
 
           <!-- <px-vis-timeseries
             id="chartCustom"
