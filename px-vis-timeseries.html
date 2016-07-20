@@ -117,6 +117,8 @@ Creates an interactive timeseries chart
           <template is="dom-repeat" items="[[eventData]]">
             <px-vis-event
               svg="[[svg]]"
+              x-axis-type="time"
+              x-key="time"
               event-id="[[item.id]]"
               event-data="[[item]]"
               x="[[x]]"
@@ -206,8 +208,8 @@ Creates an interactive timeseries chart
           </px-vis-cursor>
 
           <px-vis-chart-navigator
-            x-scale="time"
-            y-scale="linear"
+            x-axis-type="time"
+            y-axis-type="linear"
             width="[[width]]"
             height="100"
             margin="[[marginNav]]"
