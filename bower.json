@@ -16,11 +16,11 @@
   "dependencies": {
     "polymer": "~1.5.0",
     "px-theme": "~0.8.0",
-    "px-vis": "https://github.com/PredixDev/px-vis.git"
+    "px-demo-data": "~0.0.1",
+    "px-vis": "~0.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
-    "px-demo-data": "~0.0.1",
     "px-starter-kit-design": "~0.4.9"
   },
   "resolutions": {
