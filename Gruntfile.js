@@ -24,7 +24,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'css/noprefix/px-vis-timeseries-sketch.css': 'sass/px-vis-timeseries-sketch.scss',
-                    'css/noprefix/px-vis-timeseries.css': 'sass/px-vis-timeseries-predix.scss'
+                    'css/noprefix/px-vis-timeseries.css': 'sass/px-vis-timeseries-predix.scss',
+                    'css/noprefix/px-vis-timeseries-demo.css': 'sass/px-vis-timeseries-demo.scss'
                 }
             }
         },
