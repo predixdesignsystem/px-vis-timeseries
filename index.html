@@ -192,6 +192,15 @@
                     series-config="{{seriesConfig}}"
                     chart-data="{{chartData}}">
                   </px-vis-data-converter>
+                  <px-vis-data
+                    id = "eventAjax"
+                    request-data = '[{
+                        "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
+                    }]'
+                    data-var="eventData"
+                    lists = "flat"
+                    response-data="{{eventData}}">
+                  </px-vis-data>
 
                   <br />
                   <br />
