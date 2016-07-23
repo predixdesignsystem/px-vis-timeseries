@@ -4,7 +4,7 @@
 <link rel="import" href="../px-vis/px-vis-behavior-d3.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-chart.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
-<link rel="import" href="../px-vis/px-vis-svg.html"/>
+<link rel="import" href="../px-vis/px-vis-svg-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line.html"/>
 <link rel="import" href="../px-vis/px-vis-scatter.html"/>
 <link rel="import" href="../px-vis/px-vis-event.html"/>
@@ -38,7 +38,7 @@ Creates an interactive timeseries chart
   <template>
     <div class="flex--row u-m safariFlex safariFlexDirectionRow flex" >
       <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
-        <div class="inline--flex flex--col safariFlexDirectionCol" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;">
+        <div class="inline--flex flex--col" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;">
           <template is="dom-if" if="[[_topRegister(registerLocation)]]">
             <px-vis-register
               height="50"
@@ -52,160 +52,12 @@ Creates an interactive timeseries chart
               x-axis-type="time">
             </px-vis-register>
           </template>
-          <px-vis-zoom
-            margin="[[margin]]"
-            extents-data="[[extentsData]]"
-            px-svg-elem=[[pxSvgElem]]>
-          </px-vis-zoom>
-          <px-vis-scale
-            x-axis-type="time"
-            y-axis-type="linear"
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]"
-            chart-data="[[chartData]]"
-            complete-series-config="[[completeSeriesConfig]]"
-            chart-extents="[[chartExtents]]"
-            selected-domain="[[selectedDomain]]">
-          </px-vis-scale>
-          <px-vis-svg
+
+          <px-vis-svg-canvas
             width="[[width]]"
             height="[[height]]"
             margin="[[margin]]">
-          </px-vis-svg>
-
-          <px-vis-clip-path
-            svg="[[svg]]"
-            x="[[x]]"
-            y="[[y]]"
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]">
-          </px-vis-clip-path>
-
-          <template is="dom-repeat" items="[[_returnKeys(completeSeriesConfig)]]">
-            <template is="dom-if" if="[[_chartTypeLine(item,completeSeriesConfig)]]">
-              <px-vis-line
-                svg="[[svg]]"
-                series-id="[[item]]"
-                chart-data="[[chartData]]"
-                complete-series-config="[[completeSeriesConfig]]"
-                x="[[x]]"
-                y="[[y]]"
-                current-domain-x="[[currentDomainX]]"
-                current-domain-y="[[currentDomainY]]"
-                clip-path="[[seriesClipPath]]"
-                muted-series="[[mutedSeries]]">
-              </px-vis-line>
-            </template>
-            <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]">
-              <px-vis-scatter
-                svg="[[svg]]"
-                series-id="[[item]]"
-                chart-data="[[chartData]]"
-                complete-series-config="[[completeSeriesConfig]]"
-                x="[[x]]"
-                y="[[y]]"
-                current-domain-x="[[currentDomainX]]"
-                current-domain-y="[[currentDomainY]]"
-                clip-path="[[seriesClipPath]]"
-                muted-series="[[mutedSeries]]">
-              </px-vis-scatter>
-            </template>
-          </template>
-
-          <template is="dom-repeat" items="[[eventData]]">
-            <px-vis-event
-              svg="[[svg]]"
-              x-axis-type="time"
-              x-key="time"
-              event-id="[[item.id]]"
-              event-data="[[item]]"
-              x="[[x]]"
-              y="[[y]]"
-              event-config="[[eventConfig]]"
-              current-domain-x="[[currentDomainX]]"
-              current-domain-y="[[currentDomainY]]"
-              clip-path="[[clipPath]]">
-            </px-vis-event>
-          </template>
-
-          <px-vis-threshold
-            svg="[[svg]]"
-            complete-series-config="[[completeSeriesConfig]]"
-            chart-data="[[thresholdData]]"
-            x="[[x]]"
-            y="[[y]]"
-            current-domain-x="[[currentDomainX]]"
-            current-domain-y="[[currentDomainY]]"
-            show-threshold-box="[[showThresholdBox]]">
-          </px-vis-threshold>
-
-          <px-vis-gridlines
-            svg="[[svg]]"
-            axis="[[x]]"
-            margin="[[margin]]"
-            length="[[height]]"
-            orientation="bottom"
-            current-domain="[[currentDomainX]]">
-          </px-vis-gridlines>
-
-          <px-vis-gridlines
-            svg="[[svg]]"
-            axis="[[y]]"
-            margin="[[margin]]"
-            length="[[width]]"
-            orientation="left"
-            current-domain="[[currentDomainY]]">
-          </px-vis-gridlines>
-
-          <px-vis-axis
-            svg="[[svg]]"
-            axis="[[x]]"
-            margin="[[margin]]"
-            title="Date"
-            orientation="bottom"
-            label-position="after"
-            current-domain="[[currentDomainX]]">
-          </px-vis-axis>
-          <px-vis-axis
-            svg="[[svg]]"
-            axis="[[y]]"
-            margin="[[margin]]"
-            title="Hz"
-            orientation="left"
-            complete-series-config="[[completeSeriesConfig]]"
-            muted-series=[[mutedSeries]]
-            current-domain="[[currentDomainY]]">
-          </px-vis-axis>
-
-          <px-vis-interaction-space
-            svg="[[svg]]"
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]"
-            x-axis-type="time"
-            complete-series-config="[[completeSeriesConfig]]"
-            chart-data="[[chartData]]"
-            x="[[x]]"
-            y="[[y]]"
-            current-domain-x="[[currentDomainX]]"
-            current-domain-y="[[currentDomainY]]"
-            selection-type=[[selectionType]]>
-          </px-vis-interaction-space>
-
-          <px-vis-cursor
-            svg="[[svg]]"
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]"
-            complete-series-config="[[completeSeriesConfig]]"
-            chart-data="[[chartData]]"
-            horizontal-line="full"
-            vertical-line="full"
-            circle-point="yes"
-            tooltip-data="[[tooltipData]]">
-          </px-vis-cursor>
+          </px-vis-svg-canvas>
 
           <px-vis-chart-navigator
             x-axis-type="time"
@@ -223,17 +75,7 @@ Creates an interactive timeseries chart
             selected-domain="[[selectedDomain]]">
           </px-vis-chart-navigator>
         </div>
-      <template is="dom-if" if="[[enableTooltip]]">
-        <px-vis-tooltip
-          px-svg-elem=[[pxSvgElem]]
-          width="250"
-          margin="[[margin]]"
-          chart-data="[[chartData]]"
-          tooltip-data="[[tooltipData]]"
-          complete-series-config="[[completeSeriesConfig]]"
-          x-axis-type="time">
-        </px-vis-tooltip>
-      </template>
+
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
         <px-vis-register
           height="[[height]]"
@@ -246,7 +88,169 @@ Creates an interactive timeseries chart
           x-axis-type="time">
         </px-vis-register>
       </template>
-    </div>
+    </div> <!-- flex row -->
+
+    <px-vis-zoom
+      margin="[[margin]]"
+      extents-data="[[extentsData]]"
+      px-svg-elem=[[pxSvgElem]]>
+    </px-vis-zoom>
+    <px-vis-scale
+      x-axis-type="time"
+      y-axis-type="linear"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[margin]]"
+      chart-data="[[chartData]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      chart-extents="[[chartExtents]]"
+      selected-domain="[[selectedDomain]]">
+    </px-vis-scale>
+    <px-vis-clip-path
+      svg="[[svg]]"
+      x="[[x]]"
+      y="[[y]]"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[margin]]">
+    </px-vis-clip-path>
+
+    <template is="dom-repeat" items="[[_returnKeys(completeSeriesConfig)]]">
+      <template is="dom-if" if="[[_chartTypeLine(item,completeSeriesConfig)]]">
+        <px-vis-line
+          svg="[[svg]]"
+          render-to-canvas="[[renderToCanvas]]"
+          canvas-context="[[canvasContext]]"
+          series-id="[[item]]"
+          chart-data="[[chartData]]"
+          complete-series-config="[[completeSeriesConfig]]"
+          x="[[x]]"
+          y="[[y]]"
+          current-domain-x="[[currentDomainX]]"
+          current-domain-y="[[currentDomainY]]"
+          clip-path="[[seriesClipPath]]"
+          muted-series="[[mutedSeries]]">
+        </px-vis-line>
+      </template>
+      <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]">
+        <px-vis-scatter
+          svg="[[svg]]"
+          series-id="[[item]]"
+          chart-data="[[chartData]]"
+          complete-series-config="[[completeSeriesConfig]]"
+          x="[[x]]"
+          y="[[y]]"
+          current-domain-x="[[currentDomainX]]"
+          current-domain-y="[[currentDomainY]]"
+          clip-path="[[seriesClipPath]]"
+          muted-series="[[mutedSeries]]">
+        </px-vis-scatter>
+      </template>
+    </template>
+
+    <template is="dom-repeat" items="[[eventData]]">
+      <px-vis-event
+        svg="[[svg]]"
+        x-axis-type="time"
+        x-key="time"
+        event-id="[[item.id]]"
+        event-data="[[item]]"
+        x="[[x]]"
+        y="[[y]]"
+        event-config="[[eventConfig]]"
+        current-domain-x="[[currentDomainX]]"
+        current-domain-y="[[currentDomainY]]"
+        clip-path="[[clipPath]]">
+      </px-vis-event>
+    </template>
+
+    <px-vis-threshold
+      svg="[[svg]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      chart-data="[[thresholdData]]"
+      x="[[x]]"
+      y="[[y]]"
+      current-domain-x="[[currentDomainX]]"
+      current-domain-y="[[currentDomainY]]"
+      show-threshold-box="[[showThresholdBox]]">
+    </px-vis-threshold>
+
+    <px-vis-gridlines
+      svg="[[svg]]"
+      axis="[[x]]"
+      margin="[[margin]]"
+      length="[[height]]"
+      orientation="bottom"
+      current-domain="[[currentDomainX]]">
+    </px-vis-gridlines>
+
+    <px-vis-gridlines
+      svg="[[svg]]"
+      axis="[[y]]"
+      margin="[[margin]]"
+      length="[[width]]"
+      orientation="left"
+      current-domain="[[currentDomainY]]">
+    </px-vis-gridlines>
+
+    <px-vis-axis
+      svg="[[svg]]"
+      axis="[[x]]"
+      margin="[[margin]]"
+      title="Date"
+      orientation="bottom"
+      label-position="after"
+      current-domain="[[currentDomainX]]">
+    </px-vis-axis>
+    <px-vis-axis
+      svg="[[svg]]"
+      axis="[[y]]"
+      margin="[[margin]]"
+      title="Hz"
+      orientation="left"
+      complete-series-config="[[completeSeriesConfig]]"
+      muted-series=[[mutedSeries]]
+      current-domain="[[currentDomainY]]">
+    </px-vis-axis>
+
+    <px-vis-interaction-space
+      svg="[[svg]]"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[margin]]"
+      x-axis-type="time"
+      complete-series-config="[[completeSeriesConfig]]"
+      chart-data="[[chartData]]"
+      x="[[x]]"
+      y="[[y]]"
+      current-domain-x="[[currentDomainX]]"
+      current-domain-y="[[currentDomainY]]"
+      selection-type=[[selectionType]]>
+    </px-vis-interaction-space>
+
+    <px-vis-cursor
+      svg="[[svg]]"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[margin]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      chart-data="[[chartData]]"
+      horizontal-line="full"
+      vertical-line="full"
+      circle-point="yes"
+      tooltip-data="[[tooltipData]]">
+    </px-vis-cursor>
+    <template is="dom-if" if="[[enableTooltip]]">
+      <px-vis-tooltip
+        px-svg-elem=[[pxSvgElem]]
+        width="250"
+        margin="[[margin]]"
+        chart-data="[[chartData]]"
+        tooltip-data="[[tooltipData]]"
+        complete-series-config="[[completeSeriesConfig]]"
+        x-axis-type="time">
+      </px-vis-tooltip>
+    </template>
   </template>
 </dom-module>
 
@@ -263,6 +267,7 @@ Creates an interactive timeseries chart
           PxVisBehavior.extentsData,
           PxVisBehaviorTime.datetime,
           PxVisBehaviorD3.svg,
+          PxVisBehaviorD3.canvas,
           PxVisBehaviorD3.axes,
           PxVisBehaviorD3.axis,
           PxVisBehaviorD3.selectedDomain,

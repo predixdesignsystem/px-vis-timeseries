@@ -56,6 +56,7 @@
             "navSeriesLimit":0,
             "showThresholdBox":false,
             "includeAllSeries": true,
+            "renderToCanvas": true,
             "selectionType": "xAxis"
           }'
           series-config='[[seriesConfig]]'
@@ -179,6 +180,17 @@
           response-data="{{apmData}}">
           </px-vis-data> -->
 
+          <br />
+          <br />
+          <h2>Example of a timeseries rendering series data to canvas</h2>
+          <px-vis-timeseries
+            width = "1000"
+            height = "500"
+            include-all-series
+            render-to-canvas
+            selection-type= "xy"
+            chart-data="[[chartData2]]">
+          </px-vis-timeseries>
 
           <!-- <px-vis-timeseries
             id="chartCustom"
