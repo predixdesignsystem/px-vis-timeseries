@@ -1,3 +1,7 @@
+v0.0.4
+==================
+* fix tooltip for demo
+
 v0.0.3
 ==================
 * use relative path for demo data, fix units for demo, remove unused behavior
