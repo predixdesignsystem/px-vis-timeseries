@@ -1,3 +1,8 @@
+v0.1.0
+==================
+* Added canvas support
+* Added precipitationPattern behavior
+
 v0.0.3
 ==================
 * use relative path for demo data, fix units for demo, remove unused behavior
