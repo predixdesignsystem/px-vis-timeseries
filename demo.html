@@ -47,10 +47,10 @@
               }
             },
             "thresholdData":[
-              { "for":"mySeries", "type":"max", "value":35.4784 },
-              { "for":"mySeries", "type":"min", "value":7.6531 },
-              { "for":"mySeries", "type":"mean", "value":15.330657585139331 },
-              { "for":"hpt-acc-position-cruise", "type":"mean", "value":75 },
+              { "for":"y0", "type":"max", "value":35.4784 },
+              { "for":"y0", "type":"min", "value":7.6531 },
+              { "for":"y0", "type":"mean", "value":15.330657585139331 },
+              { "for":"y1", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
             "navSeriesLimit":0,
@@ -179,6 +179,17 @@
           response-data="{{apmData}}">
           </px-vis-data> -->
 
+          <br />
+          <br />
+          <h2>Example of a timeseries rendering series data to canvas</h2>
+          <px-vis-timeseries
+            width = "1000"
+            height = "500"
+            include-all-series
+            render-to-canvas
+            selection-type= "xy"
+            chart-data="[[chartData2]]">
+          </px-vis-timeseries>
 
           <!-- <px-vis-timeseries
             id="chartCustom"

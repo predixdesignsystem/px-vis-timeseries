@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.0.4",
+  "version": "0.1.1",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -14,17 +14,13 @@
     "test"
   ],
   "dependencies": {
-    "polymer": "~1.5.0",
+    "polymer": "^1.5.0",
     "px-theme": "~0.8.0",
     "px-demo-data": "~0.0.1",
-    "px-vis": "~0.0.1"
+    "px-vis": "~01.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
     "px-starter-kit-design": "~0.4.9"
-  },
-  "resolutions": {
-    "polymer": "^1.5.0",
-    "px-theme": "~0.8.0"
   }
 }

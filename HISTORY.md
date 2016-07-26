@@ -1,3 +1,12 @@
+v0.1.1
+==================
+* merged and fixed conflicts
+
+v0.1.0
+==================
+* Added canvas support
+* Added precipitationPattern behavior
+
 v0.0.4
 ==================
 * fix tooltip for demo
