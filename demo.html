@@ -53,7 +53,6 @@
               { "for":"y1", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
-            "navSeriesLimit":1,
             "showThresholdBox":false,
             "includeAllSeries": true,
             "selectionType": "xAxis"
@@ -158,7 +157,7 @@
             "height": "500",
             "enableTooltip":true,
             "registerLocation":"none",
-            "navSeriesLimit":1,
+            "navSeriesLimit":5,
             "includeAllSeries": true,
             "selectionType": "xAxis"
           }'
@@ -176,7 +175,7 @@
           <px-vis-data
           id = "seriesAjax"
           request-data = '[{
-              "url":"/bower_components/px-demo-data/demo-data/apm/timeseries.json"
+              "url":"../px-demo-data/demo-data/apm/timeseries.json"
             }]'
           data-var="chartData"
           lists="flat"
