@@ -1,3 +1,11 @@
+v0.1.5
+==================
+* Added vulcanize index and demo
+
+v0.1.4
+==================
+* demo bug fix
+
 v0.1.3
 ==================
 * changed canvas demo
