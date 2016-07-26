@@ -1,3 +1,7 @@
+v0.1.3
+==================
+* changed canvas demo
+
 v0.1.1
 ==================
 * merged and fixed conflicts

@@ -52,7 +52,6 @@ Creates an interactive timeseries chart
               x-axis-type="time">
             </px-vis-register>
           </template>
-<<<<<<< HEAD
           <template is="dom-if" if="[[enableTooltip]]">
             <px-vis-tooltip
               px-svg-elem=[[pxSvgElem]]
@@ -64,30 +63,6 @@ Creates an interactive timeseries chart
               x-axis-type="time">
             </px-vis-tooltip>
           </template>
-          <px-vis-zoom
-            margin="[[margin]]"
-            extents-data="[[extentsData]]"
-            px-svg-elem=[[pxSvgElem]]>
-          </px-vis-zoom>
-          <px-vis-scale
-            x-axis-type="time"
-            y-axis-type="linear"
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]"
-            chart-data="[[chartData]]"
-            complete-series-config="[[completeSeriesConfig]]"
-            chart-extents="[[chartExtents]]"
-            selected-domain="[[selectedDomain]]">
-          </px-vis-scale>
-          <px-vis-svg
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]">
-          </px-vis-svg>
-=======
->>>>>>> canvas
-
           <px-vis-svg-canvas
             width="[[width]]"
             height="[[height]]"
@@ -275,17 +250,6 @@ Creates an interactive timeseries chart
       circle-point="yes"
       tooltip-data="[[tooltipData]]">
     </px-vis-cursor>
-    <template is="dom-if" if="[[enableTooltip]]">
-      <px-vis-tooltip
-        px-svg-elem=[[pxSvgElem]]
-        width="250"
-        margin="[[margin]]"
-        chart-data="[[chartData]]"
-        tooltip-data="[[tooltipData]]"
-        complete-series-config="[[completeSeriesConfig]]"
-        x-axis-type="time">
-      </px-vis-tooltip>
-    </template>
   </template>
 </dom-module>
 

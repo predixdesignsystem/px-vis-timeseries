@@ -53,7 +53,7 @@
               { "for":"y1", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
-            "navSeriesLimit":0,
+            "navSeriesLimit":1,
             "showThresholdBox":false,
             "includeAllSeries": true,
             "selectionType": "xAxis"
@@ -149,7 +149,10 @@
           response-data="{{chartData3}}">
         </px-vis-data>
 
-        <!-- <px-vis-timeseries
+        <br />
+        <br />
+        <h2>Example of a timeseries rendering ~345,000 datapoints to canvas</h2>
+        <px-vis-timeseries
           options = '{
             "width": "1000",
             "height": "500",
@@ -159,6 +162,7 @@
             "includeAllSeries": true,
             "selectionType": "xAxis"
           }'
+          render-to-canvas
           default-series-config='{
               "type": "line",
               "x": "TimeStamp",
@@ -177,19 +181,16 @@
           data-var="chartData"
           lists="flat"
           response-data="{{apmData}}">
-          </px-vis-data> -->
+          </px-vis-data>
 
-          <br />
-          <br />
-          <h2>Example of a timeseries rendering series data to canvas</h2>
-          <px-vis-timeseries
+          <!-- <px-vis-timeseries
             width = "1000"
             height = "500"
             include-all-series
             render-to-canvas
             selection-type= "xy"
             chart-data="[[chartData2]]">
-          </px-vis-timeseries>
+          </px-vis-timeseries> -->
 
           <!-- <px-vis-timeseries
             id="chartCustom"
