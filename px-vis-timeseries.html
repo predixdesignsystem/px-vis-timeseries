@@ -36,11 +36,12 @@ Creates an interactive timeseries chart
 <dom-module id="px-vis-timeseries">
   <link rel="import" type="css" href="css/px-vis-timeseries.css"/>
   <template>
-    <div class="flex--row u-m safariFlex safariFlexDirectionRow flex" >
+    <div id="wrapper" class="flex--row u-m safariFlex safariFlexDirectionRow flex wrapper" >
       <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
         <div class="inline--flex flex--col" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;">
           <template is="dom-if" if="[[_topRegister(registerLocation)]]">
             <px-vis-register
+              id="topRegister"
               height="50"
               units="[[units]]"
               width="[[width]]"
@@ -64,12 +65,14 @@ Creates an interactive timeseries chart
             </px-vis-tooltip>
           </template>
           <px-vis-svg-canvas
+            class="inline--flex"
             width="[[width]]"
             height="[[height]]"
             margin="[[margin]]">
           </px-vis-svg-canvas>
 
           <px-vis-chart-navigator
+            id="navigator"
             x-axis-type="time"
             y-axis-type="linear"
             width="[[width]]"
@@ -87,6 +90,7 @@ Creates an interactive timeseries chart
 
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
         <px-vis-register
+          id="sideRegister"
           height="[[height]]"
           width="250"
           units="[[units]]"
@@ -282,7 +286,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorD3.clipPath,
           PxVisBehaviorD3.axisConfig,
           PxVisBehaviorChart.chartCommon,
-          PxVisBehaviorChart.precipitationPattern
+          PxVisBehaviorChart.precipitationPattern,
+          Polymer.IronResizableBehavior
         ],
 
         /**
@@ -421,6 +426,9 @@ Creates an interactive timeseries chart
             value: function() { return {};}
           }
         },
+        listeners: {
+          'iron-resize': '_onIronResize'
+        },
 
         ready:function(){
           this._calcMargins();
@@ -478,6 +486,30 @@ Creates an interactive timeseries chart
             'bottom': 20,
             'left': leftMargin
           });
+        },
+        _onIronResize: function() {
+          this.debounce('ironresize', function() {
+            var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+                navigatorRect = this.$.navigator.getBoundingClientRect(),
+                widthDeduct = 0,
+                heightDeduct = 0;
+
+            if(this._topRegister(this.registerLocation)) {
+              var regRect = this.$$('#topRegister').getBoundingClientRect();
+              heightDeduct = regRect.height;
+            }
+
+            if(this._sideRegister(this.registerLocation)) {
+              var regRect = this.$$('#sideRegister').getBoundingClientRect();
+              widthDeduct = regRect.width;
+            }
+
+            heightDeduct += navigatorRect.height;
+
+            this.set('width', wrapperRect.width - widthDeduct);
+            this.set('height', wrapperRect.height - heightDeduct);
+          
+          },50);
         }
     });
 </script>

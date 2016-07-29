@@ -1,3 +1,7 @@
+v0.1.7
+==================
+* added automatic resize
+
 v0.1.6
 ==================
 * demo update
