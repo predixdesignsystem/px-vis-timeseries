@@ -1,3 +1,7 @@
+v0.1.8
+==================
+* font-awesome reference, repo screenshot and demo updates
+
 v0.1.7
 ==================
 * added automatic resize
