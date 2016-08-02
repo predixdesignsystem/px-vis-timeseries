@@ -1,5 +1,8 @@
 Px-Vis-Timeseries
 -----------------------------------------------
+
+[![px-vis-timeseries demo](px-vis-timeseries.png?raw=true)](https://predixdev.github.io/px-vis-timeseries)
+
 ## Overview
 
 Px-Vis-Timeseries is a Predix Experience ('Px') component

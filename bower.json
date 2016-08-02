@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -11,7 +11,8 @@
     "sass",
     "bower_components",
     "node_modules",
-    "test"
+    "test",
+    "px-vis-timeseries.png"
   ],
   "dependencies": {
     "polymer": "^1.5.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
+    "px-polymer-font-awesome":"^0.1.8",
     "px-starter-kit-design": "~0.4.9"
   }
 }
