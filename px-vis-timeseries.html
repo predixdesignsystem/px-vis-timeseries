@@ -71,21 +71,22 @@ Creates an interactive timeseries chart
             margin="[[margin]]">
           </px-vis-svg-canvas>
 
-          <px-vis-chart-navigator
-            id="navigator"
-            x-axis-type="time"
-            y-axis-type="linear"
-            width="[[width]]"
-            height="100"
-            margin="[[marginNav]]"
-            default-series-config="[[defaultSeriesConfig]]"
-            series-config="[[seriesConfig]]"
-            include-all-series="[[includeAllSeries]]"
-            chart-data="[[chartData]]"
-            nav-series-limit="[[navSeriesLimit]]"
-            chart-domain-x="[[currentDomainX]]"
-            chart-domain-y="[[currentDomainY]]">
-          </px-vis-chart-navigator>
+          <div style="height:100px">
+            <px-vis-chart-navigator
+              id="navigator"
+              x-axis-type="time"
+              y-axis-type="linear"
+              width="[[width]]"
+              margin="[[marginNav]]"
+              default-series-config="[[defaultSeriesConfig]]"
+              series-config="[[seriesConfig]]"
+              include-all-series="[[includeAllSeries]]"
+              chart-data="[[chartData]]"
+              nav-series-limit="[[navSeriesLimit]]"
+              chart-domain-x="[[currentDomainX]]"
+              chart-domain-y="[[currentDomainY]]">
+            </px-vis-chart-navigator>
+          </div>
         </div>
 
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
