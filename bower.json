@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -24,6 +24,7 @@
     "iron-resizable-behavior": "^1.0.4"
   },
   "devDependencies": {
+    "px-rangepicker": "^1.0.0",
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
     "px-polymer-font-awesome":"^0.1.8",
     "px-starter-kit-design": "~0.4.9"

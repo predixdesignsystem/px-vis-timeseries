@@ -1,3 +1,7 @@
+v0.1.9
+==================
+* Allow px-rangepicker use to drive selection of time span
+
 v0.1.8
 ==================
 * font-awesome reference, repo screenshot and demo updates

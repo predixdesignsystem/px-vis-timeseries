@@ -11,6 +11,7 @@
         <link rel="import" href="../px-theme/px-theme.html"/>
         <link rel="import" href="px-vis-timeseries.html"/>
         <link rel="import" href="../px-vis/px-vis-data.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
         <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
 
         <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries.css"/>
@@ -20,6 +21,13 @@
     <body style="padding:30px">
       <template is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+        <px-rangepicker 
+          range="{{range}}"
+          date-format="YYYY/MM/DD" 
+          time-format="hh:mm:ss A" 
+          show-buttons="true" 
+          show-time-zone="text">
+        </px-rangepicker>
         <px-vis-timeseries
           options = '{
             "width": "1000",
@@ -68,7 +76,8 @@
               "yMax": "dynamic"
             }'
           chart-data="[[chartData]]"
-          event-data="[[eventData]]">
+          event-data="[[eventData]]"
+          range="{{range}}">
         </px-vis-timeseries>
         <px-vis-data
           id = "seriesAjax"
