@@ -22,6 +22,7 @@
       <template is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
         <px-rangepicker 
+          id="rangepicker"
           range="{{range}}"
           date-format="YYYY/MM/DD" 
           time-format="hh:mm:ss A" 
@@ -218,7 +219,8 @@
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
-        var chart = document.getElementById('chartCustom');
+        var chart = document.getElementById('chartCustom'),
+            rangepicker = document.getElementById('rangepicker');
           chart.svg.append('rect')
             .attr("y", 200)
             .attr("x", 0)
@@ -226,6 +228,7 @@
             .attr("width", 1000)
             .attr('opacity',0.25)
             .attr('fill', 'rgb(70,173,0)');
+          rangepicker.range = {"from":"2014-04-10T04:01:00.000Z","to":"2015-04-01T20:42:00.000Z"};
       });
     </script>
     </body>
