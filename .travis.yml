@@ -2,41 +2,36 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-- stable
+  - stable
 branches:
   except:
-  - gh-pages
+    - gh-pages
 addons:
-  firefox: latest
   apt:
     sources:
-    - google-chrome
+      - google-chrome
     packages:
-    - google-chrome-stable
+      - google-chrome-stable
 before_script:
-- npm install web-component-tester
-- npm install bower
-- export PATH=$PWD/node_modules/.bin:$PATH
-- bower install
+  - npm install web-component-tester
+  - npm install bower
+  - 'export PATH=$PWD/node_modules/.bin:$PATH'
+  - bower install
 script:
-- xvfb-run wct --skip-plugin sauce
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct --plugin sauce --skip-plugin
-  local; fi
+  - xvfb-run wct --skip-plugin sauce
+  - >-
+    if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct --plugin sauce
+    --skip-plugin local; fi
 env:
   global:
   - secure: BzcksPX0+i9NFBsKUzO711fIWzm1DkVA+eu6smEdlTdGJCjwo33h34laz2PHZcLNedcaZfkNdQxUlkHI1m0iSrulXXqQ6cTi7EbxEzTFPjYg101BHJyNEzdh+Y6AbW+T0drRwPiJ7ej1XwllOYJCPLMMUE3DmcAKoc4vq0W/snKgLqO5t9aWhQGLtoAbppu/hfI5JLazSmt6jOWvis9nhMG/gwHBvkAS3LQPKCZ7VA80dsvtsBAQ1znJUJRrB95VyAmPim8rK0tQzk3+x1cl64bOLN7+9wj4sJP/99IPnEWEsfPowqzvs7dRvcY7BFAYx8wjgD++qgxv/A9cf6o/gsnwJYEYZ67OiV3+0RtmyMCY0unWZIX4HQYM8VhnhfU2088SqqbRmRYVrtnl6uinCIZvnb4Dbk3Jr+ScSypiP0mcTLd43fJXnep5n7o3r1BY4Gncf4RfiVMky42QodvqzInjUjv/eAF5AZWFN+W5AxB4axvETS96TubABfWEGxJkmpYzuZAon9l+1eVcFM4HDb/rDRUYXZmARYknHHF0FvQINfnGVIjxezvKCaBr/5avgIqxVElkoZqVebXpATyS5h7HyqCg1AGaEqtraiMjkyU9OZqiVSgPVIzisoXBGa0a9wQqr+0rmvunJvQIN3HUQdwh3Jsce8dyjESn7ono+Z8=
   - secure: OhE6Z2FAOCvgR5tjxARL68rRrRwLHRdqcWzFAPN+pk95H/23w3MV22S+VPC2p2qQHBRlUyvXrX61FJY/juJPcnVZD/70cL+CZzkm+/t8qQSe/WHuSLpzK3TOwKFoW1Gd1/sHWu90Fr95PSQWGAYR7if4nLljdOxx9CnMdKjvvjvjS9LBSTpu4CcsdMwqYnRk1IGLrXyyv4inQn6MD706qlhjBPEX31tckQ5kSH0SeUsDUkYCMhyh/Yodlf2Oy85UE2UjoHMMBJPz2oK0c4segC4Qksl2dEy1lpUdc7+wB24o6qIGCjcEvgQjE0saJu1F0F+R+f55Gwy7id+/1hZxdvjRbiH3Thj1o0JRxtwEZpnAXMzAEHT6+0lPbEUfPzXpooSldJpmQ3/HgR+tOSNICI0+IEn1ExqSz7Pgm85+foQzEeVVAQudpEXCWSWZmStpQ0DIGmnhZwW2QeVDTinpZbo+e4tAclwaoLeBRf76Yw/zKBHBTX8gdDjyV9bL81XzmCFODOkX+8aNRLKJr3RA+5C+VgjFNWjI0o6hYBqNqGffkhw6mMKETPMX+JvTmqwhMe0y/jTzDHy7uCqLuhW4L0DenBF0yb6Z/m2Mfs3gs34RFYvl9uq0zRjlzXq/empLtq2aIadLN1qgmvuxvJxEajnVIUzJExZrJ4qZnx/Qh5A=
   - secure: jTBL9J5c14Yyu1y9Ox7x1yg/14h0jPKRd5SEjn2OiiE5qhPcp6OkX96AqiKyxZQ4BagxGbGeNI+uXoheJPT5sYxpcN1ftoI9+7FrqrZscVK2J6t6W7o/+AUBUCKPihC7ydmz+csE/bHxF78PbYGZV5DfrX1fNsAOY5akDo88TkIHa/Ry8stDarqQplw8yGYP2NobLI1A9T1wcPtS9tberCoOrYgrBIIUib9TteuGqe5asuaC4Qy4fahN6Elp2R+zTIUbGuCyMZUYMNf9RO9uhlhf813pap9hD4xLKliMLJMl/68EpgyEaRTWojmXcIt4Xabw9E0moTI+cuRxyBq7RZVkpv0u7lPbm6L2XYaRGF7KOsFT23PDIKdObWuUsOd9thiTkC3DBxH4VFTrrJcjRBBrjQYwsnlXsBsXV4YnoghImaAwImyxCHqNGGOqlVgPoMA6g8unPtmVtQuCUJMmzY8XpArTYTTFQcph1tR1MnPOdc5skVDxmZdE8g4k8IgU4/gz98Cb630NmLb55PbviSz4A94VrucZ+OGpLR/YsoIZBPB+5oCciZcr3haumiSvcyvz8m6JRL2BQQmlmNNzaSoKVUT2owDHdsrU5LpcpiqVtzwsVqqv+gEse/AtSe6CvpKotS/hKPDsIB+uzWRph0QBDRC8A0u7dUBONLSc0Tg=
 before_install:
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then openssl aes-256-cbc -k "$password"
-  -in id_rsa.enc -out deploy_key -d; fi
+  - >-
+    if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then openssl aes-256-cbc -k
+    "$password" -in id_rsa.enc -out deploy_key -d; fi
 after_success:
-- cd $TRAVIS_BUILD_DIR/scripts
-- chmod 755 ghp.sh
-- "./ghp.sh"
-before_install:
-  - if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then openssl aes-256-cbc -k "$password" -in id_rsa.enc -out deploy_key -d; fi
-after_success:
-- cd $TRAVIS_BUILD_DIR/scripts
-- chmod 755 ghp.sh
-- "./ghp.sh"
+  - cd $TRAVIS_BUILD_DIR/scripts
+  - chmod 755 ghp.sh
+  - ./ghp.sh
