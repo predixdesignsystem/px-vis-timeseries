@@ -21,6 +21,7 @@
     <body style="padding:30px">
       <template is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+        
         <px-rangepicker 
           id="rangepicker"
           range="{{range}}"
@@ -29,7 +30,11 @@
           show-buttons="true" 
           show-time-zone="text">
         </px-rangepicker>
+        <br/>
+        <span>Open image of chart in new tab</span>
+        <button id="btnSnap">Go</button>
         <px-vis-timeseries
+          id="timeSerie"
           options = '{
             "width": "1000",
             "height": "500",
@@ -220,7 +225,10 @@
     <script>
       window.addEventListener('WebComponentsReady', function() {
         var chart = document.getElementById('chartCustom'),
-            rangepicker = document.getElementById('rangepicker');
+            rangepicker = document.getElementById('rangepicker'),
+            btnSnap = document.getElementById('btnSnap'),
+            timeSerie = document.getElementById('timeSerie');
+
           chart.svg.append('rect')
             .attr("y", 200)
             .attr("x", 0)
@@ -229,6 +237,12 @@
             .attr('opacity',0.25)
             .attr('fill', 'rgb(70,173,0)');
           rangepicker.range = {"from":"2014-04-10T04:01:00.000Z","to":"2015-04-01T20:42:00.000Z"};
+
+          btnSnap.addEventListener('click', function() {
+            timeSerie.getCombinedImage(function(result) {
+              window.open().location = result.image;
+            });
+          });
       });
     </script>
     </body>

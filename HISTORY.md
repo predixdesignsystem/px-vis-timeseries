@@ -1,3 +1,7 @@
+v0.1.10
+==================
+* adding support for exporting to images
+
 v0.1.9
 ==================
 * Allow px-rangepicker use to drive selection of time span

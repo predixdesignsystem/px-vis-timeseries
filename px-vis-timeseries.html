@@ -288,7 +288,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorD3.axisConfig,
           PxVisBehaviorChart.chartCommon,
           PxVisBehaviorChart.precipitationPattern,
-          Polymer.IronResizableBehavior
+          Polymer.IronResizableBehavior,
+          PxVisBehaviorChart.saveImage
         ],
 
         /**
@@ -511,6 +512,25 @@ Creates an interactive timeseries chart
             this.set('height', wrapperRect.height - heightDeduct);
           
           },50);
+        },
+        /**
+         * gets a combined graphical snapshot of the chart and its navigator
+         */
+        getCombinedImage: function(callback) {
+          this.getImage(function(chartSnap) {
+            this.$.navigator.getImage(function(navigatorSnap) {
+              var canvas = document.createElement('canvas'),
+                  context;
+              canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
+              canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
+              context = canvas.getContext('2d');
+
+              context.drawImage(chartSnap.canvas, 0, 0);
+              context.drawImage(navigatorSnap.canvas, 0, chartSnap.canvas.height);
+
+              callback({canvas: canvas, image: canvas.toDataURL("image/png")});
+            }.bind(this));
+          }.bind(this));
         }
     });
 </script>
