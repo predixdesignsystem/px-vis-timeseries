@@ -23,10 +23,10 @@
   <link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
 
   <link rel="import" href="px-vis-timeseries.html"/>
-  <link rel="icon" href="px-favicon.png" type="image/x-icon"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
 
   <link rel="import" href="../px-demo-snippet/px-demo-snippet.html">
-  <link rel="import" href="../polymer-font-awesome/polymer-font-awesome.html">
+  <link rel="import" href="../px-polymer-font-awesome/polymer-font-awesome.html">
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
 
   </head>
@@ -38,20 +38,21 @@
   <template id="just-for-demo" is="dom-bind" >
     <!-- discription -->
     <div class="hero u-p++ text--shadow">
+      <a class="actionable flex flex--right flex--middle" href="https://github.com/PredixDev/px-vis-timeseries" target="_blank"><iron-icon class="menu__open" icon="fa:fa-github"></iron-icon>View on Github</a>
   		<h1 class="delta">px-vis-timeseries</h1>
   		<p>
   			The	<code>px-vis-timeseries</code> component creates a timeseries chart.
   		</p>
-      <p class="description-text">With timeseries, you can create line and scatter timerseries charts complete with user interaction, events, thresholds, and a navigator.
-      <br>
-      <br>
+      <p class="description-text">
+        With timeseries, you can create line and scatter timeseries charts complete with user interaction, events, thresholds, and a navigator.
+      </p>
+      <p>
         The chart is built off px-vis components which utilize d3 4.x.
       </p>
   		<div class="flex">
   			<img class="u-mr--" src="https://img.shields.io/travis/PredixDev/px-vis-timeseries.svg?style=flat-square" alt="Travis" onerror="this.style.display='none'"/>
   			<img class="u-mr--" src="https://img.shields.io/bower/v/px-vis-timeseries.svg?style=flat-square" alt="Bower" onerror="this.style.display='none'"/>
   			<img class="u-mr--" src="https://img.shields.io/github/issues-raw/PredixDev/px-vis-timeseries.svg?style=flat-square" alt="Issues" onerror="this.style.display='none'"/>
-  			<img class="u-mr--" src="https://img.shields.io/github/watchers/PredixDev/px-vis-timeseries.svg?style=social&label=Watch" onerror="this.style.display='none'"/>
   		</div>
   	</div>
     <br />
@@ -60,40 +61,24 @@
       <div class="tabContainer u-pt++ u-pl++">
         <px-tab-set selected="{{selected}}" bare no-bottom-border>
           <template is="dom-repeat" items="{{optionsArray}}">
-            <px-tab>Configuration {{indexPlusOne(index)}}</px-tab>
+            <px-tab>Option {{indexPlusOne(index)}}</px-tab>
           </template>
         </px-tab-set>
       </div>
       <px-tab-pages selected="{{selected}}">
         <template is="dom-repeat" items="{{optionsArray}}">
-          <section class="tab-page flex flex--right flex--wrap">
-            <div class="mega-demo flex u-pb++">
+          <section class="tab-page">
+            <div class="mega-demo flex u-ph++ u-pb++">
             <!-- Properties -->
-            <div class="properties u-ph+ u-pb+ u-mt++ u-mh++" id="properties">
+            <div class="properties u-ph+ u-pb+ u-mt+" id="properties">
               <p class="epsilon">Properties</p>
               <!-- <div class="flex u-mb-">
-                <input id="toggleTime{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideTime::change}}">
-                <label for$="toggleTime{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                <div class="u-ml-">Hide time</div>
-              </div>
-              <div class="flex u-mb-">
-                <input id="toggleDate{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideDate::change}}">
-                <label for$="toggleDate{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                <div class="u-ml-">Hide date</div>
-              </div>
-              <div class="flex u-mb-">
-                <input id="toggleButtons{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.showButtons::change}}">
-                <label for$="toggleButtons{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                <div class="u-ml-">Show buttons</div>
-              </div>
-              <div class="flex u-mb-">
-                <input id="toggleFutureDates{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.blockFutureDates::change}}">
-                <label for$="toggleFutureDates{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                <div class="u-ml-">Block future dates</div>
+                <input id="tooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.tooltip::change}}">
+                <label for$="tooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                <div class="u-ml-">Enable Tooltip</div>
               </div> -->
-
-              <!-- <div class="u-mb-">Width: <input id="chartWidth" class="text-input" type="text" placeholder="1000" value="{{item.width::input}}" /></div>
-              <div class="u-mb-">Height: <input id="chartHeight" class="text-input" type="text" placeholder="500" value="{{item.height::input}}" /></div> -->
+              <div class="u-mb-">Width: <input id="width" class="text-input" type="text" placeholder="{{item.width}}" value="{{item.width::input}}" /></div>
+              <div class="u-mb-">Height: <input id="height" class="text-input" type="text" placeholder="{{item.height}}" value="{{item.height::input}}" /></div>
               <div class="u-mb-">Zoom Type:
                 <div style="width: 100%;">
                   <px-dropdown id="showSelectionType" value="{{item.selectionType}}" display-value="{{item.selectionType}}" bound-target="properties">
@@ -106,110 +91,37 @@
                   </px-dropdown>
                 </div>
               </div>
-              <div>More info on date and time format at <a href="http://momentjs.com/docs/#/parsing/string-format/" target="_blank" class="actionable">momentjs</a></div>
+              <div class="u-mb-">Register Location:
+                <div style="width: 100%;">
+                  <px-dropdown id="registerLocation" value="{{item.registerLocation}}" display-value="{{item.registerLocation}}" bound-target="properties">
+                    <px-dropdown-content
+                      items='[
+                        {"key":"one", "val": "none"},
+                        {"key":"two", "val": "top"},
+                        {"key":"three", "val": "side"},
+                        {"key":"four", "val": "both"}]'>
+                    </px-dropdown-content>
+                  </px-dropdown>
+                </div>
+              </div>
+              <div class="flex u-mb-">
+                <input id="enableTooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.enableTooltip::change}}">
+                <label for$="enableTooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                <div class="u-ml-">Enable Tooltip</div>
+              </div>
             </div>
 
-            <div class="demoContainer u-mr++">
+            <div class="demoContainer clearfix u-mt+">
               <!-- demo -->
               <div class="flex flex--col">
-                <div class="flex__item demo u-ph+ u-pb+ u-mt++">
-                  <br />
-                  <span id="counter"><strong>px-vis-timeseries-submitted</strong> fired <strong>0</strong> times</span>
-                  <br />
-                  <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+                <div class="demo u-p+">
                   <px-vis-timeseries
-                    width="[[width]]"
-                    height="[[height]]"
-                    options = '{
-                      "width":1000,
-                      "height":500,
-                      "enableTooltip":true,
-                      "registerLocation":"both",
-                      "eventConfig": {
-                        "Recalibrate":{
-                          "color": "blue",
-                          "icon": "fa-camera",
-                          "type": "fa",
-                          "offset":[0,0]
-                        },
-                        "Fan start":{
-                          "color": "green",
-                          "icon": "\uf015",
-                          "type": "unicode",
-                          "offset":[1,0]
-                        },
-                        "Fan stop":{
-                          "icon": "ge_logo.png",
-                          "type": "image",
-                          "offset":[0,-20],
-                          "size":"20"
-                        }
-                      },
-                      "thresholdData":[
-                        { "for":"y0", "type":"max", "value":35.4784 },
-                        { "for":"y0", "type":"min", "value":7.6531 },
-                        { "for":"y0", "type":"mean", "value":15.330657585139331 },
-                        { "for":"y1", "type":"mean", "value":75 },
-                        { "for":"", "type":"quartile", "value":17 }
-                      ],
-                      "navSeriesLimit":0,
-                      "showThresholdBox":false,
-                      "includeAllSeries": true
-                    }'
+                    width = "{{item.width}}"
+                    height = "{{item.height}}"
+                    enable-tooltip = "{{item.enableTooltip}}"
+                    register-location = "{{item.registerLocation}}"
                     include-all-series
-                    series-config='[[seriesConfig]]'
-                    default-series-config='{
-                        "type": "line",
-                        "yAxisUnit": "Hz",
-                        "x": "TimeStamp",
-                        "xMin": "dynamic",
-                        "xMax": "dynamic",
-                        "yMin": 0,
-                        "yMax": "dynamic"
-                      }'
-                    chart-data="[[chartData]]"
-                    event-data="[[eventData]]"
-                    selection-type="[[selectionType]]">
-                  </px-vis-timeseries>
-                  <px-vis-data
-                    id = "seriesAjax"
-                    request-data = '[{
-                      "type":"line",
-                      "name":"mySeries",
-                        "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-                      },{
-                        "type":"line",
-                        "url":"../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
-                    }]'
-                    data-var="originalData"
-                    lists="append"
-                    response-data="{{originalData}}">
-                  </px-vis-data>
-                  <px-vis-data-converter
-                    data-key = "series"
-                    id-key = "name"
-                    original-data = '[[originalData]]'
-                    series-config="{{seriesConfig}}"
-                    chart-data="{{chartData}}">
-                  </px-vis-data-converter>
-                  <px-vis-data
-                    id = "eventAjax"
-                    request-data = '[{
-                        "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
-                    }]'
-                    data-var="eventData"
-                    lists = "flat"
-                    response-data="{{eventData}}">
-                  </px-vis-data>
-
-                  <br />
-                  <br />
-                  <h2>Example of a timeseries with mostly default data and using the new data format</h2>
-                  <px-vis-timeseries
-                    width = "1000"
-                    height = "500"
-                    include-all-series
-                    selection-type= "[[selectionType]]"
+                    selection-type= "{{item.selectionType}}"
                     chart-data="[[chartData2]]">
                   </px-vis-timeseries>
                   <px-vis-data
@@ -220,33 +132,6 @@
                     data-var="chartData2"
                     lists="flat"
                     response-data="{{chartData2}}">
-                  </px-vis-data>
-
-                  <br />
-                  <br />
-                  <h2>Example of a timeseries with a custom series configuration</h2>
-                  <px-vis-timeseries
-                    width = "1000"
-                    height = "500"
-                    selection-type= "[[selectionType]]"
-                    series-config='{
-                      "y":{
-                        "type": "scatter",
-                        "name": "mySeries",
-                        "x":"x",
-                        "y":"y"
-                      }
-                    }'
-                    chart-data="[[chartData3]]">
-                  </px-vis-timeseries>
-                  <px-vis-data
-                    id = "seriesAjax"
-                    request-data = '[{
-                        "url":"../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-                      }]'
-                    data-var="chartData3"
-                    lists="flat"
-                    response-data="{{chartData3}}">
                   </px-vis-data>
                 </div>
                 <div class="flex__item">
@@ -284,7 +169,7 @@
           <li>
             <a href="mailto:info@predix.io" class="footer__list--lnk">Contact Us</a>
           </li>
-          <li>Copyright © 2016 General Electric Company. All rights reserved.</li>
+          <li>Copyright &copy; 2016 General Electric Company. All rights reserved.</li>
         </ul>
       </div>
     </div>
@@ -292,19 +177,27 @@
 </template>
 <script>
 window.addEventListener('WebComponentsReady', function() {
-  var template = document.querySelector('template[is=dom-bind]');
+  var template = document.querySelector('template[is=dom-bind]'),
+      optionsArray = [
+        {
+          "selectionType":'xy',
+          "width":'850',
+          "height":'300',
+          "enableTooltip":true,
+          "registerLocation":"none"
+        },
+        {
+          "selectionType":'xAxis',
+          "width":'700',
+          "height":'400',
+          "enableTooltip":false,
+          "registerLocation":"side"
+        }
+      ],
+      indexPlusOne = function(num) {
+        return num + 1;
+      };
 
-  var optionsArray = [
-    {
-      "selectionType":'xy',
-       "width":'1000',
-       "height":'500'
-    }
-  ];
-
-    var indexPlusOne = function(num) {
-      return num + 1;
-    };
     template.selected = "0";
     template.optionsArray = optionsArray;
     template.indexPlusOne = indexPlusOne;

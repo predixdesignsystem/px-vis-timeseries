@@ -10,7 +10,7 @@
  */
 /*
 THIS FILE SHOULD CONTAIN ONLY ABSTRACT/'SKETCH' THEME RULES, NOT SPECIFIC TO PREDIX BRANDING
-Predix branding rules go in px-rangepicker-predix.scss, not in this file.
+Predix branding rules go in px-.scss, not in this file.
 */
 /*------------------------------------*    #PX-COLORS-DESIGN
 \*------------------------------------*/
@@ -1085,17 +1085,18 @@ textarea {
   max-width: 46.6666666667rem; }
 
 .properties {
-  -ms-flex-preferred-size: 16.6666666667rem;
-      flex-basis: 16.6666666667rem;
+  -ms-flex: 0 0 16.6666666667rem;
+      flex: 0 0 16.6666666667rem;
   background: white;
   border: 1px solid #d1d0d8;
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 39.3333333333rem; }
+  margin-right: 1.3333333333rem; }
 
 .demoContainer {
-  -ms-flex: 1 1;
-      flex: 1 1; }
+  -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+  overflow: auto; }
 
 .demoSnippet {
   -ms-flex-preferred-size: 10rem;
@@ -1109,10 +1110,11 @@ textarea {
   margin-right: 3.3333333333rem; }
 
 .demo {
-  -ms-flex-preferred-size: 26.6666666667rem;
-      flex-basis: 26.6666666667rem;
+  -ms-flex-preferred-size: 33.3333333333rem;
+      flex-basis: 33.3333333333rem;
   background: white;
-  border: 1px solid #d1d0d8; }
+  border: 1px solid #d1d0d8;
+  overflow: auto; }
 
 .componentList a {
   color: #2886af; }
@@ -1128,16 +1130,13 @@ textarea {
   margin: 0 auto;
   max-width: 80rem; }
 
-.tabContainer {
-  -ms-flex: 0 0 100%;
-      flex: 0 0 100%;
-  height: 4rem;
-  margin-top: 2.3333333333rem;
-  background: #f7f7fc; }
-
 .apiContainer {
-  background-color: white;
-  margin: 0 auto; }
+  margin: 0 auto;
+  background-color: white; }
+
+.tabContainer {
+  height: auto;
+  background: #f7f7fc; }
 
 .footer {
   background-color: #7c7c84; }
@@ -1171,8 +1170,8 @@ textarea {
   .mega-demo {
     -ms-flex-direction: column;
         flex-direction: column; }
-  .demoContainer {
-    margin-left: 2rem; }
+  .properties {
+    margin-right: 0px; }
   .footer__container {
     -ms-flex-direction: column;
         flex-direction: column; }
