@@ -1,5 +1,9 @@
 v0.1.10
 ==================
+* adding property for prevent-resize
+
+v0.1.10
+==================
 * adding support for exporting to images
 
 v0.1.9
