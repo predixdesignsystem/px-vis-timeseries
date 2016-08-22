@@ -1,4 +1,8 @@
-v0.1.10
+v0.1.12
+==================
+* adding new demo pages
+
+v0.1.11
 ==================
 * adding property for prevent-resize
 
