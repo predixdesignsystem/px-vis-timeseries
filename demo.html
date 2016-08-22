@@ -11,16 +11,30 @@
         <link rel="import" href="../px-theme/px-theme.html"/>
         <link rel="import" href="px-vis-timeseries.html"/>
         <link rel="import" href="../px-vis/px-vis-data.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
         <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
 
         <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries.css"/>
 
     </head>
 
-    <body>
+    <body style="padding:30px">
       <template is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+        
+        <px-rangepicker 
+          id="rangepicker"
+          range="{{range}}"
+          date-format="YYYY/MM/DD" 
+          time-format="hh:mm:ss A" 
+          show-buttons="true" 
+          show-time-zone="text">
+        </px-rangepicker>
+        <br/>
+        <span>Open image of chart in new tab</span>
+        <button id="btnSnap">Go</button>
         <px-vis-timeseries
+          id="timeSerie"
           options = '{
             "width": "1000",
             "height": "500",
@@ -47,13 +61,12 @@
               }
             },
             "thresholdData":[
-              { "for":"mySeries", "type":"max", "value":35.4784 },
-              { "for":"mySeries", "type":"min", "value":7.6531 },
-              { "for":"mySeries", "type":"mean", "value":15.330657585139331 },
-              { "for":"hpt-acc-position-cruise", "type":"mean", "value":75 },
+              { "for":"y0", "type":"max", "value":35.4784 },
+              { "for":"y0", "type":"min", "value":7.6531 },
+              { "for":"y0", "type":"mean", "value":15.330657585139331 },
+              { "for":"y1", "type":"mean", "value":75 },
               { "for":"", "type":"quartile", "value":17 }
             ],
-            "navSeriesLimit":0,
             "showThresholdBox":false,
             "includeAllSeries": true,
             "selectionType": "xAxis"
@@ -69,7 +82,8 @@
               "yMax": "dynamic"
             }'
           chart-data="[[chartData]]"
-          event-data="[[eventData]]">
+          event-data="[[eventData]]"
+          range="{{range}}">
         </px-vis-timeseries>
         <px-vis-data
           id = "seriesAjax"
@@ -124,6 +138,52 @@
 
         <br />
         <br />
+        <h2>Example of a timeseries rendering to canvas</h2>
+        <px-vis-timeseries
+          width = "1000"
+          height = "500"
+          include-all-series
+          render-to-canvas
+          selection-type= "xy"
+          chart-data="[[chartData2]]">
+        </px-vis-timeseries>
+
+        <!-- <br />
+        <br />
+        <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
+        <px-vis-timeseries
+          options = '{
+            "width": "1000",
+            "height": "500",
+            "enableTooltip":true,
+            "registerLocation":"none",
+            "navSeriesLimit":5,
+            "includeAllSeries": true,
+            "selectionType": "xAxis"
+          }'
+          render-to-canvas
+          default-series-config='{
+              "type": "line",
+              "x": "TimeStamp",
+              "xMin": "dynamic",
+              "xMax": "dynamic",
+              "yMin": 0,
+              "yMax": "dynamic"
+            }'
+          chart-data="[[apmData]]">
+          </px-vis-timeseries>
+          <px-vis-data
+          id = "seriesAjax"
+          request-data = '[{
+              "url":"../px-demo-data/demo-data/apm/timeseries.json"
+            }]'
+          data-var="chartData"
+          lists="flat"
+          response-data="{{apmData}}">
+          </px-vis-data> -->
+
+        <br />
+        <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
         <px-vis-timeseries
           width = "1000"
@@ -149,57 +209,41 @@
           response-data="{{chartData3}}">
         </px-vis-data>
 
-        <!-- <px-vis-timeseries
+        <br />
+        <br />
+        <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
+        <px-vis-timeseries
+          id="chartCustom"
           options = '{
             "width": "1000",
-            "height": "500",
-            "enableTooltip":true,
-            "registerLocation":"none",
-            "navSeriesLimit":1,
-            "includeAllSeries": true,
-            "selectionType": "xAxis"
+            "height": "500"
           }'
-          default-series-config='{
-              "type": "line",
-              "x": "TimeStamp",
-              "xMin": "dynamic",
-              "xMax": "dynamic",
-              "yMin": 0,
-              "yMax": "dynamic"
-            }'
-          chart-data="[[apmData]]">
-          </px-vis-timeseries>
-          <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"/bower_components/px-demo-data/demo-data/apm/timeseries.json"
-            }]'
-          data-var="chartData"
-          lists="flat"
-          response-data="{{apmData}}">
-          </px-vis-data> -->
-
-
-          <!-- <px-vis-timeseries
-            id="chartCustom"
-            options = '{
-              "width": "1000",
-              "height": "500",
-              "series": [{"url":"/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"}]
-            }'
-            ></px-vis-timeseries> -->
+          include-all-series
+          chart-data="[[chartData3]]"
+          ></px-vis-timeseries>
     </template>
-    <!-- <script>
+    <script>
       window.addEventListener('WebComponentsReady', function() {
-        var chart = document.getElementById('chartCustom');
-        console.log(chart);
-        console.log(chart.svg);
-        chart.svg.append('circle')
-          .attr("cx", 100)
-          .attr("cy", 100)
-          .attr("r", 20);
+        var chart = document.getElementById('chartCustom'),
+            rangepicker = document.getElementById('rangepicker'),
+            btnSnap = document.getElementById('btnSnap'),
+            timeSerie = document.getElementById('timeSerie');
 
+          chart.svg.append('rect')
+            .attr("y", 200)
+            .attr("x", 0)
+            .attr("height", 100)
+            .attr("width", 1000)
+            .attr('opacity',0.25)
+            .attr('fill', 'rgb(70,173,0)');
+          rangepicker.range = {"from":"2014-04-10T04:01:00.000Z","to":"2015-04-01T20:42:00.000Z"};
+
+          btnSnap.addEventListener('click', function() {
+            timeSerie.getCombinedImage(function(result) {
+              window.open().location = result.image;
+            });
+          });
       });
-    </script> -->
+    </script>
     </body>
 </html>
