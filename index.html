@@ -10,7 +10,6 @@
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../px-api-viewer/px-api-viewer.html" />
   <link rel="import" href="../px-tabs/px-tab-set.html" />
-  <link rel="import" href="../iron-component-page/iron-component-page.html"/>
   <link rel="import" href="../px-dropdown/px-dropdown.html"/>
 
   <link rel="import" href="../px-vis/px-vis-data.html"/>
@@ -72,13 +71,18 @@
             <!-- Properties -->
             <div class="properties u-ph+ u-pb+ u-mt+" id="properties">
               <p class="epsilon">Properties</p>
-              <!-- <div class="flex u-mb-">
-                <input id="tooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.tooltip::change}}">
-                <label for$="tooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+              <div class="flex u-mb-">
+                <input id="enableTooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.enableTooltip::change}}">
+                <label for$="enableTooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                 <div class="u-ml-">Enable Tooltip</div>
-              </div> -->
-              <div class="u-mb-">Width: <input id="width" class="text-input" type="text" placeholder="{{item.width}}" value="{{item.width::input}}" /></div>
-              <div class="u-mb-">Height: <input id="height" class="text-input" type="text" placeholder="{{item.height}}" value="{{item.height::input}}" /></div>
+              </div>
+              <div class="flex u-mb-">
+                <input id="preventResize{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.preventResize::change}}">
+                <label for$="preventResize{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                <div class="u-ml-">Prevent Resize</div>
+              </div>
+              <div class="u-mb-">Width: <input id="width" class="text-input" type="number" placeholder="{{item.width}}" value="{{item.width::input}}" /></div>
+              <div class="u-mb-">Height: <input id="height" class="text-input" type="number" placeholder="{{item.height}}" value="{{item.height::input}}" /></div>
               <div class="u-mb-">Zoom Type:
                 <div style="width: 100%;">
                   <px-dropdown id="showSelectionType" value="{{item.selectionType}}" display-value="{{item.selectionType}}" bound-target="properties">
@@ -104,11 +108,6 @@
                   </px-dropdown>
                 </div>
               </div>
-              <div class="flex u-mb-">
-                <input id="enableTooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.enableTooltip::change}}">
-                <label for$="enableTooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                <div class="u-ml-">Enable Tooltip</div>
-              </div>
             </div>
 
             <div class="demoContainer clearfix u-mt+">
@@ -118,6 +117,7 @@
                   <px-vis-timeseries
                     width = "{{item.width}}"
                     height = "{{item.height}}"
+                    prevent-resize = "{{item.preventResize}}"
                     enable-tooltip = "{{item.enableTooltip}}"
                     register-location = "{{item.registerLocation}}"
                     include-all-series
@@ -180,18 +180,12 @@ window.addEventListener('WebComponentsReady', function() {
   var template = document.querySelector('template[is=dom-bind]'),
       optionsArray = [
         {
+          "height":300,
+          "width":800,
+          "preventResize":true,
           "selectionType":'xy',
-          "width":'850',
-          "height":'400',
           "enableTooltip":true,
           "registerLocation":"none"
-        },
-        {
-          "selectionType":'xAxis',
-          "width":'700',
-          "height":'300',
-          "enableTooltip":false,
-          "registerLocation":"side"
         }
       ],
       indexPlusOne = function(num) {
