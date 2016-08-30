@@ -1,3 +1,7 @@
+v0.1.14
+==================
+* updating for axis changes
+
 v0.1.13
 ==================
 * adding new png
