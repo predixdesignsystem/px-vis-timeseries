@@ -1,3 +1,7 @@
+v0.1.15
+==================
+* fixed demo page for IE
+
 v0.1.14
 ==================
 * updating for axis changes
