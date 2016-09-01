@@ -21,13 +21,13 @@
     <body style="padding:30px">
       <template is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
-        
-        <px-rangepicker 
+
+        <px-rangepicker
           id="rangepicker"
           range="{{range}}"
-          date-format="YYYY/MM/DD" 
-          time-format="hh:mm:ss A" 
-          show-buttons="true" 
+          date-format="YYYY/MM/DD"
+          time-format="hh:mm:ss A"
+          show-buttons="true"
           show-time-zone="text">
         </px-rangepicker>
         <br/>
@@ -69,7 +69,13 @@
             ],
             "showThresholdBox":false,
             "includeAllSeries": true,
-            "selectionType": "xAxis"
+            "selectionType": "xAxis",
+            "xAxisConfig": {
+              "title": "Date"
+            },
+            "yAxisConfig": {
+              "title": "Hz"
+            }
           }'
           series-config='[[seriesConfig]]'
           default-series-config='{
@@ -83,7 +89,7 @@
             }'
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
-          range="{{range}}">
+          range="[[range]]">
         </px-vis-timeseries>
         <px-vis-data
           id = "seriesAjax"
@@ -120,11 +126,18 @@
         <br />
         <h2>Example of a timeseries with mostly default data and using the new data format</h2>
         <px-vis-timeseries
+          prevent-resize
           width = "1000"
           height = "500"
           include-all-series
           selection-type= "xy"
-          chart-data="[[chartData2]]">
+          chart-data="[[chartData2]]"
+          x-axis-config='{
+            "title": "Date"
+          }'
+          y-axis-config='{
+            "title": "Widgets"
+          }'>
         </px-vis-timeseries>
         <px-vis-data
           id = "seriesAjax"
@@ -140,12 +153,19 @@
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
         <px-vis-timeseries
+          prevent-resize
           width = "1000"
           height = "500"
           include-all-series
           render-to-canvas
           selection-type= "xy"
-          chart-data="[[chartData2]]">
+          chart-data="[[chartData2]]"
+          x-axis-config='{
+            "title": "Date"
+          }'
+          y-axis-config='{
+            "title": "Units"
+          }'>
         </px-vis-timeseries>
 
         <!-- <br />
@@ -186,6 +206,7 @@
         <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
         <px-vis-timeseries
+          prevent-resize
           width = "1000"
           height = "500"
           selection-type= "yAxis"
@@ -197,7 +218,13 @@
               "y":"y"
             }
           }'
-          chart-data="[[chartData3]]">
+          chart-data="[[chartData3]]"
+          x-axis-config='{
+            "title": "Date"
+          }'
+          y-axis-config='{
+            "title": "Hz"
+          }'>
         </px-vis-timeseries>
         <px-vis-data
           id = "seriesAjax"
@@ -214,12 +241,19 @@
         <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
         <px-vis-timeseries
           id="chartCustom"
+          prevent-resize
           options = '{
             "width": "1000",
             "height": "500"
           }'
           include-all-series
           chart-data="[[chartData3]]"
+          x-axis-config='{
+            "title": "Date"
+          }'
+          y-axis-config='{
+            "title": "Temperature"
+          }'
           ></px-vis-timeseries>
     </template>
     <script>
@@ -236,7 +270,11 @@
             .attr("width", 1000)
             .attr('opacity',0.25)
             .attr('fill', 'rgb(70,173,0)');
-          rangepicker.range = {"from":"2014-04-10T04:01:00.000Z","to":"2015-04-01T20:42:00.000Z"};
+
+          rangepicker.range = {
+            "from":"2014-04-10T04:01:00.000Z",
+            "to":"2015-04-01T20:42:00.000Z"
+          };
 
           btnSnap.addEventListener('click', function() {
             timeSerie.getCombinedImage(function(result) {

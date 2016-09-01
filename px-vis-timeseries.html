@@ -84,10 +84,12 @@ Creates an interactive timeseries chart
               chart-data="[[chartData]]"
               nav-series-limit="[[navSeriesLimit]]"
               chart-domain-x="[[currentDomainX]]"
-              chart-domain-y="[[currentDomainY]]">
+              chart-domain-y="[[currentDomainY]]"
+              range="[[range]]"
+              disable-empty-render>
             </px-vis-chart-navigator>
           </div>
-        </div>
+        </div> <!-- flex row -->
 
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
         <px-vis-register
@@ -102,7 +104,7 @@ Creates an interactive timeseries chart
           x-axis-type="time">
         </px-vis-register>
       </template>
-    </div> <!-- flex row -->
+    </div>
 
     <px-vis-zoom
       margin="[[margin]]"
@@ -143,7 +145,8 @@ Creates an interactive timeseries chart
           current-domain-x="[[currentDomainX]]"
           current-domain-y="[[currentDomainY]]"
           clip-path="[[seriesClipPath]]"
-          muted-series="[[mutedSeries]]">
+          muted-series="[[mutedSeries]]"
+          no-canvas-progressive-rendering>
         </px-vis-line>
       </template>
       <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]">
@@ -208,26 +211,28 @@ Creates an interactive timeseries chart
     </px-vis-gridlines>
 
     <px-vis-axis
+      id="xAxis"
       svg="[[svg]]"
       axis="[[x]]"
       margin="[[margin]]"
       height="[[height]]"
-      title="Date"
       orientation="bottom"
       label-position="after"
       complete-series-config="[[completeSeriesConfig]]"
       prevent-series-bar
+      domain-changed="[[domainChanged]]"
       current-domain="[[currentDomainX]]">
     </px-vis-axis>
     <px-vis-axis
+      id="yAxis"
       svg="[[svg]]"
       axis="[[y]]"
       margin="[[margin]]"
       height="[[height]]"
-      title="Hz"
       orientation="left"
       complete-series-config="[[completeSeriesConfig]]"
       muted-series=[[mutedSeries]]
+      domain-changed="[[domainChanged]]"
       current-domain="[[currentDomainY]]">
     </px-vis-axis>
 
@@ -291,7 +296,9 @@ Creates an interactive timeseries chart
           PxVisBehaviorChart.chartCommon,
           PxVisBehaviorChart.precipitationPattern,
           Polymer.IronResizableBehavior,
-          PxVisBehaviorChart.saveImage
+          PxVisBehaviorChart.saveImage,
+          PxVisBehaviorD3.domainUpdate,
+          PxVisBehaviorChart.subConfiguration
         ],
 
         /**
@@ -438,8 +445,32 @@ Creates an interactive timeseries chart
           pxSvgElem : {
             type: Object,
             value: function() { return {};}
-          }
+          },
+          /**
+           * Configuration object used to customize the X axis cosmetic properties.
+           * Please refer to px-vis-axis (https://github.com/PredixDev/px-vis) for a list of supported proerties
+           *
+           */
+          xAxisConfig: {
+            type: Object,
+            observer: '_xAxisConfigChanged'
+          },
+          /**
+           * Configuration object used to customize the Y axis cosmetic properties.
+           * Please refer to px-vis-axis (https://github.com/PredixDev/px-vis) for a list of supported proerties
+           *
+           */
+          yAxisConfig: {
+            type: Object,
+            observer: '_yAxisConfigChanged'
+          },
         },
+
+        observer: [
+          '_xAxisConfigChanged(xAxisConfig.*)',
+          '_yAxisConfigChanged(yAxisConfig.*)'
+        ],
+
         listeners: {
           'iron-resize': '_onIronResize'
         },
@@ -463,6 +494,12 @@ Creates an interactive timeseries chart
             var key = keys[i];
             this.set(key, this.options[key]);
           }
+        },
+        _xAxisConfigChanged: function(conf) {
+          this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
+        },
+        _yAxisConfigChanged: function(conf) {
+          this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
         },
         /**
          * Overwrites default margins based on settings

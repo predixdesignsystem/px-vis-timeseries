@@ -1,3 +1,8 @@
+v0.2.0
+==================
+* update to px-vis 2.0
+* added axis configuration
+
 v0.1.14
 ==================
 * updating for axis changes
