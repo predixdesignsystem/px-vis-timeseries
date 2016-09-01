@@ -81,8 +81,8 @@
                 <label for$="preventResize{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                 <div class="u-ml-">Prevent Resize</div>
               </div>
-              <div class="u-mb-">Width: <input id="width" class="text-input" type="number" placeholder="{{item.width}}" value="{{item.width::input}}" /></div>
-              <div class="u-mb-">Height: <input id="height" class="text-input" type="number" placeholder="{{item.height}}" value="{{item.height::input}}" /></div>
+              <div class="u-mb-">Width: <input id="width" class="text-input" type="text" placeholder="{{item.width}}" value="{{item.width::input}}" /></div>
+              <div class="u-mb-">Height: <input id="height" class="text-input" type="text" placeholder="{{item.height}}" value="{{item.height::input}}" /></div>
               <div class="u-mb-">Zoom Type:
                 <div style="width: 100%;">
                   <px-dropdown id="showSelectionType" value="{{item.selectionType}}" display-value="{{item.selectionType}}" bound-target="properties">
