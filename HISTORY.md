@@ -1,3 +1,7 @@
+v0.2.2
+==================
+* added ability to disable navigator
+
 v0.2.1
 ==================
 * fixed test

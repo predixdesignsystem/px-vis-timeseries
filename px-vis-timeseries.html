@@ -71,24 +71,26 @@ Creates an interactive timeseries chart
             margin="[[margin]]">
           </px-vis-svg-canvas>
 
-          <div style="height:100px">
-            <px-vis-chart-navigator
-              id="navigator"
-              x-axis-type="time"
-              y-axis-type="linear"
-              width="[[width]]"
-              margin="[[marginNav]]"
-              default-series-config="[[defaultSeriesConfig]]"
-              series-config="[[seriesConfig]]"
-              include-all-series="[[includeAllSeries]]"
-              chart-data="[[chartData]]"
-              nav-series-limit="[[navSeriesLimit]]"
-              chart-domain-x="[[currentDomainX]]"
-              chart-domain-y="[[currentDomainY]]"
-              range="[[range]]"
-              disable-empty-render>
-            </px-vis-chart-navigator>
-          </div>
+          <template is="dom-if" if="[[!disableNavigator]]">
+            <div style="height:100px">
+              <px-vis-chart-navigator
+                id="navigator"
+                x-axis-type="time"
+                y-axis-type="linear"
+                width="[[width]]"
+                margin="[[marginNav]]"
+                default-series-config="[[defaultSeriesConfig]]"
+                series-config="[[seriesConfig]]"
+                include-all-series="[[includeAllSeries]]"
+                chart-data="[[chartData]]"
+                nav-series-limit="[[navSeriesLimit]]"
+                chart-domain-x="[[currentDomainX]]"
+                chart-domain-y="[[currentDomainY]]"
+                range="[[range]]"
+                disable-empty-render>
+              </px-vis-chart-navigator>
+            </div>
+          </template>
         </div> <!-- flex row -->
 
       <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
@@ -464,6 +466,14 @@ Creates an interactive timeseries chart
             type: Object,
             observer: '_yAxisConfigChanged'
           },
+          /**
+           * Flag to not show a navigator in the timeseries. Set to true to disable the navigator. Default false which shows the navigator
+           *
+           */
+          disableNavigator: {
+            type: Boolean,
+            value: false
+          }
         },
 
         observer: [
@@ -543,26 +553,27 @@ Creates an interactive timeseries chart
             return;
           }
           this.debounce('ironresize', function() {
-            var wrapperRect = this.$.wrapper.getBoundingClientRect(),
-                navigatorRect = this.$.navigator.getBoundingClientRect(),
-                widthDeduct = 0,
-                heightDeduct = 0;
+            if(this.disableNavigator || this.$$('#navigator')){
+              var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+                  navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
+                  widthDeduct = 0,
+                  heightDeduct = 0;
 
-            if(this._topRegister(this.registerLocation)) {
-              var regRect = this.$$('#topRegister').getBoundingClientRect();
-              heightDeduct = regRect.height;
+              if(this._topRegister(this.registerLocation)) {
+                var regRect = this.$$('#topRegister').getBoundingClientRect();
+                heightDeduct = regRect.height;
+              }
+
+              if(this._sideRegister(this.registerLocation)) {
+                var regRect = this.$$('#sideRegister').getBoundingClientRect();
+                widthDeduct = regRect.width;
+              }
+
+              heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
+
+              this.set('width', wrapperRect.width - widthDeduct);
+              this.set('height', wrapperRect.height - heightDeduct);
             }
-
-            if(this._sideRegister(this.registerLocation)) {
-              var regRect = this.$$('#sideRegister').getBoundingClientRect();
-              widthDeduct = regRect.width;
-            }
-
-            heightDeduct += navigatorRect.height;
-
-            this.set('width', wrapperRect.width - widthDeduct);
-            this.set('height', wrapperRect.height - heightDeduct);
-
           },50);
         },
         /**
@@ -570,18 +581,20 @@ Creates an interactive timeseries chart
          */
         getCombinedImage: function(callback) {
           this.getImage(function(chartSnap) {
-            this.$.navigator.getImage(function(navigatorSnap) {
-              var canvas = document.createElement('canvas'),
-                  context;
-              canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
-              canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
-              context = canvas.getContext('2d');
+            if(!this.disableNavigator){
+              this.$$('#navigator').getImage(function(navigatorSnap) {
+                var canvas = document.createElement('canvas'),
+                    context;
+                canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
+                canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
+                context = canvas.getContext('2d');
 
-              context.drawImage(chartSnap.canvas, 0, 0);
-              context.drawImage(navigatorSnap.canvas, 0, chartSnap.canvas.height);
+                context.drawImage(chartSnap.canvas, 0, 0);
+                context.drawImage(navigatorSnap.canvas, 0, chartSnap.canvas.height);
 
-              callback({canvas: canvas, image: canvas.toDataURL("image/png")});
-            }.bind(this));
+                callback({canvas: canvas, image: canvas.toDataURL("image/png")});
+              }.bind(this));
+            }
           }.bind(this));
         }
     });
