@@ -1,0 +1,142 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>px-vis-timeseries Demo</title>
+        <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+        <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+        <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+        <link rel="import" href="../px-theme/px-theme.html"/>
+        <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../px-vis/px-vis-data.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+        <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+
+        <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries.css"/>
+
+    </head>
+
+    <body style="padding:30px">
+      <template is="dom-bind" id="demoTemplate">
+
+        <px-vis-timeseries
+          id="timeSerie"
+          options = '{
+            "width": "1000",
+            "height": "500",
+            "enableTooltip":true,
+            "registerLocation":"both",
+            "eventConfig": {
+              "Recalibrate":{
+                "color": "blue",
+                "icon": "fa-camera",
+                "type": "fa",
+                "offset":[0,0]
+              },
+              "Fan start":{
+                "color": "green",
+                "icon": "\uf015",
+                "type": "unicode",
+                "offset":[1,0]
+              },
+              "Fan stop":{
+                "icon": "ge_logo.png",
+                "type": "image",
+                "offset":[0,-20],
+                "size":"20"
+              }
+            },
+            "thresholdData":[
+              { "for":"y0", "type":"max", "value":35.4784 },
+              { "for":"y0", "type":"min", "value":7.6531 },
+              { "for":"y0", "type":"mean", "value":15.330657585139331 },
+              { "for":"y1", "type":"mean", "value":75 },
+              { "for":"", "type":"quartile", "value":17 }
+            ],
+            "showThresholdBox":false,
+            "includeAllSeries": true,
+            "selectionType": "xAxis",
+            "xAxisConfig": {
+              "title": "Date"
+            },
+            "yAxisConfig": {
+              "title": "Hz"
+            }
+          }'
+          series-config='[[seriesConfig]]'
+          default-series-config='{
+              "type": "line",
+              "yAxisUnit": "Hz",
+              "x": "TimeStamp",
+              "xMin": "dynamic",
+              "xMax": "dynamic",
+              "yMin": 0,
+              "yMax": "dynamic"
+            }'
+          chart-data="[[chartData]]"
+          event-data="[[eventData]]"
+          range="[[range]]"
+          position-offset=[[positionOffset]]>
+        </px-vis-timeseries>
+
+        <px-vis-data
+          id = "seriesAjax"
+          request-data = '[{
+            "type":"line",
+            "name":"mySeries",
+              "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+            },{
+              "type":"line",
+              "url":"../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          }]'
+          data-var="originalData"
+          lists="append"
+          response-data="{{originalData}}">
+        </px-vis-data>
+
+        <px-vis-data-converter
+          data-key = "series"
+          id-key = "name"
+          original-data = '[[originalData]]'
+          series-config="{{seriesConfig}}"
+          chart-data="{{chartData}}">
+        </px-vis-data-converter>
+
+        <px-vis-data
+          id = "eventAjax"
+          request-data = '[{
+              "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
+          }]'
+          data-var="eventData"
+          lists = "flat"
+          response-data="{{eventData}}">
+        </px-vis-data>
+
+    </template>
+    <script>
+      window.addEventListener('WebComponentsReady', function() {
+        var rangepicker = document.getElementById('rangepicker'),
+            btnSnap = document.getElementById('btnSnap'),
+            timeSerie = document.getElementById('timeSerie');
+
+        var demoTemplate = document.getElementById('demoTemplate');
+
+        demoTemplate.positionOffset = timeSerie.getBoundingClientRect();
+
+        rangepicker.range = {
+          "from":"2014-04-10T04:01:00.000Z",
+          "to":"2015-04-01T20:42:00.000Z"
+        };
+
+        btnSnap.addEventListener('click', function() {
+          timeSerie.getCombinedImage(function(result) {
+            window.open().location = result.image;
+          });
+        });
+
+      });
+    </script>
+    </body>
+</html>

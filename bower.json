@@ -44,5 +44,15 @@
     "px-dropdown": "^0.10.1",
     "px-rangepicker": "^1.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
+  },
+  "resolutions": {
+    "px-typography-design": "^1.1.1",
+    "px-theme": "~1.1.2",
+    "px-dropdown": "~0.12.1",
+    "px-tooltip": "~0.8.0",
+    "px-datetime-range-field": "~0.4.1",
+    "px-datetime-common": "~0.6.1",
+    "px-datetime-range-panel": "~0.3.0",
+    "px-calendar-picker": "~0.4.0"
   }
 }

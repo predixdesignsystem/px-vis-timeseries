@@ -14,7 +14,7 @@
 <link rel="import" href="../px-vis/px-vis-scale.html"/>
 <link rel="import" href="../px-vis/px-vis-interaction-space.html"/>
 <link rel="import" href="../px-vis/px-vis-cursor.html"/>
-<link rel="import" href="../px-vis/px-vis-tooltip.html"/>
+<link rel="import" href="../px-vis/px-vis-tooltip-2.html"/>
 <link rel="import" href="../px-vis/px-vis-register.html"/>
 <link rel="import" href="../px-vis/px-vis-threshold.html"/>
 <link rel="import" href="../px-vis/px-vis-zoom.html"/>
@@ -56,15 +56,18 @@ Creates an interactive timeseries chart
           <template is="dom-if" if="[[enableTooltip]]">
             <px-vis-tooltip
               px-svg-elem=[[pxSvgElem]]
+              offests=[[tooltipOffsets]]
               width="250"
               margin="[[margin]]"
               chart-data="[[chartData]]"
               tooltip-data="[[tooltipData]]"
               complete-series-config="[[completeSeriesConfig]]"
-              x-axis-type="time">
+              x-axis-type="time"
+              position-offset=[[positionOffset]]>
             </px-vis-tooltip>
           </template>
           <px-vis-svg-canvas
+            id="svgCanvas"
             class="inline--flex"
             width="[[width]]"
             height="[[height]]"
@@ -310,6 +313,10 @@ Creates an interactive timeseries chart
          * @type Object
          */
         properties: {
+          positionOffset: {
+            type: Object,
+            value: null
+          },
           /**
            *
            *
@@ -485,7 +492,7 @@ Creates an interactive timeseries chart
           'iron-resize': '_onIronResize'
         },
 
-        ready:function(){
+        ready: function(){
           this._calcMargins();
         },
         /**
