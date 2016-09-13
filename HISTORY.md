@@ -1,3 +1,7 @@
+v0.2.3
+==================
+* uses new tooltip
+
 v0.2.2
 ==================
 * added ability to disable navigator
