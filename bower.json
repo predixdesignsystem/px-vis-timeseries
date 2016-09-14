@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -44,5 +44,8 @@
     "px-dropdown": "^0.10.1",
     "px-rangepicker": "^1.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
+  },
+  "resolutions": {
+    "px-tooltip": "vis-tooltip"
   }
 }

@@ -1,3 +1,7 @@
+v0.2.4
+==================
+* added axis type
+
 v0.2.3
 ==================
 * uses new tooltip
