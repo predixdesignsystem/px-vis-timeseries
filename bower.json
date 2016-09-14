@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -46,6 +46,14 @@
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
   },
   "resolutions": {
-    "px-tooltip": "vis-tooltip"
+    "px-tooltip": "vis-tooltip",
+    "px-datetime-common": "~0.5.0",
+    "px-theme": "~0.8.0",
+    "px-typography-design": "~0.3.2",
+    "px-dropdown": "^0.10.1",
+    "px-datetime-range-field": "~0.3.0",
+    "px-datetime-range-panel": "~0.2.0",
+    "px-datetime-field": "~0.4.0",
+    "px-calendar-picker": "~0.3.0"
   }
 }

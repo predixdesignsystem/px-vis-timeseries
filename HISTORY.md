@@ -1,3 +1,7 @@
+v0.2.5
+==================
+* added resolutions
+
 v0.2.4
 ==================
 * added axis type
