@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -15,45 +15,34 @@
     "px-vis-timeseries.png"
   ],
   "dependencies": {
-    "polymer": "^1.5.0",
-    "px-theme": "~0.8.0",
-    "px-demo-data": "~0.0.1",
-    "px-datetime-common": "~0.5.0",
-    "px-colors-design": "~0.2.15",
-    "px-vis": "~0.3.0",
-    "iron-resizable-behavior": "^1.0.4"
+    "polymer": "^1.6.1",
+    "px-theme": "~1.1.2",
+    "px-demo-data": "~0.0.17",
+    "px-datetime-common": "~0.6.3",
+    "px-colors-design": "~0.2.16",
+    "px-vis": "~0.4.1",
+    "iron-resizable-behavior": "^1.0.5"
   },
   "devDependencies": {
-    "px-starter-kit-design": "#~0.5.4",
-    "px-forms-design": "#~0.3.15",
-    "px-tables-design": "#~0.3.12",
-    "px-spacing-design": "~0.3.4",
-    "px-buttons-design": "~0.4.13",
-    "px-button-group-design": "~0.3.8",
-    "px-typography-design": "~0.3.2",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#~1.2.3",
-    "px-tabs": "~0.4.0",
-    "px-api-viewer": "^0.0.4",
-    "px-demo-snippet": "^0.2.1",
+    "px-starter-kit-design": "~0.6.0",
+    "px-forms-design": "~0.3.17",
+    "px-tables-design": "~0.3.13",
+    "px-spacing-design": "~0.3.8",
+    "px-buttons-design": "~0.4.26",
+    "px-button-group-design": "~0.3.12",
+    "px-typography-design": "~1.1.1",
+    "iron-demo-helpers": "~1.2.5",
+    "px-tabs": "~0.5.2",
+    "px-api-viewer": "^0.1.0",
+    "px-demo-snippet": "^0.5.2",
     "px-toggle-design": "^0.2.12",
     "px-headings-design": "^0.2.14",
     "px-actionable-text-icons-design": "^0.0.3",
     "px-code-design": "^0.2.11",
     "px-list-inline-design": "^0.2.11",
-    "px-polymer-font-awesome": "^0.1.8",
-    "px-dropdown": "^0.10.1",
-    "px-rangepicker": "^1.0.0",
-    "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
-  },
-  "resolutions": {
-    "px-tooltip": "vis-tooltip",
-    "px-datetime-common": "~0.5.0",
-    "px-theme": "~0.8.0",
-    "px-typography-design": "~0.3.2",
-    "px-dropdown": "^0.10.1",
-    "px-datetime-range-field": "~0.3.0",
-    "px-datetime-range-panel": "~0.2.0",
-    "px-datetime-field": "~0.4.0",
-    "px-calendar-picker": "~0.3.0"
+    "px-polymer-font-awesome": "^0.1.9",
+    "px-dropdown": "^0.12.2",
+    "px-rangepicker": "^1.2.1",
+    "iron-ajax": "~1.4.3"
   }
 }

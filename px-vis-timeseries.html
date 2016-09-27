@@ -33,9 +33,13 @@ Creates an interactive timeseries chart
 @homepage index.html
 @demo demo.html
 -->
+
+<link rel="import" type="css" href="css/px-vis-timeseries-styles.html"/>
+
 <dom-module id="px-vis-timeseries">
-  <link rel="import" type="css" href="css/px-vis-timeseries.css"/>
   <template>
+    <style include="px-vis-timeseries-styles"></style>
+    <style include="px-theme-styles"></style>
     <div id="wrapper" class="flex--row u-m safariFlex safariFlexDirectionRow flex wrapper" >
       <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
         <div
