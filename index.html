@@ -117,30 +117,54 @@
               <!-- demo -->
               <div class="flex flex--col">
                 <div class="demo u-p+">
-                  <px-vis-timeseries
-                    width = "{{item.width}}"
-                    height = "{{item.height}}"
-                    prevent-resize = "{{item.preventResize}}"
-                    enable-tooltip = "{{item.enableTooltip}}"
-                    register-location = "{{item.registerLocation}}"
-                    include-all-series
-                    selection-type= "{{item.selectionType}}"
-                    chart-data="[[chartData2]]">
-                  </px-vis-timeseries>
-                  <px-vis-data
-                    id = "seriesAjax"
-                    request-data = '[{
-                        "url":"../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-                      }]'
-                    data-var="chartData2"
-                    lists="flat"
-                    response-data="{{chartData2}}">
-                  </px-vis-data>
+                  <template is="dom-if" if="{{isOption1(index)}}" restamp>
+                    <px-vis-timeseries
+                      width = "{{item.width}}"
+                      height = "{{item.height}}"
+                      prevent-resize = "{{item.preventResize}}"
+                      enable-tooltip = "{{item.enableTooltip}}"
+                      register-location = "{{item.registerLocation}}"
+                      include-all-series
+                      selection-type= "{{item.selectionType}}"
+                      chart-data="{{item.chartData}}">
+                    </px-vis-timeseries>
+                  </template>
+                  <!-- <template is="dom-if" if="{{isOption2(index)}}" restamp>
+                    <px-vis-timeseries
+                      width="{{item.width}}"
+                      height="{{item.height}}"
+                      prevent-resize="{{item.preventResize}}"
+                      enable-tooltip="{{item.enableTooltip}}"
+                      register-location="{{item.registerLocation}}"
+                      include-all-series
+                      selection-type="{{item.selectionType}}"
+                      chart-data="{{item.chartData}}">
+                    </px-vis-timeseries>
+                    <px-vis-data
+                      id = "seriesAjax"
+                      request-data = '[{
+                          "url":"https://cdn.rawgit.com/PredixDev/px-demo-data/master/demo-data/aviation/delta-egt-cruise.json"
+                        }]'
+                      lists="flat"
+                      response-data="{{item.responseData}}">
+                    </px-vis-data>
+                    <px-vis-data-converter
+                    original-data="[[item.responseData]]"
+                    chart-data="{{item.chartData}}"
+                    data-key="series"
+                    id-key="name"
+                    series-config="{{seriesConfig}}">
+                    ></px-vis-data-converter>
+                  </template> -->
                 </div>
                 <div class="flex__item">
                   <px-demo-snippet
-                    element-properties={{item}}
-                    element-name="px-vis-timeseries">
+                    element-properties="{{item}}"
+                    element-name="px-vis-timeseries"
+                    scripts-includes="[[scriptsIncludes]]"
+                    links-includes="[[linksIncludes]]"
+                    polygit-includes="[[polygitIncludes]]"
+                    >
                   </px-demo-snippet>
                 </div>
               </div>
@@ -180,16 +204,31 @@
 </template>
 <script>
 window.addEventListener('WebComponentsReady', function() {
-  var template = document.querySelector('template[is=dom-bind]'),
+
+  var template = document.querySelector('template[is=dom-bind]');
+  var  chartData1 = [{"x": 1465416480000, "y": "0"}, {"x": 1465416540000, "y": "0.897277832"}, {"x": 1465416600000, "y": "1"}, {"x": 1465416660000, "y": "2"}, {"x": 1465416720000, "y": "1"}, {"x": 1465416780000, "y": "0.897697449"}, {"x": 1465416840000, "y": "0.897796631"}],
       optionsArray = [
         {
           "height":300,
           "width":800,
           "preventResize":true,
           "selectionType":'xy',
-          "enableTooltip":true,
-          "registerLocation":"none"
+          "enableTooltip":false,
+          "registerLocation":"top",
+          "chartData":chartData1,
+          "includeAllSeries": true
         }
+        // {
+        //   "height":300,
+        //   "width":800,
+        //   "preventResize":true,
+        //   "selectionType":'xy',
+        //   "enableTooltip":false,
+        //   "registerLocation":"top",
+        //   "chartData":[],
+        //   "includeAllSeries": true
+        // }
+
       ],
       indexPlusOne = function(num) {
         return num + 1;
@@ -198,6 +237,17 @@ window.addEventListener('WebComponentsReady', function() {
     template.selected = "0";
     template.optionsArray = optionsArray;
     template.indexPlusOne = indexPlusOne;
+    template.scriptsIncludes = ['https://cdn.rawgit.com/foretagsplatsen/numbro/1.7.1/numbro.js'];
+    template.linksIncludes = ['px-vis/px-polygit-imports-vis.html', 'numbro-element/numbro-element.html'];
+    template.polygitIncludes = ['numbro*+MeTaNoV+*'];
+    template.chartData = chartData1;
+    template.isOption1 = function(index) {
+      return index + 1 === 1;
+    };
+    template.isOption2 = function(index) {
+      console.log(index);
+      return (index === 1);
+    };
 });
 </script>
 

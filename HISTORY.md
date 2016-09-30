@@ -1,3 +1,7 @@
+v0.3.1
+==================
+* polished the demo page a bit and included script Includes, linksIncludes and polygitIncludes in the demo snippet call
+
 v0.2.5
 ==================
 * added resolutions
