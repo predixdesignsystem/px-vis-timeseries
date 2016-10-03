@@ -5,6 +5,7 @@
 <link rel="import" href="../px-vis/px-vis-behavior-chart.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
 <link rel="import" href="../px-vis/px-vis-svg-canvas.html"/>
+<link rel="import" href="../px-vis/px-vis-line-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line.html"/>
 <link rel="import" href="../px-vis/px-vis-scatter.html"/>
 <link rel="import" href="../px-vis/px-vis-event.html"/>
@@ -143,21 +144,34 @@ Creates an interactive timeseries chart
 
     <template is="dom-repeat" items="[[_returnKeys(completeSeriesConfig)]]">
       <template is="dom-if" if="[[_chartTypeLine(item,completeSeriesConfig)]]">
-        <px-vis-line
-          svg="[[svg]]"
-          render-to-canvas="[[renderToCanvas]]"
-          canvas-context="[[canvasContext]]"
-          series-id="[[item]]"
-          chart-data="[[chartData]]"
-          complete-series-config="[[completeSeriesConfig]]"
-          x="[[x]]"
-          y="[[y]]"
-          current-domain-x="[[currentDomainX]]"
-          current-domain-y="[[currentDomainY]]"
-          clip-path="[[seriesClipPath]]"
-          muted-series="[[mutedSeries]]"
-          no-canvas-progressive-rendering>
-        </px-vis-line>
+        <template is="dom-if" if="[[renderToCanvas]]">
+          <px-vis-line-canvas
+            id="lineCanvas"
+            canvas-context="[[canvasContext]]"
+            series-id="[[item]]"
+            chart-data="[[chartData]]"
+            complete-series-config="[[completeSeriesConfig]]"
+            x="[[x]]"
+            y="[[y]]"
+            domain-changed="[[domainChanged]]"
+            muted-series="[[mutedSeries]]"
+            no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]">
+          </px-vis-line-canvas>
+        </template>
+        <template is="dom-if" if="[[!renderToCanvas]]">
+          <px-vis-line
+            id="lineSVG"
+            svg="[[svg]]"
+            series-id="[[item]]"
+            chart-data="[[chartData]]"
+            complete-series-config="[[completeSeriesConfig]]"
+            x="[[x]]"
+            y="[[y]]"
+            domain-changed="[[domainChanged]]"
+            clip-path="[[seriesClipPath]]"
+            muted-series="[[mutedSeries]]">
+          </px-vis-line>
+        </template>
       </template>
       <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]">
         <px-vis-scatter
@@ -488,6 +502,10 @@ Creates an interactive timeseries chart
           mousePosition:{
             type: Array
           },
+          renderToCanvas: {
+            type: Boolean,
+            value: false
+          }
         },
 
         observer: [

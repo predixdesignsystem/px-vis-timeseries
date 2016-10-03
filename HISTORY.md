@@ -1,3 +1,7 @@
+v0.3.2
+==================
+* Upgrade to px-vis 0.5.0 and associated change to line
+
 v0.3.1
 ==================
 * polished the demo page a bit and included script Includes, linksIncludes and polygitIncludes in the demo snippet call
