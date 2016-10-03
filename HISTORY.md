@@ -1,4 +1,4 @@
-v0.3.2
+v0.3.3
 ==================
 * Upgrade to px-vis 0.5.0 and associated change to line
 
