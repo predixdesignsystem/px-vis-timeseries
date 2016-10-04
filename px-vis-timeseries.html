@@ -183,6 +183,7 @@ Creates an interactive timeseries chart
           y="[[y]]"
           current-domain-x="[[currentDomainX]]"
           current-domain-y="[[currentDomainY]]"
+          domain-changed="[[domainChanged]]"
           clip-path="[[seriesClipPath]]"
           muted-series="[[mutedSeries]]">
         </px-vis-scatter>
@@ -324,7 +325,8 @@ Creates an interactive timeseries chart
           Polymer.IronResizableBehavior,
           PxVisBehaviorChart.saveImage,
           PxVisBehaviorD3.domainUpdate,
-          PxVisBehaviorChart.subConfiguration
+          PxVisBehaviorChart.subConfiguration,
+          PxVisBehavior.progressiveRendering
         ],
 
         /**

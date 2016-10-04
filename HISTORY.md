@@ -1,3 +1,7 @@
+v0.3.4
+==================
+* Make sure zooming works when using scatter
+
 v0.3.3
 ==================
 * Upgrade to px-vis 0.5.0 and associated change to line
