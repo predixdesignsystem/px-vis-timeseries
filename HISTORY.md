@@ -1,3 +1,7 @@
+v0.3.6
+==================
+* fixed gridline issue
+
 v0.3.5
 ==================
 * Added width to axis
