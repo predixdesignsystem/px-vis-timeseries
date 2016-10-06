@@ -1,3 +1,7 @@
+v0.3.5
+==================
+* Added width to axis
+
 v0.3.4
 ==================
 * Make sure zooming works when using scatter
