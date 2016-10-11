@@ -31,17 +31,6 @@ Starts a local server. Navigate to the root of that server (e.g. http://localhos
 
 By default gulp serve is configured to enable BrowserSync and will be watching for modifications in your root directory as well as `/css`.
 
-Add, remove, modify file system patterns specified in the `watch` task in your `gulpfile.js`
-
-This is an example depserve configuration:
-
-```
-gulp.task('watch', function() {
-  gulp.watch(['!sass/*-demo.scss', 'sass/*.scss'], ['sass']);
-  gulp.watch('sass/*-demo.scss', ['demosass']);
-});
-```
-
 ### Options
 
 Does this component have runtime configuration options?  If so, they should be able to be passed as attributes on the element with examples shown below.
