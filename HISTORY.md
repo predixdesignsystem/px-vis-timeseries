@@ -1,3 +1,7 @@
+v0.4.1
+==================
+* added clip path for canvas
+
 v0.4.0
 ==================
 * ensure muted series are muted in tooltip
