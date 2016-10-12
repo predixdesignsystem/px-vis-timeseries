@@ -1,3 +1,9 @@
+v0.4.0
+==================
+* ensure muted series are muted in tooltip
+* added hideGridlinesX and hideGridlinesY
+* moved to px-vis 0.0.6
+
 v0.3.6
 ==================
 * added mute/unmute behavior

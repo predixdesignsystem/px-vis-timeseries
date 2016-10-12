@@ -70,7 +70,8 @@ Creates an interactive timeseries chart
               tooltip-data="[[tooltipData]]"
               complete-series-config="[[completeSeriesConfig]]"
               x-axis-type="time"
-              tooltip-style="light">
+              tooltip-style="light"
+              muted-series="[[mutedSeries]]">
             </px-vis-tooltip>
           </template>
           <px-vis-svg-canvas
@@ -217,25 +218,29 @@ Creates an interactive timeseries chart
       show-threshold-box="[[showThresholdBox]]">
     </px-vis-threshold>
 
-    <px-vis-gridlines
-      svg="[[svg]]"
-      axis="[[x]]"
-      margin="[[margin]]"
-      length="[[height]]"
-      orientation="bottom"
-      current-domain="[[currentDomainX]]"
-      domain-changed="[[domainChanged]]">
-    </px-vis-gridlines>
+    <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
+      <px-vis-gridlines
+        svg="[[svg]]"
+        axis="[[x]]"
+        margin="[[margin]]"
+        length="[[height]]"
+        orientation="bottom"
+        current-domain="[[currentDomainX]]"
+        domain-changed="[[domainChanged]]">
+      </px-vis-gridlines>
+    </template>
 
-    <px-vis-gridlines
-      svg="[[svg]]"
-      axis="[[y]]"
-      margin="[[margin]]"
-      length="[[width]]"
-      orientation="left"
-      current-domain="[[currentDomainY]]"
-      domain-changed="[[domainChanged]]">
-    </px-vis-gridlines>
+    <template is="dom-if" if="[[!hideGridlinesY]]" restamp>
+      <px-vis-gridlines
+        svg="[[svg]]"
+        axis="[[y]]"
+        margin="[[margin]]"
+        length="[[width]]"
+        orientation="left"
+        current-domain="[[currentDomainY]]"
+        domain-changed="[[domainChanged]]">
+      </px-vis-gridlines>
+    </template>
 
     <px-vis-axis
       id="xAxis"
@@ -509,6 +514,20 @@ Creates an interactive timeseries chart
             type: Array
           },
           renderToCanvas: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Whether to hide the gridlines perpendicular to the X axis
+           */
+          hideGridlinesX: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Whether to hide the gridlines perpendicular to the Y axis
+           */
+          hideGridlinesY: {
             type: Boolean,
             value: false
           }
