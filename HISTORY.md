@@ -1,3 +1,7 @@
+v0.4.2
+==================
+* make sure addition/removal of series to seriesConfig are correctly processed
+
 v0.4.1
 ==================
 * added clip path for canvas
