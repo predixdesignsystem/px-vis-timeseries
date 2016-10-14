@@ -1,3 +1,7 @@
+v0.4.3
+==================
+* restamp on lines and scatter dom if
+
 v0.4.2
 ==================
 * make sure addition/removal of series to seriesConfig are correctly processed

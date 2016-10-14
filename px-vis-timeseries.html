@@ -144,8 +144,8 @@ Creates an interactive timeseries chart
     </px-vis-clip-path>
 
     <template is="dom-repeat" items="[[_seriesKeys]]">
-      <template is="dom-if" if="[[_chartTypeLine(item,completeSeriesConfig)]]">
-        <template is="dom-if" if="[[renderToCanvas]]">
+      <template is="dom-if" if="[[_chartTypeLine(item,completeSeriesConfig)]]" restamp>
+        <template is="dom-if" if="[[renderToCanvas]]" restamp>
           <px-vis-line-canvas
             id="lineCanvas"
             canvas-context="[[canvasContext]]"
@@ -178,7 +178,7 @@ Creates an interactive timeseries chart
           </px-vis-line>
         </template>
       </template>
-      <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]">
+      <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]" restamp>
         <px-vis-scatter
           svg="[[svg]]"
           series-id="[[item]]"
