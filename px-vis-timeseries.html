@@ -156,7 +156,11 @@ Creates an interactive timeseries chart
             y="[[y]]"
             domain-changed="[[domainChanged]]"
             muted-series="[[mutedSeries]]"
-            no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]">
+            no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
+            width="[[width]]"
+            height="[[height]]"
+            margin="[[margin]]"
+            clip-path>
           </px-vis-line-canvas>
         </template>
         <template is="dom-if" if="[[!renderToCanvas]]">
