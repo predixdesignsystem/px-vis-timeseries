@@ -1,3 +1,7 @@
+v0.4.4
+==================
+* Update dependencies
+
 v0.4.3
 ==================
 * restamp on lines and scatter dom if

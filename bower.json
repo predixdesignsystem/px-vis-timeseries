@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -37,7 +37,7 @@
     "px-demo-snippet": "^0.6.0",
     "px-toggle-design": "^0.2.12",
     "px-headings-design": "^0.2.14",
-    "px-actionable-text-icons-design": "^0.0.3",
+    "px-actionable-text-icons-design": "^0.1.0",
     "px-code-design": "^0.2.11",
     "px-list-inline-design": "^0.2.11",
     "px-polymer-font-awesome": "^0.1.9",
