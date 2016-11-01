@@ -88,7 +88,7 @@ $inuit-enable-list-inline--delimited : true;
   }
 }
 .demo{
-  flex-basis: calculateRem(500px);
+  min-height: calculateRem(300px);
   background: $white;
   border: 1px solid $gray4;
   overflow: auto;

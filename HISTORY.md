@@ -1,3 +1,7 @@
+v0.4.5
+==================
+* added a second series to demo 
+
 v0.4.4
 ==================
 * Update dependencies
