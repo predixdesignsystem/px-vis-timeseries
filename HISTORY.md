@@ -1,3 +1,7 @@
+v0.4.5
+==================
+* added seriesKey to interaction space for no data scenarios
+
 v0.4.4
 ==================
 * Update dependencies
