@@ -75,9 +75,9 @@
             <div class="properties u-ph+ u-pb+ u-mt+" id="properties">
               <p class="epsilon">Properties</p>
               <div class="flex u-mb-">
-                <input id="enableTooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.enableTooltip::change}}">
-                <label for$="enableTooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                <div class="u-ml-">Enable Tooltip</div>
+                <input id="showTooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.showTooltip::change}}">
+                <label for$="showTooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                <div class="u-ml-">Show Tooltip</div>
               </div>
               <div class="flex u-mb-">
                 <input id="preventResize{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.preventResize::change}}">
@@ -98,19 +98,6 @@
                   </px-dropdown>
                 </div>
               </div>
-              <div class="u-mb-">Register Location:
-                <div style="width: 100%;">
-                  <px-dropdown id="registerLocation" value="{{item.registerLocation}}" display-value="{{item.registerLocation}}" bound-target="properties">
-                    <px-dropdown-content
-                      items='[
-                        {"key":"one", "val": "none"},
-                        {"key":"two", "val": "top"},
-                        {"key":"three", "val": "side"},
-                        {"key":"four", "val": "both"}]'>
-                    </px-dropdown-content>
-                  </px-dropdown>
-                </div>
-              </div>
             </div>
 
             <div class="demoContainer clearfix u-mt+">
@@ -122,7 +109,7 @@
                       width = "{{item.width}}"
                       height = "{{item.height}}"
                       prevent-resize = "{{item.preventResize}}"
-                      enable-tooltip = "{{item.enableTooltip}}"
+                      show-tooltip = "{{item.showTooltip}}"
                       register-location = "{{item.registerLocation}}"
                       include-all-series
                       selection-type= "{{item.selectionType}}"
@@ -220,7 +207,7 @@ window.addEventListener('WebComponentsReady', function() {
           "width":800,
           "preventResize":true,
           "selectionType":'xy',
-          "enableTooltip":false,
+          "showTooltip":false,
           "registerLocation":"top",
           "chartData":chartData1,
           "includeAllSeries": true

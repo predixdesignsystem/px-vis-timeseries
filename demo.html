@@ -36,39 +36,35 @@
         <button id="btnSnap">Go</button>
         <px-vis-timeseries
           id="timeSerie"
-          options = '{
-            "width": "1000",
-            "height": "500",
-            "enableTooltip":true,
-            "eventConfig": {
-              "Recalibrate":{
-                "color": "blue",
-                "icon": "fa-camera",
-                "type": "fa",
-                "offset":[0,0]
-              },
-              "Fan start":{
-                "color": "green",
-                "icon": "\uf015",
-                "type": "unicode",
-                "offset":[1,0]
-              },
-              "Fan stop":{
-                "icon": "ge_logo.png",
-                "type": "image",
-                "offset":[0,-20],
-                "size":"20"
-              }
+          height="500"
+          threshold-data='[
+            { "for":"y0", "type":"max", "value":35.4784 },
+            { "for":"y0", "type":"min", "value":7.6531 },
+            { "for":"y0", "type":"mean", "value":15.330657585139331 },
+            { "for":"y1", "type":"mean", "value":75 },
+            { "for":"", "type":"quartile", "value":17 }
+          ]',
+          selection-type="xAxis"
+          show-tooltip
+          event-config= '{
+            "Recalibrate":{
+              "color": "blue",
+              "icon": "fa-camera",
+              "type": "fa",
+              "offset":[0,0]
             },
-            "thresholdData":[
-              { "for":"y0", "type":"max", "value":35.4784 },
-              { "for":"y0", "type":"min", "value":7.6531 },
-              { "for":"y0", "type":"mean", "value":15.330657585139331 },
-              { "for":"y1", "type":"mean", "value":75 },
-              { "for":"", "type":"quartile", "value":17 }
-            ],
-            "showThresholdBox":false,
-            "selectionType": "xAxis"
+            "Fan start":{
+              "color": "green",
+              "icon": "\uf015",
+              "type": "unicode",
+              "offset":[1,0]
+            },
+            "Fan stop":{
+              "icon": "ge_logo.png",
+              "type": "image",
+              "offset":[0,-20],
+              "size":"20"
+            }
           }'
           x-axis-config= '{
             "title": "Date",
@@ -129,7 +125,6 @@
         <br />
         <h2>Example of a timeseries with mostly default data and using the new data format</h2>
         <px-vis-timeseries
-          prevent-resize
           width = "1000"
           height = "500"
           include-all-series
@@ -159,10 +154,10 @@
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
         <px-vis-timeseries
-          prevent-resize
           width = "1000"
           height = "500"
           include-all-series
+          prevent-resize
           render-to-canvas
           selection-type= "xy"
           chart-data="[[chartData2]]"
@@ -267,29 +262,34 @@
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
-        var chart = document.getElementById('chartCustom'),
-            rangepicker = document.getElementById('rangepicker'),
-            btnSnap = document.getElementById('btnSnap'),
-            timeSerie = document.getElementById('timeSerie');
 
-          chart.svg.append('rect')
-            .attr("y", 200)
-            .attr("x", 0)
-            .attr("height", 100)
-            .attr("width", 1000)
-            .attr('opacity',0.25)
-            .attr('fill', 'rgb(70,173,0)');
+        setTimeout(function() {
 
-          rangepicker.range = {
-            "from":"2014-04-10T04:01:00.000Z",
-            "to":"2015-04-01T20:42:00.000Z"
-          };
+       
+          var chart = document.getElementById('chartCustom'),
+              rangepicker = document.getElementById('rangepicker'),
+              btnSnap = document.getElementById('btnSnap'),
+              timeSerie = document.getElementById('timeSerie');
 
-          btnSnap.addEventListener('click', function() {
-            timeSerie.getCombinedImage(function(result) {
-              window.open().location = result.image;
+            chart.svg.append('rect')
+              .attr("y", 200)
+              .attr("x", 0)
+              .attr("height", 100)
+              .attr("width", 1000)
+              .attr('opacity',0.25)
+              .attr('fill', 'rgb(70,173,0)');
+
+            rangepicker.range = {
+              "from":"2014-04-10T04:01:00.000Z",
+              "to":"2015-04-01T20:42:00.000Z"
+            };
+
+            btnSnap.addEventListener('click', function() {
+              timeSerie.getCombinedImage(function(result) {
+                window.open().location = result.image;
+              });
             });
-          });
+          }, 500);
       });
     </script>
     </body>
