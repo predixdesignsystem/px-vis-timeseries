@@ -40,7 +40,6 @@
             "width": "1000",
             "height": "500",
             "enableTooltip":true,
-            "registerLocation":"both",
             "eventConfig": {
               "Recalibrate":{
                 "color": "blue",
@@ -69,15 +68,18 @@
               { "for":"", "type":"quartile", "value":17 }
             ],
             "showThresholdBox":false,
-            "selectionType": "xAxis",
-            "xAxisConfig": {
-              "title": "Date",
-              "tickFormat": "%b %d"
-            },
-            "yAxisConfig": {
-              "title": "Hz"
-            }
+            "selectionType": "xAxis"
           }'
+          x-axis-config= '{
+            "title": "Date",
+            "tickFormat": "%b %d"
+          }'
+          y-axis-config= '{
+            "title": "Hz"
+          }'
+          register-config='{
+              "height": 50,
+              "type": "vertical"}'
           series-config='[[seriesConfig]]'
           default-series-config='{
               "type": "line",
@@ -133,6 +135,9 @@
           include-all-series
           selection-type= "xy"
           chart-data="[[chartData2]]"
+          register-config='{
+              "height": 50,
+              "type": "horizontal"}'
           x-axis-config='{
             "title": "Date"
           }'
@@ -161,6 +166,9 @@
           render-to-canvas
           selection-type= "xy"
           chart-data="[[chartData2]]"
+          register-config='{
+              "height": 50,
+              "type": "horizontal"}'
           x-axis-config='{
             "title": "Date"
           }'

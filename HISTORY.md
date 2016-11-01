@@ -1,3 +1,7 @@
+v1.0.0
+==================
+* removed registerLocation in favor of hideRegister and registerConfig
+
 v0.4.4
 ==================
 * Update dependencies

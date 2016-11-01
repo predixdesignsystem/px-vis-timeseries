@@ -41,25 +41,51 @@ Creates an interactive timeseries chart
   <template>
     <style include="px-vis-timeseries-styles"></style>
     <style include="px-theme-styles"></style>
-    <div id="wrapper" class="flex--row u-m safariFlex safariFlexDirectionRow flex wrapper" >
-      <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
-        <div
-        class="inline--flex flex--col" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;"
-        on-mousemove="_calcMousePos">
-          <template is="dom-if" if="[[_topRegister(registerLocation)]]">
-            <px-vis-register
-              id="topRegister"
-              height="50"
-              units="[[units]]"
+    <div id="wrapper" class="u-m flex wrapper" >
+        <!--[chart + navigator] + register-->
+        <div class$="{{_registerWrapperClass}}" on-mousemove="_calcMousePos">
+          <px-vis-register
+            id="register"
+            class$="{{_getHideClass(hideRegister)}}"
+            units="[[units]]"
+            tooltip-data="[[tooltipData]]"
+            chart-data="[[chartData]]"
+            complete-series-config="[[completeSeriesConfig]]"
+            muted-series={{mutedSeries}}
+            type="{{_registerType}}"
+            x-axis-type="time">
+          </px-vis-register>
+          <!-- chart + navigator -->
+          <div class="flex--col">
+            <px-vis-svg-canvas
+              class="inline--flex flex__item"
               width="[[width]]"
-              type="horizontal"
-              tooltip-data=[[tooltipData]]
-              muted-series="[[mutedSeries]]"
-              complete-series-config="[[completeSeriesConfig]]"
-              chart-data="[[chartData]]"
-              x-axis-type="time">
-            </px-vis-register>
-          </template>
+              height="[[height]]"
+              margin="[[margin]]">
+            </px-vis-svg-canvas>
+            <template is="dom-if" if="[[!disableNavigator]]">
+              <div class="flex__item" style="height:100px">
+                <px-vis-chart-navigator
+                  id="navigator"
+                  x-axis-type="time"
+                  y-axis-type="linear"
+                  width="[[width]]"
+                  height="100"
+                  margin="[[marginNav]]"
+                  default-series-config="[[defaultSeriesConfig]]"
+                  series-config="[[seriesConfig]]"
+                  include-all-series="[[includeAllSeries]]"
+                  chart-data="[[chartData]]"
+                  nav-series-limit="[[navSeriesLimit]]"
+                  chart-domain-x="[[currentDomainX]]"
+                  chart-domain-y="[[currentDomainY]]"
+                  range="[[range]]"
+                  disable-empty-render
+                  prevent-resize="[[preventResize]]">
+                </px-vis-chart-navigator>
+              </div>
+            </template>
+          </div>
           <template is="dom-if" if="[[enableTooltip]]">
             <px-vis-tooltip
               hover-target=[[mouseRect]]
@@ -74,48 +100,7 @@ Creates an interactive timeseries chart
               muted-series="[[mutedSeries]]">
             </px-vis-tooltip>
           </template>
-          <px-vis-svg-canvas
-            class="inline--flex"
-            width="[[width]]"
-            height="[[height]]"
-            margin="[[margin]]">
-          </px-vis-svg-canvas>
-
-          <template is="dom-if" if="[[!disableNavigator]]">
-            <div style="height:100px">
-              <px-vis-chart-navigator
-                id="navigator"
-                x-axis-type="time"
-                y-axis-type="linear"
-                width="[[width]]"
-                margin="[[marginNav]]"
-                default-series-config="[[defaultSeriesConfig]]"
-                series-config="[[seriesConfig]]"
-                include-all-series="[[includeAllSeries]]"
-                chart-data="[[chartData]]"
-                nav-series-limit="[[navSeriesLimit]]"
-                chart-domain-x="[[currentDomainX]]"
-                chart-domain-y="[[currentDomainY]]"
-                range="[[range]]"
-                disable-empty-render>
-              </px-vis-chart-navigator>
-            </div>
-          </template>
-        </div> <!-- flex row -->
-
-      <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
-        <px-vis-register
-          id="sideRegister"
-          height="[[height]]"
-          width="250"
-          units="[[units]]"
-          complete-series-config="[[completeSeriesConfig]]"
-          tooltip-data=[[tooltipData]]
-          muted-series="[[mutedSeries]]"
-          chart-data="[[chartData]]"
-          x-axis-type="time">
-        </px-vis-register>
-      </template>
+        </div>
     </div>
 
     <px-vis-zoom
@@ -339,7 +324,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorChart.saveImage,
           PxVisBehaviorD3.domainUpdate,
           PxVisBehaviorChart.subConfiguration,
-          PxVisBehavior.progressiveRendering
+          PxVisBehavior.progressiveRendering,
+          PxVisBehaviorChart.registerPositioning 
         ],
 
         /**
@@ -411,21 +397,6 @@ Creates an interactive timeseries chart
           marginNav:{
             type:Object,
             value: { top: 5, right: 5, bottom: 5, left: 5},
-          },
-          /**
-           * Defines where the register will appear. Valid entries are`:
-           * - 'none'
-           * - 'top'
-           * - 'side'
-           * - 'both'
-           *
-           * @property registerLocation
-           * @type string
-           * @default side
-          */
-          registerLocation:{
-            type:String,
-            value:'side'
           },
           /**
            * Configuration object for the chart. Key is the property name.
@@ -506,6 +477,30 @@ Creates an interactive timeseries chart
             observer: '_yAxisConfigChanged'
           },
           /**
+          * Configuration object used to customize the tooltip.
+          * Please refer to px-vis-tooltip (https://github.com/PredixDev/px-vis) for a list of supported proerties.
+          * Most interesting properties include:
+          * -width
+          * -height
+          *
+          */
+          tooltipConfig: {
+            type: Object,
+            observer: '_tooltipConfigChanged'
+          },
+          /**
+          * Configuration object used to customize the tooltip.
+          * Please refer to px-vis-register (https://github.com/PredixDev/px-vis) for a list of supported properties.
+          * Most interesting properties include:
+          * -width
+          * -height
+          *
+          */
+          registerConfig: {
+            type: Object,
+            observer: '_registerConfigChanged'
+          },
+          /**
            * Flag to not show a navigator in the timeseries. Set to true to disable the navigator. Default false which shows the navigator
            *
            */
@@ -553,7 +548,11 @@ Creates an interactive timeseries chart
         _calcMousePos: function(evt) {
           this.set('mousePosition',[evt.pageX,evt.pageY]);
         },
+        _getWrapperClass: function(_registerWrapperClass) {
+          var classList = _registerWrapperClass + ' flex__item wrapper'
 
+          return classList;
+        },
         /**
          * Cycles through the Configuration object and sets each property. Triggers each components declarative binding
          *
@@ -576,6 +575,12 @@ Creates an interactive timeseries chart
         },
         _yAxisConfigChanged: function(conf) {
           this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
+        },
+        _tooltipConfigChanged: function(conf) {
+          this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
+        },
+        _registerConfigChanged: function(conf) {
+          this._applyConfigToElement(this.registerConfig, this.$.register);
         },
         /**
          * Overwrites default margins based on settings
@@ -619,26 +624,23 @@ Creates an interactive timeseries chart
             return;
           }
           this.debounce('ironresize', function() {
-            if(this.disableNavigator || this.$$('#navigator')){
+            if(this.disableNavigator || this.$$('#navigator')) {
               var wrapperRect = this.$.wrapper.getBoundingClientRect(),
                   navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
+                  registerRect = this.$.register.getBoundingClientRect(),
                   widthDeduct = 0,
                   heightDeduct = 0;
 
-              if(this._topRegister(this.registerLocation)) {
-                var regRect = this.$$('#topRegister').getBoundingClientRect();
-                heightDeduct = regRect.height;
-              }
-
-              if(this._sideRegister(this.registerLocation)) {
-                var regRect = this.$$('#sideRegister').getBoundingClientRect();
-                widthDeduct = regRect.width;
+              if(this.$.register.type === 'horizontal') {
+                heightDeduct += registerRect.height;
+              } else {
+                widthDeduct += registerRect.width;
               }
 
               heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
 
-              this.set('width', wrapperRect.width - widthDeduct);
-              this.set('height', wrapperRect.height - heightDeduct);
+              this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
+              this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
             }
           },50);
         },
