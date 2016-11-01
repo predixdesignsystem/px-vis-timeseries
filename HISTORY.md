@@ -1,3 +1,4 @@
+<<<<<<< 93765f7aa9a92fb8fe7c09a8a3d05724950b6eb8
 v0.5.0
 ==================
 * moved axisConfigs to chart behavior
@@ -14,6 +15,11 @@ v0.4.6
 v0.4.5
 ==================
 * added a second series to demo
+=======
+v1.0.0
+==================
+* removed registerLocation in favor of hideRegister and registerConfig
+>>>>>>> register positioning
 
 v0.4.4
 ==================
