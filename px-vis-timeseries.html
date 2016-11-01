@@ -41,9 +41,9 @@ Creates an interactive timeseries chart
   <template>
     <style include="px-vis-timeseries-styles"></style>
     <style include="px-theme-styles"></style>
-    <div id="wrapper" class="u-m flex wrapper" >
+    <div id="wrapper" class="u-m wrapper" >
         <!--[chart + navigator] + register-->
-        <div class$="{{_registerWrapperClass}}" on-mousemove="_calcMousePos">
+        <div class$="{{_registerWrapperClass}}">
           <px-vis-register
             id="register"
             class$="{{_getHideClass(hideRegister)}}"
@@ -56,9 +56,9 @@ Creates an interactive timeseries chart
             x-axis-type="time">
           </px-vis-register>
           <!-- chart + navigator -->
-          <div class="flex--col">
+          <div class="flex--col flex__item" on-mousemove="_calcMousePos">
             <px-vis-svg-canvas
-              class="inline--flex flex__item"
+              class="flex__item"
               width="[[width]]"
               height="[[height]]"
               margin="[[margin]]">
@@ -86,23 +86,23 @@ Creates an interactive timeseries chart
               </div>
             </template>
           </div>
-          <template is="dom-if" if="[[enableTooltip]]">
-            <px-vis-tooltip
-              hover-target=[[mouseRect]]
-              mouse-position="[[mousePosition]]"
-              width="250"
-              margin="[[margin]]"
-              chart-data="[[chartData]]"
-              tooltip-data="[[tooltipData]]"
-              complete-series-config="[[completeSeriesConfig]]"
-              x-axis-type="time"
-              tooltip-style="light"
-              muted-series="[[mutedSeries]]">
-            </px-vis-tooltip>
-          </template>
         </div>
     </div>
 
+    <template is="dom-if" if="[[showTooltip]]">
+      <px-vis-tooltip
+        hover-target=[[mouseRect]]
+        mouse-position="[[mousePosition]]"
+        width="250"
+        margin="[[margin]]"
+        chart-data="[[chartData]]"
+        tooltip-data="[[tooltipData]]"
+        complete-series-config="[[completeSeriesConfig]]"
+        x-axis-type="time"
+        tooltip-style="light"
+        muted-series="[[mutedSeries]]">
+      </px-vis-tooltip>
+    </template>
     <px-vis-zoom
       margin="[[margin]]"
       extents-data="[[extentsData]]"
@@ -325,7 +325,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorD3.domainUpdate,
           PxVisBehaviorChart.subConfiguration,
           PxVisBehavior.progressiveRendering,
-          PxVisBehaviorChart.registerPositioning 
+          PxVisBehaviorChart.registerPositioning,
+          PxVisBehaviorChart.chartAutoResize
         ],
 
         /**
@@ -434,24 +435,12 @@ Creates an interactive timeseries chart
             notify: true
           },
           /**
-           * Boolean to turn the on-chart tooltip on or off
-           *
-           * @property enableTooltip
-           * @type Boolean
-           */
-          enableTooltip: {
+            *
+            * Allows to show the tooltip
+            */
+          showTooltip: {
             type: Boolean,
             notify: true,
-            value: false
-          },
-          /**
-           * Boolean to enable or disable auto-resizing
-           *
-           * @property preventResize
-           * @type Boolean
-           */
-          preventResize: {
-            type: Boolean,
             value: false
           },
           pxSvgElem : {
