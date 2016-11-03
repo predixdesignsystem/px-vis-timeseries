@@ -4,6 +4,14 @@ v1.0.0
 * allowed to split out the config options into smaller objects: registerConfig, tooltipConfig, eventConfig
 * renamed enableTooltip to showTooltip for framework consistency
 
+v0.4.6
+==================
+* added seriesKey to interaction space for no data scenarios
+
+v0.4.5
+==================
+* added a second series to demo
+
 v0.4.4
 ==================
 * Update dependencies

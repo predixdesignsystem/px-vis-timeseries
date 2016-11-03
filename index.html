@@ -116,7 +116,7 @@
                       chart-data="{{item.chartData}}">
                     </px-vis-timeseries>
                   </template>
-                  <!-- <template is="dom-if" if="{{isOption2(index)}}" restamp>
+                  <!-- <template is="dom-if" if="{{isOption1(index)}}" restamp>
                     <px-vis-timeseries
                       width="{{item.width}}"
                       height="{{item.height}}"
@@ -193,7 +193,14 @@
 window.addEventListener('WebComponentsReady', function() {
 
   var template = document.querySelector('template[is=dom-bind]');
-  var  chartData1 = [{"x": 1465416480000, "y": "0"}, {"x": 1465416540000, "y": "0.897277832"}, {"x": 1465416600000, "y": "1"}, {"x": 1465416660000, "y": "2"}, {"x": 1465416720000, "y": "1"}, {"x": 1465416780000, "y": "0.897697449"}, {"x": 1465416840000, "y": "0.897796631"}],
+  var  chartData1 = [
+        {"x": 1397177400000, "y0": "0.0",   "y1": "2.0"},
+        {"x": 1397228040000, "y0": "0.897", "y1": "2.5"},
+        {"x": 1397248260000, "y0": "1.0",   "y1": "3.5"},
+        {"x": 1397291280000, "y0": "2.0",   "y1": "1.5"},
+        {"x": 1397318100000, "y0": "1.5",   "y1": "0.5"},
+        {"x": 1397342100000, "y0": "3.0",   "y1": "2.0"},
+        {"x": 1397390820000, "y0": "0.897", "y1": "1.5"}],
       optionsArray = [
         {
           "height":300,
@@ -225,7 +232,7 @@ window.addEventListener('WebComponentsReady', function() {
     template.optionsArray = optionsArray;
     template.indexPlusOne = indexPlusOne;
     template.scriptsIncludes = ['https://cdn.rawgit.com/foretagsplatsen/numbro/1.7.1/numbro.js'];
-    template.linksIncludes = ['px-vis/px-polygit-imports-vis.html', 'numbro-element/numbro-element.html'];
+    template.linksIncludes = ['px-vis/px-polygit-imports-vis.html', 'px-datetime-common/px-polygit-imports-datetime.html', 'numbro-element/numbro-element.html'];
     template.polygitIncludes = ['numbro*+MeTaNoV+*'];
     template.chartData = chartData1;
     template.isOption1 = function(index) {
