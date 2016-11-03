@@ -41,7 +41,7 @@ Creates an interactive timeseries chart
   <template>
     <style include="px-vis-timeseries-styles"></style>
     <style include="px-theme-styles"></style>
-    <div id="wrapper" class="u-m wrapper" >
+    <div id="wrapper" class$="{{_chartWrapperClass}}" >
         <!--[chart + navigator] + register-->
         <div class$="{{_registerWrapperClass}}">
           <px-vis-register
