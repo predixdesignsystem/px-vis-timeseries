@@ -98,6 +98,30 @@
                   </px-dropdown>
                 </div>
               </div>
+              <div class="u-mb-">Horizontal Alignment:
+                <div style="width: 100%;">
+                  <px-dropdown id="showSelectionType" value="{{item.chartHorizontalAlignment}}" display-value="{{item.chartHorizontalAlignment}}" bound-target="properties">
+                    <px-dropdown-content
+                      items='[
+                        {"key":"one", "val": "left"},
+                        {"key":"two", "val": "center"},
+                        {"key":"three", "val": "right"}]'>
+                    </px-dropdown-content>
+                  </px-dropdown>
+                </div>
+              </div>
+              <div class="u-mb-">Vertical Alignment:
+                <div style="width: 100%;">
+                  <px-dropdown id="showSelectionType" value="{{item.chartVerticalAlignment}}" display-value="{{item.chartVerticalAlignment}}" bound-target="properties">
+                    <px-dropdown-content
+                      items='[
+                        {"key":"one", "val": "top"},
+                        {"key":"two", "val": "center"},
+                        {"key":"three", "val": "bottom"}]'>
+                    </px-dropdown-content>
+                  </px-dropdown>
+                </div>
+              </div>
             </div>
 
             <div class="demoContainer clearfix u-mt+">
@@ -111,6 +135,8 @@
                       prevent-resize = "{{item.preventResize}}"
                       show-tooltip = "{{item.showTooltip}}"
                       register-location = "{{item.registerLocation}}"
+                      chart-horizontal-alignment = "{{item.chartHorizontalAlignment}}"
+                      chart-vertical-alignment = "{{item.chartVerticalAlignment}}"
                       include-all-series
                       selection-type= "{{item.selectionType}}"
                       chart-data="{{item.chartData}}">
@@ -210,7 +236,9 @@ window.addEventListener('WebComponentsReady', function() {
           "showTooltip":false,
           "registerLocation":"top",
           "chartData":chartData1,
-          "includeAllSeries": true
+          "includeAllSeries": true,
+          "chartHorizontalAlignment": "center",
+          "chartVerticalAlignment": "center",
         }
         // {
         //   "height":300,
