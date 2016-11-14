@@ -3,6 +3,7 @@ v1.0.0
 * removed registerLocation in favor of hideRegister and registerConfig
 * allowed to split out the config options into smaller objects: registerConfig, tooltipConfig, eventConfig
 * renamed enableTooltip to showTooltip for framework consistency
+* fixed bug where tooltipConfig wasn't applied
 
 v0.4.6
 ==================
