@@ -89,7 +89,7 @@ Creates an interactive timeseries chart
         </div>
     </div>
 
-    <template is="dom-if" if="[[showTooltip]]">
+    <template id="tooltipTemplate" is="dom-if" if="[[showTooltip]]">
       <px-vis-tooltip
         hover-target=[[mouseRect]]
         mouse-position="[[mousePosition]]"
@@ -442,7 +442,8 @@ Creates an interactive timeseries chart
           showTooltip: {
             type: Boolean,
             notify: true,
-            value: false
+            value: false,
+            observer: '_showTooltipChanged'
           },
           pxSvgElem : {
             type: Object,
@@ -567,7 +568,9 @@ Creates an interactive timeseries chart
           this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
         },
         _tooltipConfigChanged: function(conf) {
-          this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
+          if(this.$$('px-vis-tooltip')) {
+            this._applyConfigToElement(this.tooltipConfig, this.$$('px-vis-tooltip'));
+          }
         },
         _registerConfigChanged: function(conf) {
           this._applyConfigToElement(this.registerConfig, this.$.register);
@@ -654,6 +657,15 @@ Creates an interactive timeseries chart
               }.bind(this));
             }
           }.bind(this));
+        },
+        _showTooltipChanged: function() {
+
+          //make sure the dom if is processed....
+          this.$.tooltipTemplate.render();
+
+          if(this.showTooltip && this.tooltipConfig) {
+            this._tooltipConfigChanged();
+          }
         }
     });
 </script>
