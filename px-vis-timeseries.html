@@ -190,6 +190,7 @@ Creates an interactive timeseries chart
         x="[[x]]"
         y="[[y]]"
         event-config="[[eventConfig]]"
+        domain-changed="[[domainChanged]]"
         current-domain-x="[[currentDomainX]]"
         current-domain-y="[[currentDomainY]]"
         clip-path="[[clipPath]]">
@@ -199,7 +200,9 @@ Creates an interactive timeseries chart
     <px-vis-threshold
       svg="[[svg]]"
       complete-series-config="[[completeSeriesConfig]]"
-      chart-data="[[thresholdData]]"
+      threshold-data="[[thresholdData]]"
+      display-title="[[displayThresholdTitle]]"
+      threshold-config="[[thresholdConfig]]"
       x="[[x]]"
       y="[[y]]"
       current-domain-x="[[currentDomainX]]"
@@ -327,7 +330,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorChart.subConfiguration,
           PxVisBehavior.progressiveRendering,
           PxVisBehaviorChart.registerPositioning,
-          PxVisBehaviorChart.chartAutoResize
+          PxVisBehaviorChart.chartAutoResize,
+          PxVisBehavior.thresholds
         ],
 
         /**
@@ -351,15 +355,6 @@ Creates an interactive timeseries chart
            * @type Array
            */
           events:{
-            type:Array
-          },
-          /**
-           *
-           *
-           *
-           * @type Array
-           */
-          thresholds:{
             type:Array
           },
           /**
@@ -410,18 +405,6 @@ Creates an interactive timeseries chart
             type:Object,
             notify:true,
             observer:'_setConfig'
-          },
-          /**
-           * container for the data object that drives the thresholds
-           * Generally loaded with an iron-ajax tag (but doesnt have to be)
-           * This can be set declaratively
-           *
-           * @property thresholdData
-           * @type Object
-           */
-          thresholdData:{
-            type: Array,
-            notify: true
           },
           /**
            * container for the data object that drives the events
@@ -518,6 +501,10 @@ Creates an interactive timeseries chart
            * Whether to hide the gridlines perpendicular to the Y axis
            */
           hideGridlinesY: {
+            type: Boolean,
+            value: false
+          },
+          displayThresholdTitle: {
             type: Boolean,
             value: false
           }
