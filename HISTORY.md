@@ -1,3 +1,8 @@
+
+v0.4.7
+==================
+* bower updating px-demo-snippet
+
 v0.4.6
 ==================
 * added seriesKey to interaction space for no data scenarios
