@@ -23,7 +23,18 @@
 
   <body>
     <h3>Web Component Test : Fixture for px-vis-timeseries</h3>
-    <px-vis-timeseries id="configFile" prevent-resize></px-vis-timeseries>
-    <px-vis-timeseries id="margin"  prevent-resize></px-vis-timeseries>
+    <div>
+      <px-vis-timeseries
+        id="IASChart"
+        prevent-resize
+        include-all-series>
+      </px-vis-timeseries>
+    </div>
+    <div>
+      <px-vis-timeseries id="configFile" prevent-resize></px-vis-timeseries>
+    </div>
+    <div>
+      <px-vis-timeseries id="margin"  prevent-resize></px-vis-timeseries>
+    </div>
   </body>
 </html>

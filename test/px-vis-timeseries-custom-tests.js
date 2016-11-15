@@ -108,4 +108,148 @@ function runCustomTests() {
     });
   });
 
+
+  suite('px-vis-timeseries includeAllSeries setup works', function() {
+    var IASChart = document.getElementById('IASChart');
+    var colors = commonColors.properties.colors.value;
+    var colorOrder = commonColors.properties.seriesColorOrder.value;
+    var colorSet = commonColors.properties.dataVisColors.value;
+
+    suiteSetup(function(done){
+      var d = [{
+            "x": 1397102460000,
+            "y": 1,
+            "y1": 1
+          },{
+            "x": 1397131620000,
+            "y": 6,
+            "y1": 15
+          },{
+            "x": 1397160780000,
+            "y": 10,
+            "y1": 8
+          },{
+            "x": 1397189940000,
+            "y": 4,
+            "y1": 10
+          },{
+            "x": 1397219100000,
+            "y": 6,
+            "y1": 20
+          }
+        ],
+        m = {
+          "top": 10,
+          "bottom": 10,
+          "left": 50,
+          "right": 10
+        }
+
+      IASChart.set('width',500);
+      IASChart.set('height',400);
+      IASChart.set('margin',m);
+      IASChart.set('chartData',d);
+
+      setTimeout(function(){done()}, 500);
+    });
+
+    test('IASChart fixture is created', function() {
+      assert.isTrue(IASChart !== null);
+    });
+
+    test('IASChart completeSeriesConfig', function() {
+      assert.isObject(IASChart.completeSeriesConfig.y);
+      assert.equal(IASChart.completeSeriesConfig.y.color, colorSet[colorOrder[0]]);
+      assert.equal(IASChart.completeSeriesConfig.y.name, 'y');
+      assert.deepEqual(IASChart.completeSeriesConfig.y.x, 'x');
+      assert.deepEqual(IASChart.completeSeriesConfig.y.y, 'y');
+
+      assert.isObject(IASChart.completeSeriesConfig.y1);
+      assert.equal(IASChart.completeSeriesConfig.y1.color, colorSet[colorOrder[1]]);
+      assert.equal(IASChart.completeSeriesConfig.y1.name, 'y1');
+      assert.deepEqual(IASChart.completeSeriesConfig.y1.x, 'x');
+      assert.deepEqual(IASChart.completeSeriesConfig.y1.y, 'y1');
+    });
+
+    test('IASChart svg', function() {
+      var re = /translate\((\d+)\s?,?(\d*)\)/,
+          translate = re.exec(IASChart.svg.attr('transform'));
+
+      assert.equal(IASChart.svg.node().tagName, 'g');
+      assert.equal(translate[1], 50);
+      assert.equal(translate[2], 10);
+    });
+
+    test('IASChart pxSvgElem', function() {
+      assert.equal(IASChart.pxSvgElem.tagName, 'svg');
+      assert.equal(IASChart.pxSvgElem.width.baseVal.value, 500);
+      assert.equal(IASChart.pxSvgElem.height.baseVal.value, 400);
+    });
+
+    test('IASChart canvasContext', function() {
+      assert.deepEqual(IASChart.canvasContext._translation, [50,10]);
+      assert.equal(IASChart.canvasContext._pxLinesRedraw, 0);
+      assert.equal(IASChart.canvasContext._pxLinesTotal, 0);
+      assert.deepEqual(IASChart.canvasContext._pxLinesSeries, {});
+      assert.equal(IASChart.canvasContext.canvas.width, 500);
+      assert.equal(IASChart.canvasContext.canvas.height, 400);
+    });
+
+    test('IASChart x', function() {
+      assert.deepEqual(IASChart.x.range(), [0,440]);
+      assert.equal(Number(IASChart.x.domain()[0]), 1397102460000);
+      assert.equal(Number(IASChart.x.domain()[1]), 1397219100000);
+    });
+
+    test('IASChart y', function() {
+      assert.deepEqual(IASChart.y.range(), [380,0]);
+      assert.deepEqual(IASChart.y.domain(), [0,20]);
+    });
+
+    test('IASChart mutedSeries', function() {
+      assert.deepEqual(IASChart.mutedSeries, {});
+    });
+
+    test('IASChart tooltipData', function() {
+      var ttD = {
+        "mouse": null,
+        "time": null,
+        "xArr": null,
+        "yArr": null,
+        "series": [{
+          "name": "y",
+          "value": null
+        },{
+          "name": "y1",
+          "value": null
+        }]
+      }
+      assert.deepEqual(IASChart.tooltipData, ttD);
+    });
+
+    test('IASChart extentsData', function() {
+      assert.isUndefined(IASChart.extentsData);
+    });
+
+    test('IASChart selectedDomain', function() {
+      assert.deepEqual(IASChart.selectedDomain, {"x":IASChart.currentDomainX,"y":[]});
+    });
+
+    test('IASChart _seriesKeys', function() {
+      assert.deepEqual(IASChart._seriesKeys, ['y','y1']);
+    });
+
+    test('IASChart seriesClipPath', function() {
+      var cp = document.getElementById(IASChart.seriesClipPath);
+      assert.equal(cp.tagName, "clipPath");
+    });
+
+    test('IASChart clipPath', function() {
+      var cp = document.getElementById(IASChart.clipPath);
+      assert.equal(cp.tagName, "clipPath");
+    });
+
+
+  }); //suite
+
 };
