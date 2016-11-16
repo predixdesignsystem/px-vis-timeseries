@@ -1,13 +1,13 @@
 {
     "name": "px-vis-timeseries",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "main": [
         "px-vis-timeseries.html"
     ],
     "ignore": [
         ".*",
         "npm-debug.log",
-        "Gruntfile.js",
+        "gulpfile.js",
         "sass",
         "bower_components",
         "node_modules",

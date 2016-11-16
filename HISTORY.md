@@ -1,3 +1,8 @@
+
+v0.5.1
+==================
+* changing Gruntfile.js to gulpfile.js
+
 v0.5.0
 ==================
 * moved axisConfigs to chart behavior
