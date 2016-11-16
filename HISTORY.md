@@ -5,6 +5,10 @@ v1.0.0
 * renamed enableTooltip to showTooltip for framework consistency
 * fixed bug where tooltipConfig wasn't applied
 
+v0.5.1
+==================
+* changing Gruntfile.js to gulpfile.js
+
 v0.5.0
 ==================
 * moved axisConfigs to chart behavior
