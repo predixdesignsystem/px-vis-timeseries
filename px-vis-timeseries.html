@@ -46,7 +46,7 @@ Creates an interactive timeseries chart
         <div
         class="inline--flex flex--col" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;"
         on-mousemove="_calcMousePos">
-          <template is="dom-if" if="[[_topRegister(registerLocation)]]">
+          <template id="topRegisterTemplate" is="dom-if" if="[[_topRegister(registerLocation)]]">
             <px-vis-register
               id="topRegister"
               height="50"
@@ -60,8 +60,9 @@ Creates an interactive timeseries chart
               x-axis-type="time">
             </px-vis-register>
           </template>
-          <template is="dom-if" if="[[enableTooltip]]">
+          <template id="tooltipTemplate" is="dom-if" if="[[enableTooltip]]">
             <px-vis-tooltip
+              id="tooltip"
               hover-target=[[mouseRect]]
               mouse-position="[[mousePosition]]"
               width="250"
@@ -103,7 +104,7 @@ Creates an interactive timeseries chart
           </template>
         </div> <!-- flex row -->
 
-      <template is="dom-if" if="[[_sideRegister(registerLocation)]]">
+      <template id="sideRegisterTemplate" is="dom-if" if="[[_sideRegister(registerLocation)]]">
         <px-vis-register
           id="sideRegister"
           height="[[height]]"
@@ -340,7 +341,9 @@ Creates an interactive timeseries chart
           PxVisBehaviorChart.saveImage,
           PxVisBehaviorD3.domainUpdate,
           PxVisBehaviorChart.subConfiguration,
-          PxVisBehavior.progressiveRendering
+          PxVisBehavior.progressiveRendering,
+          PxVisBehaviorChart.registerConfigs,
+          PxVisBehaviorChart.axisConfigs
         ],
 
         /**
@@ -489,24 +492,6 @@ Creates an interactive timeseries chart
             value: function() { return {};}
           },
           /**
-           * Configuration object used to customize the X axis cosmetic properties.
-           * Please refer to px-vis-axis (https://github.com/PredixDev/px-vis) for a list of supported proerties
-           *
-           */
-          xAxisConfig: {
-            type: Object,
-            observer: '_xAxisConfigChanged'
-          },
-          /**
-           * Configuration object used to customize the Y axis cosmetic properties.
-           * Please refer to px-vis-axis (https://github.com/PredixDev/px-vis) for a list of supported proerties
-           *
-           */
-          yAxisConfig: {
-            type: Object,
-            observer: '_yAxisConfigChanged'
-          },
-          /**
            * Flag to not show a navigator in the timeseries. Set to true to disable the navigator. Default false which shows the navigator
            *
            */
@@ -538,9 +523,11 @@ Creates an interactive timeseries chart
           }
         },
 
-        observer: [
+        observers: [
           '_xAxisConfigChanged(xAxisConfig.*)',
-          '_yAxisConfigChanged(yAxisConfig.*)'
+          '_yAxisConfigChanged(yAxisConfig.*)',
+          '_tooltipConfigChanged(tooltipConfig.*, enableTooltip)',
+          '_registerConfigChanged(registerConfig.*, registerLocation)'
         ],
 
         listeners: {
@@ -577,6 +564,31 @@ Creates an interactive timeseries chart
         },
         _yAxisConfigChanged: function(conf) {
           this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
+        },
+        _tooltipConfigChanged: function(conf) {
+          if(this.$$('#tooltip')) {
+            this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
+          } else if(!this.$$('#tooltip') && this.enableTooltip) {
+            this.$.tooltipTemplate.render();
+            this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
+          }
+        },
+        _registerConfigChanged: function(conf) {
+
+          if(this.$$('#topRegister')) {
+            this._applyConfigToElement(this.registerConfig, this.$$('#topRegister'));
+          } else if(!this.$$('#topRegister') && (this.registerLocation === 'top' || this.registerLocation === 'both')) {
+            this.$.topRegisterTemplate.render();
+            this._applyConfigToElement(this.registerConfig, this.$$('#topRegister'));
+          }
+
+          if(this.$$('#sideRegister')) {
+            this._applyConfigToElement(this.registerConfig, this.$$('#sideRegister'));
+          } else if(!this.$$('#sideRegister') && (this.registerLocation === 'side' || this.registerLocation === 'both')) {
+            this.$.sideRegisterTemplate.render();
+            this._applyConfigToElement(this.registerConfig, this.$$('#sideRegister'));
+          }
+
         },
         /**
          * Overwrites default margins based on settings
@@ -638,8 +650,8 @@ Creates an interactive timeseries chart
 
               heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
 
-              this.set('width', wrapperRect.width - widthDeduct);
-              this.set('height', wrapperRect.height - heightDeduct);
+              this.set('width', Math.max(wrapperRect.width - widthDeduct,0));
+              this.set('height', Math.max(wrapperRect.height - heightDeduct,0));
             }
           },50);
         },

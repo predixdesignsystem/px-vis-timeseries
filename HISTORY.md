@@ -1,3 +1,7 @@
+v0.5.0
+==================
+* moved axisConfigs to chart behavior
+* added ability to set register and tooltip via configs
 
 v0.4.7
 ==================
