@@ -248,8 +248,160 @@ function runCustomTests() {
       var cp = document.getElementById(IASChart.clipPath);
       assert.equal(cp.tagName, "clipPath");
     });
+  }); //suite
 
+  suite('px-vis-timeseries config setup works', function() {
+    var configChart = document.getElementById('configChart');
+    var colors = commonColors.properties.colors.value;
+    var colorOrder = commonColors.properties.seriesColorOrder.value;
+    var colorSet = commonColors.properties.dataVisColors.value;
 
+    suiteSetup(function(done){
+      var d = [{
+            "x": 1397102460000,
+            "y": 1,
+            "y1": 1
+          },{
+            "x": 1397131620000,
+            "y": 6,
+            "y1": 15
+          },{
+            "x": 1397160780000,
+            "y": 10,
+            "y1": 8
+          },{
+            "x": 1397189940000,
+            "y": 4,
+            "y1": 10
+          },{
+            "x": 1397219100000,
+            "y": 6,
+            "y1": 20
+          }
+        ],
+        m = {
+          "top": 10,
+          "bottom": 10,
+          "left": 50,
+          "right": 10
+        },
+        config = {
+          'config1': {
+            "name": "Series 1",
+            "x": "x",
+            "y": "y"
+          },
+          'config2': {
+            "name": "Series 2",
+            "x": "x",
+            "y": "y1"
+          }
+        }
+
+      configChart.set('width',500);
+      configChart.set('height',400);
+      configChart.set('margin',m);
+      configChart.set('seriesConfig',config);
+      configChart.set('chartData',d);
+
+      setTimeout(function(){done()}, 500);
+    });
+
+    test('configChart fixture is created', function() {
+      assert.isTrue(configChart !== null);
+    });
+
+    test('configChart completeSeriesConfig', function() {
+      assert.isObject(configChart.completeSeriesConfig.config1);
+      assert.equal(configChart.completeSeriesConfig.config1.color, colorSet[colorOrder[0]]);
+      assert.equal(configChart.completeSeriesConfig.config1.name, 'Series 1');
+      assert.deepEqual(configChart.completeSeriesConfig.config1.x, 'x');
+      assert.deepEqual(configChart.completeSeriesConfig.config1.y, 'y');
+
+      assert.isObject(configChart.completeSeriesConfig.config2);
+      assert.equal(configChart.completeSeriesConfig.config2.color, colorSet[colorOrder[1]]);
+      assert.equal(configChart.completeSeriesConfig.config2.name, 'Series 2');
+      assert.deepEqual(configChart.completeSeriesConfig.config2.x, 'x');
+      assert.deepEqual(configChart.completeSeriesConfig.config2.y, 'y1');
+    });
+
+    test('configChart svg', function() {
+      var re = /translate\((\d+)\s?,?(\d*)\)/,
+          translate = re.exec(configChart.svg.attr('transform'));
+
+      assert.equal(configChart.svg.node().tagName, 'g');
+      assert.equal(translate[1], 50);
+      assert.equal(translate[2], 10);
+    });
+
+    test('configChart pxSvgElem', function() {
+      assert.equal(configChart.pxSvgElem.tagName, 'svg');
+      assert.equal(configChart.pxSvgElem.width.baseVal.value, 500);
+      assert.equal(configChart.pxSvgElem.height.baseVal.value, 400);
+    });
+
+    test('configChart canvasContext', function() {
+      assert.deepEqual(configChart.canvasContext._translation, [50,10]);
+      assert.equal(configChart.canvasContext._pxLinesRedraw, 0);
+      assert.equal(configChart.canvasContext._pxLinesTotal, 0);
+      assert.deepEqual(configChart.canvasContext._pxLinesSeries, {});
+      assert.equal(configChart.canvasContext.canvas.width, 500);
+      assert.equal(configChart.canvasContext.canvas.height, 400);
+    });
+
+    test('configChart x', function() {
+      assert.deepEqual(configChart.x.range(), [0,440]);
+      assert.equal(Number(configChart.x.domain()[0]), 1397102460000);
+      assert.equal(Number(configChart.x.domain()[1]), 1397219100000);
+    });
+
+    test('configChart y', function() {
+      assert.deepEqual(configChart.y.range(), [380,0]);
+      assert.deepEqual(configChart.y.domain(), [0,20]);
+    });
+
+    test('configChart mutedSeries', function() {
+      assert.deepEqual(configChart.mutedSeries, {});
+    });
+
+    test('configChart tooltipData', function() {
+      var ttD = {
+        "mouse": null,
+        "time": null,
+        "xArr": null,
+        "yArr": null,
+        "series": [{
+          "name": "config1",
+          "value": null
+        },{
+          "name": "config2",
+          "value": null
+        }]
+      }
+      assert.deepEqual(configChart.tooltipData, ttD);
+    });
+
+    test('configChart extentsData', function() {
+      assert.isUndefined(configChart.extentsData);
+    });
+
+    test('configChart selectedDomain', function() {
+      assert.deepEqual(configChart.selectedDomain, {"x":configChart.currentDomainX,"y":[]});
+    });
+
+    test('configChart _seriesKeys', function() {
+      assert.deepEqual(configChart._seriesKeys, ['config1','config2']);
+    });
+
+    test('configChart seriesClipPath', function() {
+      var cp = document.getElementById(configChart.seriesClipPath);
+      assert.equal(cp.tagName, "clipPath");
+    });
+
+    test('configChart clipPath', function() {
+      var cp = document.getElementById(configChart.clipPath);
+      assert.equal(cp.tagName, "clipPath");
+    });
   }); //suite
 
 };
