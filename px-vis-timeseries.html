@@ -61,7 +61,10 @@ Creates an interactive timeseries chart
               class="flex__item"
               width="[[width]]"
               height="[[height]]"
-              margin="[[margin]]">
+              margin="[[margin]]"
+              canvas-context="{{canvasContext}}"
+              svg="{{svg}}"
+              px-svg-elem="{{pxSvgElem}}">
             </px-vis-svg-canvas>
             <template is="dom-if" if="[[!disableNavigator]]">
               <div class="flex__item" style="height:100px">
@@ -107,7 +110,8 @@ Creates an interactive timeseries chart
     <px-vis-zoom
       margin="[[margin]]"
       extents-data="[[extentsData]]"
-      px-svg-elem=[[pxSvgElem]]>
+      px-svg-elem=[[pxSvgElem]]
+      selected-domain="{{selectedDomain}}">
     </px-vis-zoom>
     <px-vis-scale
       x-axis-type="time"
@@ -118,7 +122,12 @@ Creates an interactive timeseries chart
       chart-data="[[chartData]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-extents="[[chartExtents]]"
-      selected-domain="[[selectedDomain]]">
+      selected-domain="[[selectedDomain]]"
+      x="{{x}}"
+      y="{{y}}"
+      current-domain-x="{{currentDomainX}}"
+      current-domain-y="{{currentDomainY}}"
+      domain-changed="{{domainChanged}}">
     </px-vis-scale>
     <px-vis-clip-path
       svg="[[svg]]"
@@ -126,7 +135,9 @@ Creates an interactive timeseries chart
       y="[[y]]"
       width="[[width]]"
       height="[[height]]"
-      margin="[[margin]]">
+      margin="[[margin]]"
+      clip-path="{{clipPath}}"
+      series-clip-path="{{seriesClipPath}}">
     </px-vis-clip-path>
 
     <template is="dom-repeat" items="[[_seriesKeys]]">
@@ -278,7 +289,11 @@ Creates an interactive timeseries chart
       y="[[y]]"
       current-domain-x="[[currentDomainX]]"
       current-domain-y="[[currentDomainY]]"
-      selection-type=[[selectionType]]>
+      selection-type=[[selectionType]]
+      mouse-rect="{{mouseRect}}"
+      tooltip-data="{{tooltipData}}"
+      interaction-svg="{{interactionSvg}}"
+      extents-data="{{extentsData}}">
     </px-vis-interaction-space>
 
     <px-vis-cursor
@@ -297,328 +312,331 @@ Creates an interactive timeseries chart
 </dom-module>
 
 <script>
-    Polymer({
+  Polymer({
 
-        is: 'px-vis-timeseries',
+    is: 'px-vis-timeseries',
 
-        behaviors: [
-          PxVisBehavior.sizing,
-          PxVisBehavior.formatting,
-          PxVisBehavior.dataset,
-          PxVisBehavior.completeSeriesConfig,
-          PxVisBehavior.muteUnmuteSeries,
-          PxVisBehavior.tooltipData,
-          PxVisBehavior.extentsData,
-          PxVisBehavior.commonMethods,
-          PxVisBehavior.axisTypes,
-          PxVisBehavior.zoomSelection,
-          PxVisBehavior.chartExtents,
-          PxVisBehavior.events,
-          PxVisBehaviorTime.datetime,
-          PxVisBehaviorD3.svg,
-          PxVisBehaviorD3.canvas,
-          PxVisBehaviorD3.axes,
-          PxVisBehaviorD3.axis,
-          PxVisBehaviorD3.selectedTimeDomain,
-          PxVisBehaviorD3.interaction,
-          PxVisBehaviorD3.clipPath,
-          PxVisBehaviorD3.axisConfig,
-          PxVisBehaviorChart.chartCommon,
-          PxVisBehaviorChart.precipitationPattern,
-          Polymer.IronResizableBehavior,
-          PxVisBehaviorChart.saveImage,
-          PxVisBehaviorD3.domainUpdate,
-          PxVisBehaviorChart.subConfiguration,
-          PxVisBehavior.progressiveRendering,
-          PxVisBehaviorChart.registerConfigs,
-          PxVisBehaviorChart.axisConfigs,
-          PxVisBehaviorChart.registerPositioning,
-          PxVisBehaviorChart.chartAutoResize,
-          PxVisBehavior.thresholds
-        ],
+    behaviors: [
+      PxVisBehavior.sizing,
+      PxVisBehavior.formatting,
+      PxVisBehavior.dataset,
+      PxVisBehavior.completeSeriesConfig,
+      PxVisBehavior.muteUnmuteSeries,
+      PxVisBehavior.tooltipData,
+      PxVisBehavior.extentsData,
+      PxVisBehavior.commonMethods,
+      PxVisBehavior.axisTypes,
+      PxVisBehavior.zoomSelection,
+      PxVisBehavior.chartExtents,
+      PxVisBehavior.events,
+      PxVisBehaviorTime.datetime,
+      PxVisBehaviorD3.svg,
+      PxVisBehaviorD3.canvas,
+      PxVisBehaviorD3.axes,
+      PxVisBehaviorD3.axis,
+      PxVisBehaviorD3.selectedTimeDomain,
+      PxVisBehaviorD3.interaction,
+      PxVisBehaviorD3.clipPath,
+      PxVisBehaviorD3.axisConfig,
+      PxVisBehaviorChart.chartCommon,
+      Polymer.IronResizableBehavior,
+      PxVisBehaviorChart.saveImage,
+      PxVisBehaviorD3.domainUpdate,
+      PxVisBehaviorChart.subConfiguration,
+      PxVisBehavior.progressiveRendering,
+      PxVisBehaviorChart.registerConfigs,
+      PxVisBehaviorChart.axisConfigs,
+      PxVisBehaviorChart.registerPositioning,
+      PxVisBehaviorChart.chartAutoResize,
+      PxVisBehavior.thresholds
+    ],
 
-        /**
-         * Properties block, expose attribute values to the DOM via 'reflect'
-         *
-         * @property properties
-         * @type Object
-         */
-        properties: {
-          /**
-           *
-           *
-           *
-           * @type Array
-           */
-          series:{
-            type:Array
-          },
-          /**
-           *
-           * @type Array
-           */
-          events:{
-            type:Array
-          },
-          /**
-           * Defines where to locate the X-axis.
-           * - `bottom`
-           * - `top`
-           *
-           * @property xAxisLocation
-           * @type String
-           * @default bottom
-           */
-          xAxisLocation:{
-            type:String,
-            value:'bottom'
-          },
-          /**
-           * Defines where to locate the Y-axis.
-           * - `left`
-           * - `right`
-           *
-           * @property yAxisLocation
-           * @type String
-           * @default left
-           */
-          yAxisLocation:{
-            type:String,
-            value:'left'
-          },
-          /**
-           * Defines the base margin for the navigator.
-           *
-           * @property marginNav
-           * @type Object
-           * @default { top: 5, right: 5, bottom: 5, left: 5}
-           * @private
-           */
-          marginNav:{
-            type:Object,
-            value: { top: 5, right: 5, bottom: 5, left: 5},
-          },
-          /**
-           * Configuration object for the chart. Key is the property name.
-           *
-           * @property options
-           * @type Object
-          */
-          options:{
-            type:Object,
-            notify:true,
-            observer:'_setConfig'
-          },
-          /**
-           * container for the data object that drives the events
-           * Generally loaded with an iron-ajax tag (but doesnt have to be)
-           * This can be set declaratively
-           *
-           * @property eventData
-           * @type Object
-           */
-          eventData:{
-            type: Array,
-            notify: true
-          },
-          /**
-            *
-            * Allows to show the tooltip
-            */
-          showTooltip: {
-            type: Boolean,
-            notify: true,
-            value: false,
-            observer: '_showTooltipChanged'
-          },
-          pxSvgElem : {
-            type: Object,
-            value: function() { return {};}
-          },
-          /**
-           * Flag to not show a navigator in the timeseries. Set to true to disable the navigator. Default false which shows the navigator
-           *
-           */
-          disableNavigator: {
-            type: Boolean,
-            value: false
-          },
+    /**
+     * Properties block, expose attribute values to the DOM via 'reflect'
+     *
+     * @property properties
+     * @type Object
+     */
+    properties: {
+      /**
+       *
+       *
+       *
+       * @type Array
+       */
+      series:{
+        type:Array
+      },
+      /**
+       *
+       * @type Array
+       */
+      events:{
+        type:Array
+      },
+      /**
+       * Defines where to locate the X-axis.
+       * - `bottom`
+       * - `top`
+       *
+       * @property xAxisLocation
+       * @type String
+       * @default bottom
+       */
+      xAxisLocation:{
+        type:String,
+        value:'bottom'
+      },
+      /**
+       * Defines where to locate the Y-axis.
+       * - `left`
+       * - `right`
+       *
+       * @property yAxisLocation
+       * @type String
+       * @default left
+       */
+      yAxisLocation:{
+        type:String,
+        value:'left'
+      },
+      /**
+       * Defines the base margin for the navigator.
+       *
+       * @property marginNav
+       * @type Object
+       * @default { top: 5, right: 5, bottom: 5, left: 5}
+       * @private
+       */
+      marginNav:{
+        type:Object,
+        value: { top: 5, right: 5, bottom: 5, left: 5},
+      },
+      /**
+       * Configuration object for the chart. Key is the property name.
+       *
+       * @property options
+       * @type Object
+      */
+      options:{
+        type:Object,
+        notify:true,
+        observer:'_setConfig'
+      },
+      /**
+       * container for the data object that drives the events
+       * Generally loaded with an iron-ajax tag (but doesnt have to be)
+       * This can be set declaratively
+       *
+       * @property eventData
+       * @type Object
+       */
+      eventData:{
+        type: Array,
+        notify: true
+      },
+      /**
+        *
+        * Allows to show the tooltip
+        */
+      showTooltip: {
+        type: Boolean,
+        notify: true,
+        value: false,
+        observer: '_showTooltipChanged'
+      },
+      pxSvgElem : {
+        type: Object,
+        value: function() { return {};}
+      },
+      /**
+       * Flag to not show a navigator in the timeseries. Set to true to disable the navigator. Default false which shows the navigator
+       *
+       */
+      disableNavigator: {
+        type: Boolean,
+        value: false
+      },
 
-          mousePosition:{
-            type: Array
-          },
-          renderToCanvas: {
-            type: Boolean,
-            value: false
-          },
-          /**
-           * Whether to hide the gridlines perpendicular to the X axis
-           */
-          hideGridlinesX: {
-            type: Boolean,
-            value: false
-          },
-          /**
-           * Whether to hide the gridlines perpendicular to the Y axis
-           */
-          hideGridlinesY: {
-            type: Boolean,
-            value: false
-          },
-          displayThresholdTitle: {
-            type: Boolean,
-            value: false
+      mousePosition:{
+        type: Array
+      },
+      renderToCanvas: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Whether to hide the gridlines perpendicular to the X axis
+       */
+      hideGridlinesX: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Whether to hide the gridlines perpendicular to the Y axis
+       */
+      hideGridlinesY: {
+        type: Boolean,
+        value: false
+      },
+      displayThresholdTitle: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    observers: [
+      '_xAxisConfigChanged(xAxisConfig.*)',
+      '_yAxisConfigChanged(yAxisConfig.*)',
+      '_tooltipConfigChanged(tooltipConfig.*, enableTooltip)',
+      '_registerConfigChanged(registerConfig.*, registerLocation)'
+    ],
+
+    listeners: {
+      'iron-resize': '_onIronResize',
+      'px-vis-selected-domain-updated': '_setSelectedDomain'
+    },
+
+    ready:function(){
+      this._calcMargins();
+    },
+
+    _calcMousePos: function(evt) {
+      this.set('mousePosition',[evt.pageX,evt.pageY]);
+    },
+    _getWrapperClass: function(_registerWrapperClass) {
+      var classList = _registerWrapperClass + ' flex__item wrapper'
+
+      return classList;
+    },
+    /**
+     * Cycles through the Configuration object and sets each property. Triggers each components declarative binding
+     *
+     * @method _setConfig
+     */
+    _setConfig: function(){
+      if(typeof(this.options) !== 'object'){
+        console.error('Configuration options must be valid JSON');
+        return;
+      }
+
+      var keys = Object.keys(this.options);
+      for(var i = 0; i < keys.length; i++){
+        var key = keys[i];
+        this.set(key, this.options[key]);
+      }
+    },
+    _xAxisConfigChanged: function(conf) {
+      this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
+    },
+    _yAxisConfigChanged: function(conf) {
+      this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
+    },
+    _tooltipConfigChanged: function(conf) {
+      if(this.$$('#tooltip')) {
+        this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
+      } else if(!this.$$('#tooltip') && this.enableTooltip) {
+        this.$.tooltipTemplate.render();
+        this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
+      }
+    },
+    _registerConfigChanged: function(conf) {
+      this._applyConfigToElement(this.registerConfig, this.$.register);
+    },
+    /**
+     * Overwrites default margins based on settings
+     *
+     * @method _calcMargins
+     */
+    _calcMargins:function(){
+      var topMargin = 25,
+          rightMargin = 10,
+          bottomMargin = 10,
+          leftMargin = 10;
+
+      if(this.xAxisLocation === 'bottom'){
+        bottomMargin = 40;
+      } else if(this.xAxisLocation === 'top'){
+        topMargin = 40;
+      }
+
+      // TODO if multiple Y...
+      if(this.yAxisLocation === 'left'){
+        leftMargin = 50;
+      } else if(this.yAxisLocation === 'right'){
+        rightMargin = 40;
+      }
+
+      this.set('margin', {
+        'top': topMargin,
+        'right': rightMargin,
+        'bottom': bottomMargin,
+        'left': leftMargin
+      });
+      this.set('marginNav', {
+        'top': 5,
+        'right': rightMargin,
+        'bottom': 20,
+        'left': leftMargin
+      });
+    },
+    _onIronResize: function() {
+      if(this.preventResize) {
+        return;
+      }
+      this.debounce('ironresize', function() {
+        if(this.disableNavigator || this.$$('#navigator')) {
+          var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+              navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
+              registerRect = this.$.register.getBoundingClientRect(),
+              widthDeduct = 0,
+              heightDeduct = 0;
+
+          if(this.$.register.type === 'horizontal') {
+            heightDeduct += registerRect.height;
+          } else {
+            widthDeduct += registerRect.width;
           }
-        },
 
-        observers: [
-          '_xAxisConfigChanged(xAxisConfig.*)',
-          '_yAxisConfigChanged(yAxisConfig.*)',
-          '_tooltipConfigChanged(tooltipConfig.*, enableTooltip)',
-          '_registerConfigChanged(registerConfig.*, registerLocation)'
-        ],
+          heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
 
-        listeners: {
-          'iron-resize': '_onIronResize'
-        },
-
-        ready:function(){
-          this._calcMargins();
-        },
-
-        _calcMousePos: function(evt) {
-          this.set('mousePosition',[evt.pageX,evt.pageY]);
-        },
-        _getWrapperClass: function(_registerWrapperClass) {
-          var classList = _registerWrapperClass + ' flex__item wrapper'
-
-          return classList;
-        },
-        /**
-         * Cycles through the Configuration object and sets each property. Triggers each components declarative binding
-         *
-         * @method _setConfig
-         */
-        _setConfig: function(){
-          if(typeof(this.options) !== 'object'){
-            console.error('Configuration options must be valid JSON');
-            return;
-          }
-
-          var keys = Object.keys(this.options);
-          for(var i = 0; i < keys.length; i++){
-            var key = keys[i];
-            this.set(key, this.options[key]);
-          }
-        },
-        _xAxisConfigChanged: function(conf) {
-          this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
-        },
-        _yAxisConfigChanged: function(conf) {
-          this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
-        },
-        _tooltipConfigChanged: function(conf) {
-          if(this.$$('#tooltip')) {
-            this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
-          } else if(!this.$$('#tooltip') && this.enableTooltip) {
-            this.$.tooltipTemplate.render();
-            this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
-          }
-        },
-        _registerConfigChanged: function(conf) {
-          this._applyConfigToElement(this.registerConfig, this.$.register);
-        },
-        /**
-         * Overwrites default margins based on settings
-         *
-         * @method _calcMargins
-         */
-        _calcMargins:function(){
-          var topMargin = 25,
-              rightMargin = 10,
-              bottomMargin = 10,
-              leftMargin = 10;
-
-          if(this.xAxisLocation === 'bottom'){
-            bottomMargin = 40;
-          } else if(this.xAxisLocation === 'top'){
-            topMargin = 40;
-          }
-
-          // TODO if multiple Y...
-          if(this.yAxisLocation === 'left'){
-            leftMargin = 50;
-          } else if(this.yAxisLocation === 'right'){
-            rightMargin = 40;
-          }
-
-          this.set('margin', {
-            'top': topMargin,
-            'right': rightMargin,
-            'bottom': bottomMargin,
-            'left': leftMargin
-          });
-          this.set('marginNav', {
-            'top': 5,
-            'right': rightMargin,
-            'bottom': 20,
-            'left': leftMargin
-          });
-        },
-        _onIronResize: function() {
-          if(this.preventResize) {
-            return;
-          }
-          this.debounce('ironresize', function() {
-            if(this.disableNavigator || this.$$('#navigator')) {
-              var wrapperRect = this.$.wrapper.getBoundingClientRect(),
-                  navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
-                  registerRect = this.$.register.getBoundingClientRect(),
-                  widthDeduct = 0,
-                  heightDeduct = 0;
-
-              if(this.$.register.type === 'horizontal') {
-                heightDeduct += registerRect.height;
-              } else {
-                widthDeduct += registerRect.width;
-              }
-
-              heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
-
-              this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
-              this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-            }
-          },50);
-        },
-        /**
-         * gets a combined graphical snapshot of the chart and its navigator
-         */
-        getCombinedImage: function(callback) {
-          this.getImage(function(chartSnap) {
-            if(!this.disableNavigator){
-              this.$$('#navigator').getImage(function(navigatorSnap) {
-                var canvas = document.createElement('canvas'),
-                    context;
-                canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
-                canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
-                context = canvas.getContext('2d');
-
-                context.drawImage(chartSnap.canvas, 0, 0);
-                context.drawImage(navigatorSnap.canvas, 0, chartSnap.canvas.height);
-
-                callback({canvas: canvas, image: canvas.toDataURL("image/png")});
-              }.bind(this));
-            }
-          }.bind(this));
-        },
-        _showTooltipChanged: function() {
-
-          //make sure the dom if is processed....
-          this.$.tooltipTemplate.render();
-
-          if(this.showTooltip && this.tooltipConfig) {
-            this._tooltipConfigChanged();
-          }
+          this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
+          this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
         }
-    });
+      },50);
+    },
+    /**
+     * gets a combined graphical snapshot of the chart and its navigator
+     */
+    getCombinedImage: function(callback) {
+      this.getImage(function(chartSnap) {
+        if(!this.disableNavigator){
+          this.$$('#navigator').getImage(function(navigatorSnap) {
+            var canvas = document.createElement('canvas'),
+                context;
+            canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
+            canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
+            context = canvas.getContext('2d');
+
+            context.drawImage(chartSnap.canvas, 0, 0);
+            context.drawImage(navigatorSnap.canvas, 0, chartSnap.canvas.height);
+
+            callback({canvas: canvas, image: canvas.toDataURL("image/png")});
+          }.bind(this));
+        }
+      }.bind(this));
+    },
+    _showTooltipChanged: function() {
+
+      //make sure the dom if is processed....
+      this.$.tooltipTemplate.render();
+
+      if(this.showTooltip && this.tooltipConfig) {
+        this._tooltipConfigChanged();
+      }
+    },
+    _setSelectedDomain: function(e) {
+      this.set('selectedDomain', e.detail.data);
+    }
+  });
 </script>
