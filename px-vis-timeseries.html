@@ -40,7 +40,7 @@ Creates an interactive timeseries chart
 <dom-module id="px-vis-timeseries">
   <template>
     <style include="px-vis-timeseries-styles"></style>
-    
+
     <div id="wrapper" class="flex--row u-m safariFlex safariFlexDirectionRow flex wrapper" >
       <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
         <div
@@ -294,16 +294,15 @@ Creates an interactive timeseries chart
     </px-vis-interaction-space>
 
     <px-vis-cursor
+      id="cursor"
       svg="[[svg]]"
       width="[[width]]"
       height="[[height]]"
       margin="[[margin]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-data="[[chartData]]"
-      horizontal-line="full"
-      vertical-line="full"
-      circle-point="yes"
-      tooltip-data="[[tooltipData]]">
+      tooltip-data="[[tooltipData]]"
+      clip-path="[[seriesClipPath]]">
     </px-vis-cursor>
   </template>
 </dom-module>
@@ -343,7 +342,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorChart.subConfiguration,
           PxVisBehavior.progressiveRendering,
           PxVisBehaviorChart.registerConfigs,
-          PxVisBehaviorChart.axisConfigs
+          PxVisBehaviorChart.axisConfigs,
+          PxVisBehaviorChart.cursorConfig
         ],
 
         /**
@@ -526,6 +526,7 @@ Creates an interactive timeseries chart
         observers: [
           '_xAxisConfigChanged(xAxisConfig.*)',
           '_yAxisConfigChanged(yAxisConfig.*)',
+          '_cursorConfigChanged(cursorConfig.*)',
           '_tooltipConfigChanged(tooltipConfig.*, enableTooltip)',
           '_registerConfigChanged(registerConfig.*, registerLocation)'
         ],
@@ -589,6 +590,9 @@ Creates an interactive timeseries chart
             this._applyConfigToElement(this.registerConfig, this.$$('#sideRegister'));
           }
 
+        },
+        _cursorConfigChanged: function(conf) {
+          this._applyConfigToElement(this.cursorConfig, this.$.cursor);
         },
         /**
          * Overwrites default margins based on settings

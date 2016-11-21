@@ -1,3 +1,7 @@
+==================
+* added clip path to cursor
+* added cursor config
+
 v0.5.3
 ==================
 * update dependencies for dropdown
