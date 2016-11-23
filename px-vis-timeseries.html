@@ -664,7 +664,7 @@ Creates an interactive timeseries chart
               this.$$('#navigator').getImage(function(navigatorSnap) {
                 var canvas = document.createElement('canvas'),
                     context;
-                canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
+                canvas.width = Math.max(chartSnap.canvas.width, navigatorSnap.canvas.width);
                 canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
                 context = canvas.getContext('2d');
 
