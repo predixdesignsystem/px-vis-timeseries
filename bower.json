@@ -1,6 +1,6 @@
 {
     "name": "px-vis-timeseries",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "main": [
         "px-vis-timeseries.html"
     ],
@@ -16,7 +16,7 @@
     ],
     "dependencies": {
         "polymer": "^1.6.1",
-        "px-theme": "~1.1.2",
+        "px-theme": "^2.0.1",
         "px-demo-data": "~0.0.17",
         "px-datetime-common": "~0.6.3",
         "px-colors-design": "~0.2.16",
