@@ -658,7 +658,7 @@ Creates an interactive timeseries chart
         /**
          * gets a combined graphical snapshot of the chart and its navigator
          */
-        getCombinedImage: function(callback) {
+        getCombinedImage: function(callback,  renderLegend) {
           this.getImage(function(chartSnap) {
             if(!this.disableNavigator){
               this.$$('#navigator').getImage(function(navigatorSnap) {
@@ -674,7 +674,7 @@ Creates an interactive timeseries chart
                 callback({canvas: canvas, image: canvas.toDataURL("image/png")});
               }.bind(this));
             }
-          }.bind(this));
+          }.bind(this), renderLegend);
         }
     });
 </script>

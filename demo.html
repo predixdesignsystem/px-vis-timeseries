@@ -32,7 +32,7 @@
           show-time-zone="text">
         </px-rangepicker>
         <br/>
-        <span>Open image of chart in new tab</span>
+        <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
         <px-vis-timeseries
           id="timeSerie"
@@ -165,12 +165,13 @@
           disable-navigator>
         </px-vis-timeseries>
 
-         <!--<br />
+         <br />
         <br />
         <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
           width="1000"
           height="500"
+          id="bigChart"
           enable-tooltip
           include-all-series
           render-to-canvas
@@ -191,7 +192,7 @@
             auto
             last-response="{{apmData}}"
             >
-          </iron-ajax> -->
+          </iron-ajax> 
 
         <br />
         <br />
@@ -249,28 +250,33 @@
             rangepicker = document.getElementById('rangepicker'),
             btnSnap = document.getElementById('btnSnap'),
             timeSerie = document.getElementById('timeSerie'),
+            bigChart =  document.getElementById('bigChart'),
             fetch1 = document.getElementById('fetch1'),
             fetch2 = document.getElementById('fetch2'),
             converter = document.getElementById('converter'),
             aggregatedData = [];
 
-            //get both set of data for 1st chart
-            var handleResponse = function(data) {
+            var processData = function(data) {
               aggregatedData.push(data);
               if(aggregatedData.length === 2) {
                 converter.set('originalData', aggregatedData);
               }
+            };
+
+            //get both set of data for 1st chart
+            var handleResponse = function(evt) {
+              processData(evt.detail.response);
             }
 
-            fetch1.onResponse = handleResponse;
-            fetch2.onResponse = handleResponse;
+            fetch1.addEventListener('response', handleResponse);
+            fetch2.addEventListener('response', handleResponse);
 
             //if the data has been fetched already manually kick the event handler
             if(fetch1.lastResponse) {
-              handleResponse(fetch1.lastResponse);
+              processData(fetch1.lastResponse);
             }
             if(fetch2.lastResponse) {
-              handleResponse(fetch2.lastResponse);
+              processData(fetch2.lastResponse);
             }
 
           chart.svg.append('rect')
@@ -287,9 +293,12 @@
           };
 
           btnSnap.addEventListener('click', function() {
-            timeSerie.getCombinedImage(function(result) {
-              window.open().location = result.image;
-            });
+            bigChart.getCombinedImage(function(result) {
+              var img = document.createElement('img');
+              img.src= result.image;
+              document.body.appendChild(img);
+           //   window.open().location = result.image;
+            }, true);
           });
       });
     </script>
