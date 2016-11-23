@@ -1,3 +1,7 @@
+v0.5.6
+==================
+* changing all devDeps to ^
+
 v0.5.5
 ==================
 * Merge image branch
