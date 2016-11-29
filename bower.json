@@ -1,6 +1,6 @@
 {
     "name": "px-vis-timeseries",
-    "version": "0.5.3",
+    "version": "0.5.6",
     "main": [
         "px-vis-timeseries.html"
     ],
@@ -16,7 +16,7 @@
     ],
     "dependencies": {
         "polymer": "^1.6.1",
-        "px-theme": "~1.1.2",
+        "px-theme": "^2.0.1",
         "px-demo-data": "~0.0.17",
         "px-datetime-common": "~0.6.3",
         "px-colors-design": "~0.2.16",
@@ -24,15 +24,15 @@
         "iron-resizable-behavior": "^1.0.5"
     },
     "devDependencies": {
-        "px-starter-kit-design": "~0.6.0",
-        "px-forms-design": "~0.3.17",
-        "px-tables-design": "~0.3.13",
-        "px-spacing-design": "~0.3.8",
-        "px-buttons-design": "~0.4.26",
-        "px-button-group-design": "~0.3.12",
-        "px-typography-design": "~1.1.1",
+        "px-starter-kit-design": "^0.6.0",
+        "px-forms-design": "^0.3.17",
+        "px-tables-design": "^0.3.13",
+        "px-spacing-design": "^0.3.8",
+        "px-buttons-design": "^0.4.26",
+        "px-button-group-design": "^0.3.12",
+        "px-typography-design": "^1.1.1",
         "iron-demo-helpers": "~1.2.5",
-        "px-tabs": "~0.5.2",
+        "px-tabs": "^0.5.2",
         "px-api-viewer": "^0.1.0",
         "px-demo-snippet": "^0.6.9",
         "px-toggle-design": "^0.2.12",
@@ -41,7 +41,7 @@
         "px-code-design": "^0.2.11",
         "px-list-inline-design": "^0.2.11",
         "px-polymer-font-awesome": "^0.1.9",
-        "px-dropdown": "~2.0.0",
+        "px-dropdown": "^2.0.0",
         "px-rangepicker": "^1.2.1",
         "iron-ajax": "~1.4.3"
     }

@@ -13,13 +13,14 @@
         <style include="px-theme-styles" is="custom-style"></style>
 
         <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../iron-ajax/iron-ajax.html"/>
         <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
         <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
 
     </head>
 
     <body style="padding:30px">
-      <template is="dom-bind">
+      <template id="template" is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
 
         <px-rangepicker
@@ -31,7 +32,7 @@
           show-time-zone="text">
         </px-rangepicker>
         <br/>
-        <span>Open image of chart in new tab</span>
+        <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
         <px-vis-timeseries
           id="timeSerie"
@@ -97,36 +98,33 @@
           event-data="[[eventData]]"
           range="[[range]]">
         </px-vis-timeseries>
-        <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-            "type":"line",
-            "name":"mySeries",
-              "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-            },{
-              "type":"line",
-              "url":"../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
-          }]'
-          data-var="originalData"
-          lists="append"
-          response-data="{{originalData}}">
-        </px-vis-data>
+        <iron-ajax
+          id="fetch1"
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch2"
+          url="../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+
         <px-vis-data-converter
+          id="converter"
           data-key = "series"
           id-key = "name"
           original-data = '[[originalData]]'
           series-config="{{seriesConfig}}"
           chart-data="{{chartData}}">
         </px-vis-data-converter>
-        <px-vis-data
-          id = "eventAjax"
-          request-data = '[{
-              "url":"../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
-          }]'
-          data-var="eventData"
-          lists = "flat"
-          response-data="{{eventData}}">
-        </px-vis-data>
+        <iron-ajax
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
+          handle-as="json"
+          auto
+          last-response="{{eventData}}">
+        </iron-ajax>
 
         <br />
         <br />
@@ -147,15 +145,13 @@
             "title": "Widgets"
           }'>
         </px-vis-timeseries>
-        <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-            }]'
-          data-var="chartData2"
-          lists="flat"
-          response-data="{{chartData2}}">
-        </px-vis-data>
+        <iron-ajax
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
+          handle-as="json"
+          auto
+          last-response="{{chartData2}}"
+          >
+        </iron-ajax>
 
         <br />
         <br />
@@ -184,39 +180,34 @@
           disable-navigator>
         </px-vis-timeseries>
 
-        <!-- <br />
+         <!--<br />
         <br />
         <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
-          options = '{
-            "width": "1000",
-            "height": "500",
-            "enableTooltip":true,
-            "registerLocation":"none",
-            "navSeriesLimit":5,
-            "includeAllSeries": true,
-            "selectionType": "xAxis"
-          }'
+          width="1000"
+          height="500"
+          id="bigChart"
+          enable-tooltip
+          include-all-series
           render-to-canvas
+          selection-type="xy"
           default-series-config='{
               "type": "line",
               "x": "TimeStamp",
               "xMin": "dynamic",
               "xMax": "dynamic",
-              "yMin": 0,
+              "yMin": "dynamic",
               "yMax": "dynamic"
             }'
           chart-data="[[apmData]]">
           </px-vis-timeseries>
-          <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"../px-demo-data/demo-data/apm/timeseries.json"
-            }]'
-          data-var="chartData"
-          lists="flat"
-          response-data="{{apmData}}">
-          </px-vis-data> -->
+          <iron-ajax
+            url="../px-demo-data/demo-data/apm/timeseries.json"
+            handle-as="json"
+            auto
+            last-response="{{apmData}}"
+            >
+          </iron-ajax> -->
 
         <br />
         <br />
@@ -241,15 +232,12 @@
             "title": "Hz"
           }'>
         </px-vis-timeseries>
-        <px-vis-data
-          id = "seriesAjax"
-          request-data = '[{
-              "url":"../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-            }]'
-          data-var="chartData3"
-          lists="flat"
-          response-data="{{chartData3}}">
-        </px-vis-data>
+        <iron-ajax
+            url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
+            handle-as="json"
+            auto
+            last-response="{{chartData3}}">
+        </iron-ajax>
 
         <br />
         <br />
@@ -273,35 +261,63 @@
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
-
         setTimeout(function() {
-
-
           var chart = document.getElementById('chartCustom'),
               rangepicker = document.getElementById('rangepicker'),
               btnSnap = document.getElementById('btnSnap'),
-              timeSerie = document.getElementById('timeSerie');
+              timeSerie = document.getElementById('timeSerie'),
+              bigChart =  document.getElementById('bigChart'),
+              fetch1 = document.getElementById('fetch1'),
+              fetch2 = document.getElementById('fetch2'),
+              converter = document.getElementById('converter'),
+              aggregatedData = [];
 
-            chart.svg.append('rect')
-              .attr("y", 200)
-              .attr("x", 0)
-              .attr("height", 100)
-              .attr("width", 1000)
-              .attr('opacity',0.25)
-              .attr('fill', 'rgb(70,173,0)');
+          var processData = function(data) {
+            aggregatedData.push(data);
+            if(aggregatedData.length === 2) {
+              converter.set('originalData', aggregatedData);
+            }
+          };
 
-            rangepicker.range = {
-              "from":"2014-04-10T04:01:00.000Z",
-              "to":"2015-04-01T20:42:00.000Z"
-            };
+          //get both set of data for 1st chart
+          var handleResponse = function(evt) {
+            processData(evt.detail.response);
+          }
 
-            btnSnap.addEventListener('click', function() {
-              timeSerie.getCombinedImage(function(result) {
-                window.open().location = result.image;
-              });
-            });
-          }, 500);
+          fetch1.addEventListener('response', handleResponse);
+          fetch2.addEventListener('response', handleResponse);
+
+          //if the data has been fetched already manually kick the event handler
+          if(fetch1.lastResponse) {
+            processData(fetch1.lastResponse);
+          }
+          if(fetch2.lastResponse) {
+            processData(fetch2.lastResponse);
+          }
+
+          chart.svg.append('rect')
+            .attr("y", 200)
+            .attr("x", 0)
+            .attr("height", 100)
+            .attr("width", 1000)
+            .attr('opacity',0.25)
+            .attr('fill', 'rgb(70,173,0)');
+
+          rangepicker.range = {
+            "from":"2014-04-10T04:01:00.000Z",
+            "to":"2015-04-01T20:42:00.000Z"
+          };
+
+        btnSnap.addEventListener('click', function() {
+          timeSerie.getCombinedImage(function(result) {
+            var img = document.createElement('img');
+            img.src= result.image;
+            document.body.appendChild(img);
+         //   window.open().location = result.image;
+          }, true);
+        });
       });
+    });
     </script>
     </body>
 </html>

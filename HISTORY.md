@@ -7,6 +7,19 @@ v1.0.0
 * added clip path to cursor
 * added cursor config
 
+v0.5.6
+==================
+* changing all devDeps to ^
+
+v0.5.5
+==================
+* Merge image branch
+* --Changed how image gets called in demo to match new image call with legend
+
+v0.5.4
+==================
+* Update px-theme to 2.0.1 and update test fixtures
+
 v0.5.3
 ==================
 * update dependencies for dropdown
@@ -14,7 +27,6 @@ v0.5.3
 v0.5.2
 ==================
 * removing px-theme style call
-
 
 v0.5.1
 ==================
