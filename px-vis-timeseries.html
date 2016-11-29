@@ -41,6 +41,7 @@ Creates an interactive timeseries chart
   <template>
     <style include="px-vis-timeseries-styles"></style>
     <style include="px-theme-styles"></style>
+
     <div id="wrapper" class$="{{_chartWrapperClass}}" >
         <!--[chart + navigator] + register-->
         <div class$="{{_registerWrapperClass}}">
@@ -297,21 +298,21 @@ Creates an interactive timeseries chart
     </px-vis-interaction-space>
 
     <px-vis-cursor
+      id="cursor"
       svg="[[svg]]"
       width="[[width]]"
       height="[[height]]"
       margin="[[margin]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-data="[[chartData]]"
-      horizontal-line="full"
-      vertical-line="full"
-      circle-point="yes"
-      tooltip-data="[[tooltipData]]">
+      tooltip-data="[[tooltipData]]"
+      clip-path="[[seriesClipPath]]">
     </px-vis-cursor>
   </template>
 </dom-module>
 
 <script>
+
   Polymer({
 
     is: 'px-vis-timeseries',
@@ -488,7 +489,8 @@ Creates an interactive timeseries chart
     observers: [
       '_xAxisConfigChanged(xAxisConfig.*)',
       '_yAxisConfigChanged(yAxisConfig.*)',
-      '_tooltipConfigChanged(tooltipConfig.*, enableTooltip)',
+      '_cursorConfigChanged(cursorConfig.*)',
+      '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*, registerLocation)'
     ],
 
@@ -542,6 +544,9 @@ Creates an interactive timeseries chart
     },
     _registerConfigChanged: function(conf) {
       this._applyConfigToElement(this.registerConfig, this.$.register);
+    },
+    _cursorConfigChanged: function(conf) {
+      this._applyConfigToElement(this.cursorConfig, this.$.cursor);
     },
     /**
      * Overwrites default margins based on settings
@@ -626,6 +631,7 @@ Creates an interactive timeseries chart
         }
       }.bind(this));
     },
+
     _showTooltipChanged: function() {
 
       //make sure the dom if is processed....

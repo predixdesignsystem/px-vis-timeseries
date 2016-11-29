@@ -4,6 +4,17 @@ v1.0.0
 * allowed to split out the config options into smaller objects: registerConfig, tooltipConfig, eventConfig
 * renamed enableTooltip to showTooltip for framework consistency
 * fixed bug where tooltipConfig wasn't applied
+* added clip path to cursor
+* added cursor config
+
+v0.5.3
+==================
+* update dependencies for dropdown
+
+v0.5.2
+==================
+* removing px-theme style call
+
 
 v0.5.1
 ==================
@@ -18,7 +29,6 @@ v0.4.7
 ==================
 * bower updating px-demo-snippet
 
-=======
 
 v0.4.6
 ==================
@@ -27,10 +37,6 @@ v0.4.6
 v0.4.5
 ==================
 * added a second series to demo
-=======
-v1.0.0
-==================
-* removed registerLocation in favor of hideRegister and registerConfig
 
 v0.4.4
 ==================
