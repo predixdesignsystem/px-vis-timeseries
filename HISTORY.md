@@ -7,6 +7,8 @@ v1.0.0
 * added clip path to cursor
 * added cursor config
 * added layers
+* added lowerSVG
+* changed line to line-svg
 
 v0.5.6
 ==================
