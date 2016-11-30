@@ -147,7 +147,7 @@
         <br />
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
-        <px-vis-timeseries
+        <!-- <px-vis-timeseries
           prevent-resize
           width = "1000"
           height = "500"
@@ -162,7 +162,7 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries>
+        </px-vis-timeseries> -->
 
          <!--<br />
         <br />
@@ -197,7 +197,7 @@
         <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
         <px-vis-timeseries
-          prevent-resize
+          id="myChart"
           width = "1000"
           height = "500"
           selection-type= "yAxis"
@@ -254,6 +254,20 @@
             fetch2 = document.getElementById('fetch2'),
             converter = document.getElementById('converter'),
             aggregatedData = [];
+
+
+            // var myChart = document.getElementById('myChart');
+            // var sc = myChart.seriesConfig;
+            // for(var i = 0; i < 40; i++){
+            //   var n = 'series' + i
+            //   sc[n] = {
+            //     "name": "mySeries" + i,
+            //     "x": "x",
+            //     "y": "y",
+            //   }
+            // }
+            // myChart.seriesConfig = {};
+            // myChart.set('seriesConfig', sc);
 
             var processData = function(data) {
               aggregatedData.push(data);

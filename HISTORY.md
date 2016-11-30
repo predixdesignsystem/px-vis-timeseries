@@ -1,3 +1,8 @@
+v0.5.7
+==================
+* updating to vis 0.7.x
+* adding clip path to cursor
+
 v0.5.6
 ==================
 * changing all devDeps to ^
