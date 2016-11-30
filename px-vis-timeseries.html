@@ -131,7 +131,7 @@ Creates an interactive timeseries chart
       domain-changed="{{domainChanged}}">
     </px-vis-scale>
     <px-vis-clip-path
-      svg="[[svg]]"
+      svg="[[layers.3]]"
       x="[[x]]"
       y="[[y]]"
       width="[[width]]"
@@ -164,7 +164,7 @@ Creates an interactive timeseries chart
         <template is="dom-if" if="[[!renderToCanvas]]">
           <px-vis-line
             id="lineSVG"
-            svg="[[svg]]"
+            svg="[[layers.3]]"
             series-id="[[item]]"
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
@@ -178,7 +178,7 @@ Creates an interactive timeseries chart
       </template>
       <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]" restamp>
         <px-vis-scatter
-          svg="[[svg]]"
+          svg="[[layers.3]]"
           series-id="[[item]]"
           chart-data="[[chartData]]"
           complete-series-config="[[completeSeriesConfig]]"
@@ -195,7 +195,7 @@ Creates an interactive timeseries chart
 
     <template is="dom-repeat" items="[[eventData]]">
       <px-vis-event
-        svg="[[svg]]"
+        svg="[[layers.2]]"
         x-axis-type="time"
         x-key="time"
         event-id="[[item.id]]"
@@ -211,7 +211,7 @@ Creates an interactive timeseries chart
     </template>
 
     <px-vis-threshold
-      svg="[[svg]]"
+      svg="[[layers.4]]"
       complete-series-config="[[completeSeriesConfig]]"
       threshold-data="[[thresholdData]]"
       display-title="[[displayThresholdTitle]]"
@@ -225,7 +225,7 @@ Creates an interactive timeseries chart
 
     <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
       <px-vis-gridlines
-        svg="[[svg]]"
+        svg="[[layers.0]]"
         axis="[[x]]"
         margin="[[margin]]"
         length="[[height]]"
@@ -237,7 +237,7 @@ Creates an interactive timeseries chart
 
     <template is="dom-if" if="[[!hideGridlinesY]]" restamp>
       <px-vis-gridlines
-        svg="[[svg]]"
+        svg="[[layers.0]]"
         axis="[[y]]"
         margin="[[margin]]"
         length="[[width]]"
@@ -249,7 +249,7 @@ Creates an interactive timeseries chart
 
     <px-vis-axis
       id="xAxis"
-      svg="[[svg]]"
+      svg="[[layers.1]]"
       axis="[[x]]"
       axis-type="time"
       margin="[[margin]]"
@@ -264,7 +264,7 @@ Creates an interactive timeseries chart
     </px-vis-axis>
     <px-vis-axis
       id="yAxis"
-      svg="[[svg]]"
+      svg="[[layers.1]]"
       axis="[[y]]"
       axis-type="linear"
       margin="[[margin]]"
@@ -278,7 +278,7 @@ Creates an interactive timeseries chart
     </px-vis-axis>
 
     <px-vis-interaction-space
-      svg="[[svg]]"
+      svg="[[layers.5]]"
       width="[[width]]"
       height="[[height]]"
       margin="[[margin]]"
@@ -299,7 +299,7 @@ Creates an interactive timeseries chart
 
     <px-vis-cursor
       id="cursor"
-      svg="[[svg]]"
+      svg="[[layers.4]]"
       width="[[width]]"
       height="[[height]]"
       margin="[[margin]]"
@@ -349,7 +349,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.axisConfigs,
       PxVisBehaviorChart.registerPositioning,
       PxVisBehaviorChart.chartAutoResize,
-      PxVisBehavior.thresholds
+      PxVisBehavior.thresholds,
+      PxVisBehaviorChart.layers
     ],
 
     /**
@@ -491,7 +492,8 @@ Creates an interactive timeseries chart
       '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
-      '_registerConfigChanged(registerConfig.*, registerLocation)'
+      '_registerConfigChanged(registerConfig.*, registerLocation)',
+      '_createLayersOnce(svg, numberOfLayers)'
     ],
 
     listeners: {
@@ -500,6 +502,7 @@ Creates an interactive timeseries chart
     },
 
     ready:function(){
+      this.set('numberOfLayers',6);
       this._calcMargins();
     },
 

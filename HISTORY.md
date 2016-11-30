@@ -6,6 +6,7 @@ v1.0.0
 * fixed bug where tooltipConfig wasn't applied
 * added clip path to cursor
 * added cursor config
+* added layers
 
 v0.5.6
 ==================
