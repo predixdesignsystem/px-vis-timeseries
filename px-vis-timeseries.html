@@ -120,9 +120,12 @@ Creates an interactive timeseries chart
     </div>
 
     <px-vis-zoom
+      id="zoom"
       margin="[[margin]]"
       extents-data="[[extentsData]]"
-      px-svg-elem=[[pxSvgElem]]>
+      px-svg-elem="[[pxSvgElem]]"
+      width="[[width]]"
+      height="[[height]]">
     </px-vis-zoom>
     <px-vis-scale
       x-axis-type="time"
@@ -528,7 +531,8 @@ Creates an interactive timeseries chart
           '_xAxisConfigChanged(xAxisConfig.*)',
           '_yAxisConfigChanged(yAxisConfig.*)',
           '_tooltipConfigChanged(tooltipConfig.*, enableTooltip)',
-          '_registerConfigChanged(registerConfig.*, registerLocation)'
+          '_registerConfigChanged(registerConfig.*, registerLocation)',
+          '_chartDataChanged(chartData.*)'
         ],
 
         listeners: {
@@ -676,6 +680,12 @@ Creates an interactive timeseries chart
               }.bind(this));
             }
           }.bind(this), renderLegend);
+        },
+        /**
+        * When data changes ensure zoom is reset
+        */
+        _chartDataChanged: function() {
+          this.$.zoom.resetZoom();
         }
     });
 </script>
