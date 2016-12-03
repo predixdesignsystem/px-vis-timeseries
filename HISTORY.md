@@ -9,6 +9,7 @@ v1.0.0
 * added layers
 * added lowerSVG
 * changed line to line-svg
+* changed dataExtents
 
 v0.5.6
 ==================

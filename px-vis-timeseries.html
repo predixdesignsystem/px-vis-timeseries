@@ -72,6 +72,7 @@ Creates an interactive timeseries chart
               <div class="flex__item" style="height:100px">
                 <px-vis-chart-navigator
                   id="navigator"
+                  navigator-config="[[navigatorConfig]]"
                   x-axis-type="time"
                   y-axis-type="linear"
                   width="[[width]]"
@@ -124,6 +125,7 @@ Creates an interactive timeseries chart
       chart-data="[[chartData]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-extents="[[chartExtents]]"
+      data-extents="[[dataExtents]]"
       selected-domain="[[selectedDomain]]"
       x="{{x}}"
       y="{{y}}"
@@ -330,6 +332,7 @@ Creates an interactive timeseries chart
       PxVisBehavior.axisTypes,
       PxVisBehavior.zoomSelection,
       PxVisBehavior.chartExtents,
+      PxVisBehavior.dataExtents,
       PxVisBehavior.events,
       PxVisBehaviorTime.datetime,
       PxVisBehaviorD3.svg,
@@ -352,7 +355,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.registerPositioning,
       PxVisBehaviorChart.chartAutoResize,
       PxVisBehavior.thresholds,
-      PxVisBehaviorChart.layers
+      PxVisBehaviorChart.layers,
+      PxVisBehaviorChart.navigatorConfig
     ],
 
     /**
