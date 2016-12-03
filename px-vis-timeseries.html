@@ -159,7 +159,8 @@ Creates an interactive timeseries chart
             width="[[width]]"
             height="[[height]]"
             margin="[[margin]]"
-            clip-path>
+            clip-path
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
         </template>
         <template is="dom-if" if="[[!renderToCanvas]]">
@@ -173,7 +174,8 @@ Creates an interactive timeseries chart
             y="[[y]]"
             domain-changed="[[domainChanged]]"
             clip-path="[[seriesClipPath]]"
-            muted-series="[[mutedSeries]]">
+            muted-series="[[mutedSeries]]"
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-svg>
         </template>
       </template>
@@ -189,7 +191,8 @@ Creates an interactive timeseries chart
           current-domain-y="[[currentDomainY]]"
           domain-changed="[[domainChanged]]"
           clip-path="[[seriesClipPath]]"
-          muted-series="[[mutedSeries]]">
+          muted-series="[[mutedSeries]]"
+          serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
         </px-vis-scatter>
       </template>
     </template>
@@ -338,11 +341,10 @@ Creates an interactive timeseries chart
       PxVisBehaviorD3.axes,
       PxVisBehaviorD3.axis,
       PxVisBehaviorD3.selectedTimeDomain,
-      PxVisBehaviorD3.interaction,
+     // PxVisBehaviorD3.interaction,
       PxVisBehaviorD3.clipPath,
       PxVisBehaviorD3.axisConfig,
       PxVisBehaviorChart.chartCommon,
-      Polymer.IronResizableBehavior,
       PxVisBehaviorChart.saveImage,
       PxVisBehaviorD3.domainUpdate,
       PxVisBehaviorChart.subConfiguration,
@@ -352,7 +354,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.registerPositioning,
       PxVisBehaviorChart.chartAutoResize,
       PxVisBehavior.thresholds,
-      PxVisBehaviorChart.layers
+      PxVisBehaviorChart.layers,
+      PxVisBehavior.serieToRedrawOnTop
     ],
 
     /**
