@@ -10,6 +10,7 @@ v1.0.0
 * added lowerSVG
 * changed line to line-svg
 * changed dataExtents
+* added the ability to redraw one serie on top of the others
 
 v0.5.6
 ==================
