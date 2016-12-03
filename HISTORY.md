@@ -9,6 +9,7 @@ v1.0.0
 * added layers
 * added lowerSVG
 * changed line to line-svg
+* added the ability to redraw one serie on top of the others
 
 v0.5.6
 ==================
