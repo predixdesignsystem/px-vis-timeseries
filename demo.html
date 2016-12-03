@@ -67,6 +67,11 @@
               "size":"20"
             }
           }'
+          navigator-config='{
+            "xAxisConfig": {
+              "tickFormat": "%b %d"
+            }
+          }'
           x-axis-config= '{
             "title": "Date",
             "tickFormat": "%b %d"
@@ -157,8 +162,7 @@
         <br />
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
-         <px-vis-timeseries
-          prevent-resize
+        <px-vis-timeseries
           width = "1000"
           height = "500"
           include-all-series
@@ -173,7 +177,6 @@
           register-config='{
               "height": 50,
               "type": "horizontal"}'
-          chart-data="[[apmData]]"
           x-axis-config='{
             "title": "Date"
           }'
@@ -203,14 +206,14 @@
               "yMax": "dynamic"
             }'
           chart-data="[[apmData]]">
-          </px-vis-timeseries> -->
+          </px-vis-timeseries>
           <iron-ajax
             url="../px-demo-data/demo-data/apm/timeseries.json"
             handle-as="json"
             auto
             last-response="{{apmData}}"
             >
-          </iron-ajax> 
+          </iron-ajax> -->
 
         <br />
         <br />

@@ -72,7 +72,6 @@ Creates an interactive timeseries chart
               <div class="flex__item" style="height:100px">
                 <px-vis-chart-navigator
                   id="navigator"
-                  navigator-config="[[navigatorConfig]]"
                   x-axis-type="time"
                   y-axis-type="linear"
                   width="[[width]]"
@@ -497,6 +496,7 @@ Creates an interactive timeseries chart
     },
 
     observers: [
+      '_navigatorConfigChanged(navigatorConfig.*)',
       '_xAxisConfigChanged(xAxisConfig.*)',
       '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
@@ -539,6 +539,9 @@ Creates an interactive timeseries chart
         var key = keys[i];
         this.set(key, this.options[key]);
       }
+    },
+    _navigatorConfigChanged: function(conf) {
+      this._applyConfigToElement(this.navigatorConfig, this.$$('#navigator'));
     },
     _xAxisConfigChanged: function(conf) {
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);

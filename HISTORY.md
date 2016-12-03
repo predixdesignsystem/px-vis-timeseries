@@ -11,6 +11,7 @@ v1.0.0
 * changed line to line-svg
 * changed dataExtents
 * added the ability to redraw one serie on top of the others
+* added the ability to pass a navigator config and configure navigator axis
 
 v0.5.6
 ==================
