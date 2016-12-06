@@ -128,18 +128,20 @@
               <div class="flex flex--col full-height">
                 <div class="demo u-p+ full-height">
                   <template is="dom-if" if="{{isOption1(index)}}" restamp>
-                    <px-vis-timeseries
-                      width = "{{item.width}}"
-                      height = "{{item.height}}"
-                      prevent-resize = "{{item.preventResize}}"
-                      show-tooltip = "{{item.showTooltip}}"
-                      register-location = "{{item.registerLocation}}"
-                      chart-horizontal-alignment = "{{item.chartHorizontalAlignment}}"
-                      chart-vertical-alignment = "{{item.chartVerticalAlignment}}"
-                      include-all-series
-                      selection-type= "{{item.selectionType}}"
-                      chart-data="{{item.chartData}}">
-                    </px-vis-timeseries>
+                    <div style="height:500px">
+                      <px-vis-timeseries
+                        width = "{{item.width}}"
+                        height = "{{item.height}}"
+                        prevent-resize = "{{item.preventResize}}"
+                        show-tooltip = "{{item.showTooltip}}"
+                        register-location = "{{item.registerLocation}}"
+                        chart-horizontal-alignment = "{{item.chartHorizontalAlignment}}"
+                        chart-vertical-alignment = "{{item.chartVerticalAlignment}}"
+                        include-all-series
+                        selection-type= "{{item.selectionType}}"
+                        chart-data="{{item.chartData}}">
+                      </px-vis-timeseries>
+                    </div>
                   </template>
                   <!-- <template is="dom-if" if="{{isOption1(index)}}" restamp>
                     <px-vis-timeseries

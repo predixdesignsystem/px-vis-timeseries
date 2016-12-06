@@ -76,7 +76,7 @@ $inuit-enable-list-inline--delimited : true;
 }
 
 .demoSnippet {
-  flex-basis: calculateRem(150px);
+  min-height: calculateRem(150px);
 }
 .componentHeader {
   border-bottom: 1px solid $gray4;

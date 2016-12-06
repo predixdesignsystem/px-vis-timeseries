@@ -57,7 +57,7 @@ Creates an interactive timeseries chart
             x-axis-type="time">
           </px-vis-register>
           <!-- chart + navigator -->
-          <div class="flex--col flex__item" on-mousemove="_calcMousePos">
+          <div class="flex--col flex__item inline--flex" on-mousemove="_calcMousePos">
             <px-vis-svg-canvas
               class="flex__item"
               width="[[width]]"
@@ -69,7 +69,7 @@ Creates an interactive timeseries chart
               svg-lower="{{svgLower}}">
             </px-vis-svg-canvas>
             <template is="dom-if" if="[[!disableNavigator]]">
-              <div class="flex__item" style="height:100px">
+              <div class="flex__item inline--flex" style="height:100px">
                 <px-vis-chart-navigator
                   id="navigator"
                   x-axis-type="time"
@@ -111,6 +111,8 @@ Creates an interactive timeseries chart
     </template>
     <px-vis-zoom
       margin="[[margin]]"
+      width="[[width]]"
+      height="[[height]]"
       extents-data="[[extentsData]]"
       px-svg-elem=[[pxSvgElem]]
       selected-domain="{{selectedDomain}}">
@@ -501,8 +503,7 @@ Creates an interactive timeseries chart
       '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
-      '_registerConfigChanged(registerConfig.*, registerLocation)',
-      '_createLayersOnce(svg, numberOfLayers)'
+      '_registerConfigChanged(registerConfig.*, registerLocation)'
     ],
 
     listeners: {
