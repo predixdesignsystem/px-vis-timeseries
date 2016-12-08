@@ -347,7 +347,8 @@ Creates an interactive timeseries chart
           PxVisBehaviorChart.subConfiguration,
           PxVisBehavior.progressiveRendering,
           PxVisBehaviorChart.registerConfigs,
-          PxVisBehaviorChart.axisConfigs
+          PxVisBehaviorChart.axisConfigs,
+          PxVisBehaviorChart.dataVisColorTheming 
         ],
 
         /**
@@ -539,7 +540,7 @@ Creates an interactive timeseries chart
           'iron-resize': '_onIronResize'
         },
 
-        ready:function(){
+        ready:function() {
           this._calcMargins();
         },
 
@@ -552,14 +553,14 @@ Creates an interactive timeseries chart
          *
          * @method _setConfig
          */
-        _setConfig: function(){
-          if(typeof(this.options) !== 'object'){
+        _setConfig: function() {
+          if(typeof(this.options) !== 'object') {
             console.error('Configuration options must be valid JSON');
             return;
           }
 
           var keys = Object.keys(this.options);
-          for(var i = 0; i < keys.length; i++){
+          for(var i = 0; i < keys.length; i++) {
             var key = keys[i];
             this.set(key, this.options[key]);
           }
@@ -600,22 +601,22 @@ Creates an interactive timeseries chart
          *
          * @method _calcMargins
          */
-        _calcMargins:function(){
+        _calcMargins:function() {
           var topMargin = 25,
               rightMargin = 10,
               bottomMargin = 10,
               leftMargin = 10;
 
-          if(this.xAxisLocation === 'bottom'){
+          if(this.xAxisLocation === 'bottom') {
             bottomMargin = 40;
-          } else if(this.xAxisLocation === 'top'){
+          } else if(this.xAxisLocation === 'top') {
             topMargin = 40;
           }
 
           // TODO if multiple Y...
-          if(this.yAxisLocation === 'left'){
+          if(this.yAxisLocation === 'left') {
             leftMargin = 50;
-          } else if(this.yAxisLocation === 'right'){
+          } else if(this.yAxisLocation === 'right') {
             rightMargin = 40;
           }
 
@@ -637,7 +638,7 @@ Creates an interactive timeseries chart
             return;
           }
           this.debounce('ironresize', function() {
-            if(this.disableNavigator || this.$$('#navigator')){
+            if(this.disableNavigator || this.$$('#navigator')) {
               var wrapperRect = this.$.wrapper.getBoundingClientRect(),
                   navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
                   widthDeduct = 0,
@@ -665,7 +666,7 @@ Creates an interactive timeseries chart
          */
         getCombinedImage: function(callback,  renderLegend) {
           this.getImage(function(chartSnap) {
-            if(!this.disableNavigator){
+            if(!this.disableNavigator) {
               this.$$('#navigator').getImage(function(navigatorSnap) {
                 var canvas = document.createElement('canvas'),
                     context;
