@@ -10,6 +10,7 @@
         <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
 
         <link rel="import" href="../px-theme/px-theme-styles.html">
+        <!-- <link rel="import" href="../px-dark-theme/px-dark-theme-styles.html"> -->
         <style include="px-theme-styles" is="custom-style"></style>
 
         <link rel="import" href="px-vis-timeseries.html"/>
@@ -19,7 +20,8 @@
 
     </head>
 
-    <body style="padding:30px">
+    <body style="padding:30px; ">
+    <!-- <body style="padding:30px; background-color: rgb(27,42,51);"> -->
       <template id="template" is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
 
@@ -147,7 +149,7 @@
         <br />
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
-        <!-- <px-vis-timeseries
+        <px-vis-timeseries
           prevent-resize
           width = "1000"
           height = "500"
@@ -162,9 +164,9 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries>
 
-         <!--<br />
+         <br />
         <br />
         <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
@@ -191,7 +193,7 @@
             auto
             last-response="{{apmData}}"
             >
-          </iron-ajax> -->
+          </iron-ajax>
 
         <br />
         <br />
