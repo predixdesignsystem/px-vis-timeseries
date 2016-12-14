@@ -10,6 +10,7 @@
         <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
 
         <link rel="import" href="../px-theme/px-theme-styles.html">
+        <!-- <link rel="import" href="../px-dark-theme/px-dark-theme-styles.html"> -->
         <style include="px-theme-styles" is="custom-style"></style>
 
         <link rel="import" href="px-vis-timeseries.html"/>
@@ -19,7 +20,8 @@
 
     </head>
 
-    <body style="padding:30px">
+    <body style="padding:30px; ">
+    <!-- <body style="padding:30px; background-color: rgb(27,42,51);"> -->
       <template id="template" is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
 
@@ -219,7 +221,7 @@
         <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
         <px-vis-timeseries
-          prevent-resize
+          id="myChart"
           width = "1000"
           height = "500"
           selection-type= "yAxis"
@@ -278,49 +280,62 @@
               converter = document.getElementById('converter'),
               aggregatedData = [];
 
-          var processData = function(data) {
-            aggregatedData.push(data);
-            if(aggregatedData.length === 2) {
-              converter.set('originalData', aggregatedData);
+            // var myChart = document.getElementById('myChart');
+            // var sc = myChart.seriesConfig;
+            // for(var i = 0; i < 40; i++){
+            //   var n = 'series' + i
+            //   sc[n] = {
+            //     "name": "mySeries" + i,
+            //     "x": "x",
+            //     "y": "y",
+            //   }
+            // }
+            // myChart.seriesConfig = {};
+            // myChart.set('seriesConfig', sc);
+
+            var processData = function(data) {
+              aggregatedData.push(data);
+              if(aggregatedData.length === 2) {
+                converter.set('originalData', aggregatedData);
+              }
+            };
+
+            //get both set of data for 1st chart
+            var handleResponse = function(evt) {
+              processData(evt.detail.response);
             }
-          };
 
-          //get both set of data for 1st chart
-          var handleResponse = function(evt) {
-            processData(evt.detail.response);
-          }
+            fetch1.addEventListener('response', handleResponse);
+            fetch2.addEventListener('response', handleResponse);
 
-          fetch1.addEventListener('response', handleResponse);
-          fetch2.addEventListener('response', handleResponse);
+            //if the data has been fetched already manually kick the event handler
+            if(fetch1.lastResponse) {
+              processData(fetch1.lastResponse);
+            }
+            if(fetch2.lastResponse) {
+              processData(fetch2.lastResponse);
+            }
 
-          //if the data has been fetched already manually kick the event handler
-          if(fetch1.lastResponse) {
-            processData(fetch1.lastResponse);
-          }
-          if(fetch2.lastResponse) {
-            processData(fetch2.lastResponse);
-          }
+            chart.svg.append('rect')
+              .attr("y", 200)
+              .attr("x", 0)
+              .attr("height", 100)
+              .attr("width", 1000)
+              .attr('opacity',0.25)
+              .attr('fill', 'rgb(70,173,0)');
 
-          chart.svg.append('rect')
-            .attr("y", 200)
-            .attr("x", 0)
-            .attr("height", 100)
-            .attr("width", 1000)
-            .attr('opacity',0.25)
-            .attr('fill', 'rgb(70,173,0)');
+            rangepicker.range = {
+              "from":"2014-04-10T04:01:00.000Z",
+              "to":"2015-04-01T20:42:00.000Z"
+            };
 
-          rangepicker.range = {
-            "from":"2014-04-10T04:01:00.000Z",
-            "to":"2015-04-01T20:42:00.000Z"
-          };
-
-        btnSnap.addEventListener('click', function() {
-          timeSerie.getCombinedImage(function(result) {
-            var img = document.createElement('img');
-            img.src= result.image;
-            document.body.appendChild(img);
-         //   window.open().location = result.image;
-          }, true);
+          btnSnap.addEventListener('click', function() {
+            timeSerie.getCombinedImage(function(result) {
+              var img = document.createElement('img');
+              img.src= result.image;
+              document.body.appendChild(img);
+           //   window.open().location = result.image;
+            }, true);
         });
       });
     });

@@ -14,6 +14,29 @@ v1.0.0
 * added the ability to pass a navigator config and configure navigator axis
 * Updated register length to be dynamic based on if the navigator is included
 
+v0.6.2
+==================
+* Themeable
+
+v0.6.1
+==================
+* Update missed design dependencies
+
+v0.6.0
+==================
+* Updated dependencies
+
+v0.5.8
+==================
+* Ensure zoom button reposition on resize
+* Ensure zoom is reset when changing chart data
+* Zoom is now preserved when chart is resizing
+
+v0.5.7
+==================
+* updating to vis 0.7.x
+* adding clip path to cursor
+
 v0.5.6
 ==================
 * changing all devDeps to ^
