@@ -47,8 +47,8 @@ Creates an interactive timeseries chart
         <div class$="{{_registerWrapperClass}}">
           <px-vis-register
             id="register"
-            height="[[height]]"
-            margin="[[margin]]"
+            height="[[registerHeight]]"
+            margin="[[_chartOrNavMargin(disableNavigator, margin.*, marginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
             tooltip-data="[[tooltipData]]"
@@ -496,6 +496,10 @@ Creates an interactive timeseries chart
       displayThresholdTitle: {
         type: Boolean,
         value: false
+      },
+
+      registerHeight: {
+        type: Number
       }
     },
 
@@ -515,6 +519,7 @@ Creates an interactive timeseries chart
 
     ready:function(){
       this.set('numberOfLayers',4);
+      this.set('registerHeight', this.height);
       this._calcMargins();
     },
 
@@ -603,6 +608,11 @@ Creates an interactive timeseries chart
         'left': leftMargin
       });
     },
+
+    _chartOrNavMargin(disableNavigator) {
+      return disableNavigator ? this.margin : this.marginNav;
+    },
+
     _onIronResize: function() {
       if(this.preventResize) {
         return;
@@ -625,6 +635,7 @@ Creates an interactive timeseries chart
 
           this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
           this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
+          this.set('registerHeight', Math.max(wrapperRect.height, 0));
         }
       },50);
     },
