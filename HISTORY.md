@@ -1,3 +1,7 @@
+v0.6.3
+==================
+* Hotfix for wrapper class lost when vulcanizing APM
+
 v0.6.2
 ==================
 * Themeable

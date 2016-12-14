@@ -41,7 +41,7 @@ Creates an interactive timeseries chart
   <template>
     <style include="px-vis-timeseries-styles"></style>
 
-    <div id="wrapper" class="flex--row u-m safariFlex safariFlexDirectionRow flex wrapper" >
+    <div id="wrapper" class="flex--row u-m safariFlex safariFlexDirectionRow flex wrapper" style="width:100%; height:100%">
       <!-- Safari 8 flex needs -webkit, which autoprefixer doesn't supply, for some reason. IE10 has it's own implementation of flex which doesn't recognize flex-basis. Joy.-->
         <div
         class="inline--flex flex--col" style$="-webkit-flex-basis:[[width]]px;flex-basis:[[width]]px;-ms-flex-preferred-size:[[width]]px;"
