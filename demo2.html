@@ -16,6 +16,7 @@
         <link rel="import" href="../iron-ajax/iron-ajax.html"/>
         <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
         <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+        <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 
     </head>
 
@@ -67,12 +68,12 @@
               "size":"20"
             }
           }'
+          muted-series='{"y0": true}'
           navigator-config='{
             "xAxisConfig": {
               "tickFormat": "%b %d"
             }
           }'
-          muted-series='{"y0": true}'
           x-axis-config= '{
             "title": "Date",
             "tickFormat": "%b %d"
@@ -117,7 +118,6 @@
           handle-as="json"
           auto>
         </iron-ajax>
-
         <px-vis-data-converter
           id="converter"
           data-key = "series"
@@ -126,145 +126,7 @@
           series-config="{{seriesConfig}}"
           chart-data="{{chartData}}">
         </px-vis-data-converter>
-        <iron-ajax
-          url="../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
-          handle-as="json"
-          auto
-          last-response="{{eventData}}">
-        </iron-ajax>
 
-        <br />
-        <br />
-        <h2>Example of a timeseries with mostly default data and using the new data format</h2>
-        <px-vis-timeseries
-          width = "1000"
-          height = "500"
-          include-all-series
-          selection-type= "xy"
-          chart-data="[[chartData2]]"
-          register-config='{
-              "height": 50,
-              "type": "vertical"}'
-          x-axis-config='{
-            "title": "Date"
-          }'
-          y-axis-config='{
-            "title": "Widgets"
-          }'>
-        </px-vis-timeseries>
-        <iron-ajax
-          url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-          handle-as="json"
-          auto
-          last-response="{{chartData2}}"
-          >
-        </iron-ajax>
-
-        <br />
-        <br />
-        <h2>Example of a timeseries rendering to canvas</h2>
-        <px-vis-timeseries
-          width = "1000"
-          height = "500"
-          include-all-series
-          tooltip-config='{
-            "tooltipStyle": "dark"
-          }'
-          show-tooltip
-          prevent-resize
-          render-to-canvas
-          selection-type= "xy"
-          chart-data="[[chartData2]]"
-          register-config='{
-              "height": 50,
-              "type": "horizontal"}'
-          x-axis-config='{
-            "title": "Date"
-          }'
-          y-axis-config='{
-            "title": "Units"
-          }'
-          disable-navigator>
-        </px-vis-timeseries>
-
-         <!--<br />
-        <br />
-        <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
-        <px-vis-timeseries
-          width="1000"
-          height="500"
-          id="bigChart"
-          enable-tooltip
-          include-all-series
-          render-to-canvas
-          selection-type="xy"
-          default-series-config='{
-              "type": "line",
-              "x": "TimeStamp",
-              "xMin": "dynamic",
-              "xMax": "dynamic",
-              "yMin": "dynamic",
-              "yMax": "dynamic"
-            }'
-          chart-data="[[apmData]]">
-          </px-vis-timeseries>
-          <iron-ajax
-            url="../px-demo-data/demo-data/apm/timeseries.json"
-            handle-as="json"
-            auto
-            last-response="{{apmData}}"
-            >
-          </iron-ajax> -->
-
-        <br />
-        <br />
-        <h2>Example of a timeseries with a custom series configuration</h2>
-        <px-vis-timeseries
-          prevent-resize
-          width = "1000"
-          height = "500"
-          selection-type= "yAxis"
-          series-config='{
-            "y":{
-              "type": "scatter",
-              "name": "mySeries",
-              "color": "rgb(120,120,120)"
-            }
-          }'
-          chart-data="[[chartData3]]"
-          x-axis-config='{
-            "title": "Date"
-          }'
-          y-axis-config='{
-            "title": "Hz"
-          }'>
-        </px-vis-timeseries>
-        <iron-ajax
-            url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
-            handle-as="json"
-            auto
-            last-response="{{chartData3}}">
-        </iron-ajax>
-
-        <br />
-        <br />
-        <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
-        <px-vis-timeseries
-          id="chartCustom"
-          prevent-resize
-          options = '{
-            "width": "1000",
-            "height": "500"
-          }'
-          include-all-series
-          chart-data="[[chartData3]]"
-          x-axis-config='{
-            "title": "Date"
-          }'
-          y-axis-config='{
-            "title": "Temperature"
-          }'
-          ></px-vis-timeseries>
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -273,7 +135,6 @@
               rangepicker = document.getElementById('rangepicker'),
               btnSnap = document.getElementById('btnSnap'),
               timeSerie = document.getElementById('timeSerie'),
-              bigChart =  document.getElementById('bigChart'),
               fetch1 = document.getElementById('fetch1'),
               fetch2 = document.getElementById('fetch2'),
               converter = document.getElementById('converter'),
@@ -302,14 +163,6 @@
             processData(fetch2.lastResponse);
           }
 
-          chart.svg.append('rect')
-            .attr("y", 200)
-            .attr("x", 0)
-            .attr("height", 100)
-            .attr("width", 1000)
-            .attr('opacity',0.25)
-            .attr('fill', 'rgb(70,173,0)');
-
           rangepicker.range = {
             "from":"2014-04-10T04:01:00.000Z",
             "to":"2015-04-01T20:42:00.000Z"
@@ -318,7 +171,7 @@
         var menuConfig = [
           {
             'name': 'Delete',
-            'action': function(itemConfig, additionalDetail) {
+            'action': function(menutItem, additionalDetail) {
               var conf = this.seriesConfig;
               delete conf[additionalDetail.name];
               this.set('seriesConfig', {});
@@ -326,24 +179,35 @@
             },
             'actionContext': timeSerie,
             'eventName': 'delete',
-            'icon': 'fa-trash',
+            'icon': 'fa-trash'
           },
           {
             'name': 'Bring To Front',
-            'action': function(itemConfig, additionalDetail) {
+            'action': function(menutItem, additionalDetail) {
               this.set('serieToRedrawOnTop', additionalDetail.name);
             },
             'actionContext': timeSerie,
             'eventName': 'bring-to-front',
             'icon': 'fa-arrow-up'
+          },
+          {
+            'name': 'BOF',
+            'action': function(evt) {
+                var count=0;
+                var inter = setInterval(function() {
+                        cornify_add();
+                        count++
+                        if(count === 5) {
+                            clearInterval(inter);
+                        }
+                    },500);
+            },
+            'eventName': 'BOF',
+            'icon': 'fa-star-o'
           }
         ];
-        
+       
         timeSerie.set('dynamicMenuConfig', menuConfig);
-
-        timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
-          console.log('test delete')
-        }); 
 
         btnSnap.addEventListener('click', function() {
           timeSerie.getCombinedImage(function(result) {
