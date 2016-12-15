@@ -48,6 +48,8 @@ Creates an interactive timeseries chart
           <px-vis-register
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
+            height="[[registerHeight]]"
+            margin="[[_chartOrNavMargin(disableNavigator, margin.*, marginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
             tooltip-data="[[tooltipData]]"
@@ -111,12 +113,15 @@ Creates an interactive timeseries chart
       </px-vis-tooltip>
     </template>
     <px-vis-zoom
+      id="zoom"
       margin="[[margin]]"
       width="[[width]]"
       height="[[height]]"
       extents-data="[[extentsData]]"
       px-svg-elem=[[pxSvgElem]]
-      selected-domain="{{selectedDomain}}">
+      selected-domain="{{selectedDomain}}"
+      width="[[width]]"
+      height="[[height]]">
     </px-vis-zoom>
     <px-vis-scale
       x-axis-type="time"
@@ -362,7 +367,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.layers,
       PxVisBehaviorChart.navigatorConfig,
       PxVisBehavior.serieToRedrawOnTop,
-      PxVisBehavior.dynamicMenuConfig
+      PxVisBehavior.dynamicMenuConfig,
+      PxVisBehaviorChart.dataVisColorTheming
     ],
 
     /**
@@ -496,6 +502,10 @@ Creates an interactive timeseries chart
       displayThresholdTitle: {
         type: Boolean,
         value: false
+      },
+
+      registerHeight: {
+        type: Number
       }
     },
 
@@ -515,6 +525,7 @@ Creates an interactive timeseries chart
 
     ready:function(){
       this.set('numberOfLayers',4);
+      this.set('registerHeight', this.height);
       this._calcMargins();
     },
 
@@ -603,6 +614,11 @@ Creates an interactive timeseries chart
         'left': leftMargin
       });
     },
+
+    _chartOrNavMargin(disableNavigator) {
+      return disableNavigator ? this.margin : this.marginNav;
+    },
+
     _onIronResize: function() {
       if(this.preventResize) {
         return;
@@ -625,19 +641,21 @@ Creates an interactive timeseries chart
 
           this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
           this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
+          this.set('registerHeight', Math.max(wrapperRect.height, 0));
         }
       },50);
     },
+
     /**
      * gets a combined graphical snapshot of the chart and its navigator
      */
-    getCombinedImage: function(callback) {
+    getCombinedImage: function(callback,  renderLegend) {
       this.getImage(function(chartSnap) {
-        if(!this.disableNavigator){
+        if(!this.disableNavigator) {
           this.$$('#navigator').getImage(function(navigatorSnap) {
             var canvas = document.createElement('canvas'),
                 context;
-            canvas.width = chartSnap.canvas.width + navigatorSnap.canvas.width;
+            canvas.width = Math.max(chartSnap.canvas.width, navigatorSnap.canvas.width);
             canvas.height = chartSnap.canvas.height + navigatorSnap.canvas.height;
             context = canvas.getContext('2d');
 
@@ -647,7 +665,7 @@ Creates an interactive timeseries chart
             callback({canvas: canvas, image: canvas.toDataURL("image/png")});
           }.bind(this));
         }
-      }.bind(this));
+      }.bind(this), renderLegend);
     },
 
     _showTooltipChanged: function() {

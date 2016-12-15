@@ -111,9 +111,9 @@ function runCustomTests() {
 
   suite('px-vis-timeseries includeAllSeries setup works', function() {
     var IASChart = document.getElementById('IASChart');
-    var colors = commonColors.properties.colors.value;
-    var colorOrder = commonColors.properties.seriesColorOrder.value;
-    var colorSet = commonColors.properties.dataVisColors.value;
+    var colors = baseColors.properties.colors.value;
+    var colorOrder = dataVisColors.properties.seriesColorOrder.value;
+    var colorSet = dataVisColors.properties.dataVisColors.value;
 
     suiteSetup(function(done){
       var d = [{
@@ -252,9 +252,9 @@ function runCustomTests() {
 
   suite('px-vis-timeseries config setup works', function() {
     var configChart = document.getElementById('configChart');
-    var colors = commonColors.properties.colors.value;
-    var colorOrder = commonColors.properties.seriesColorOrder.value;
-    var colorSet = commonColors.properties.dataVisColors.value;
+    var colors = baseColors.properties.colors.value;
+    var colorOrder = dataVisColors.properties.seriesColorOrder.value;
+    var colorSet = dataVisColors.properties.dataVisColors.value;
 
     suiteSetup(function(done){
       var d = [{
