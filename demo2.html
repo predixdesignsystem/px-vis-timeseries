@@ -1,0 +1,224 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>px-vis-timeseries Demo</title>
+        <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+        <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+        <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+
+        <link rel="import" href="../px-theme/px-theme-styles.html">
+        <style include="px-theme-styles" is="custom-style"></style>
+
+        <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+        <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+        <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+
+    </head>
+
+    <body style="padding:30px">
+      <template id="template" is="dom-bind">
+        <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+
+        <px-rangepicker
+          id="rangepicker"
+          range="{{range}}"
+          time-zone="UTC"
+          date-format="YYYY/MM/DD"
+          time-format="hh:mm:ss A"
+          show-buttons="true"
+          show-time-zone="text">
+        </px-rangepicker>
+        <br/>
+        <span>Append image at the bottom of the page</span>
+        <button id="btnSnap">Go</button>
+        <px-vis-timeseries
+          id="timeSerie"
+          height="500"
+          threshold-data='[
+            { "for":"y0", "type":"max", "value":35.4784 },
+            { "for":"y0", "type":"min", "value":7.6531 },
+            { "for":"y0", "type":"mean", "value":15.330657585139331 },
+            { "for":"y1", "type":"mean", "value":75 },
+            { "for":"", "type":"quartile", "value":17 }
+          ]',
+          selection-type="xAxis"
+          show-tooltip
+          event-config= '{
+            "Recalibrate":{
+              "color": "blue",
+              "icon": "fa-camera",
+              "type": "fa",
+              "offset":[0,0]
+            },
+            "Fan start":{
+              "color": "green",
+              "icon": "\uf015",
+              "type": "unicode",
+              "offset":[1,0]
+            },
+            "Fan stop":{
+              "icon": "ge_logo.png",
+              "type": "image",
+              "offset":[0,-20],
+              "size":"20"
+            }
+          }'
+          muted-series='{"y0": true}'
+          navigator-config='{
+            "xAxisConfig": {
+              "tickFormat": "%b %d"
+            }
+          }'
+          x-axis-config= '{
+            "title": "Date",
+            "tickFormat": "%b %d"
+          }'
+          y-axis-config= '{
+            "title": "Hz"
+          }'
+          register-config='{
+              "height": 50,
+              "type": "vertical"}'
+          series-config='[[seriesConfig]]'
+          threshold-config='{
+            "max": {
+              "color": "red",
+              "dashPattern": "5,0",
+              "title": "MAX"
+            }
+          }'
+          display-threshold-title
+          default-series-config='{
+              "type": "line",
+              "yAxisUnit": "Hz",
+              "x": "TimeStamp",
+              "xMin": "dynamic",
+              "xMax": "dynamic",
+              "yMin": 0,
+              "yMax": "dynamic"
+            }'
+          chart-data="[[chartData]]"
+          event-data="[[eventData]]"
+          range="[[range]]">
+        </px-vis-timeseries>
+        <iron-ajax
+          id="fetch1"
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch2"
+          url="../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <px-vis-data-converter
+          id="converter"
+          data-key = "series"
+          id-key = "name"
+          original-data = '[[originalData]]'
+          series-config="{{seriesConfig}}"
+          chart-data="{{chartData}}">
+        </px-vis-data-converter>
+
+    </template>
+    <script>
+      window.addEventListener('WebComponentsReady', function() {
+        setTimeout(function() {
+          var chart = document.getElementById('chartCustom'),
+              rangepicker = document.getElementById('rangepicker'),
+              btnSnap = document.getElementById('btnSnap'),
+              timeSerie = document.getElementById('timeSerie'),
+              fetch1 = document.getElementById('fetch1'),
+              fetch2 = document.getElementById('fetch2'),
+              converter = document.getElementById('converter'),
+              aggregatedData = [];
+
+          var processData = function(data) {
+            aggregatedData.push(data);
+            if(aggregatedData.length === 2) {
+              converter.set('originalData', aggregatedData);
+            }
+          };
+
+          //get both set of data for 1st chart
+          var handleResponse = function(evt) {
+            processData(evt.detail.response);
+          }
+
+          fetch1.addEventListener('response', handleResponse);
+          fetch2.addEventListener('response', handleResponse);
+
+          //if the data has been fetched already manually kick the event handler
+          if(fetch1.lastResponse) {
+            processData(fetch1.lastResponse);
+          }
+          if(fetch2.lastResponse) {
+            processData(fetch2.lastResponse);
+          }
+
+          rangepicker.range = {
+            "from":"2014-04-10T04:01:00.000Z",
+            "to":"2015-04-01T20:42:00.000Z"
+          };
+
+        var menuConfig = [
+          {
+            'name': 'Delete',
+            'action': function(menutItem, additionalDetail) {
+              var conf = this.seriesConfig;
+              delete conf[additionalDetail.name];
+              this.set('seriesConfig', {});
+              this.set('seriesConfig', conf);
+            },
+            'actionContext': timeSerie,
+            'eventName': 'delete',
+            'icon': 'fa-trash'
+          },
+          {
+            'name': 'Bring To Front',
+            'action': function(menutItem, additionalDetail) {
+              this.set('serieToRedrawOnTop', additionalDetail.name);
+            },
+            'actionContext': timeSerie,
+            'eventName': 'bring-to-front',
+            'icon': 'fa-arrow-up'
+          },
+          {
+            'name': 'BOF',
+            'action': function(evt) {
+                var count=0;
+                var inter = setInterval(function() {
+                        cornify_add();
+                        count++
+                        if(count === 5) {
+                            clearInterval(inter);
+                        }
+                    },500);
+            },
+            'eventName': 'BOF',
+            'icon': 'fa-star-o'
+          }
+        ];
+       
+        timeSerie.set('dynamicMenuConfig', menuConfig);
+
+        btnSnap.addEventListener('click', function() {
+          timeSerie.getCombinedImage(function(result) {
+            var img = document.createElement('img');
+            img.src= result.image;
+            document.body.appendChild(img);
+         //   window.open().location = result.image;
+          }, true);
+        });
+      });
+    });
+    </script>
+    </body>
+</html>

@@ -74,6 +74,7 @@
               "tickFormat": "%b %d"
             }
           }'
+          muted-series='{"y0": true}'
           x-axis-config= '{
             "title": "Date",
             "tickFormat": "%b %d"
@@ -145,7 +146,7 @@
           chart-data="[[chartData2]]"
           register-config='{
               "height": 50,
-              "type": "horizontal"}'
+              "type": "vertical"}'
           x-axis-config='{
             "title": "Date"
           }'
@@ -188,7 +189,7 @@
           disable-navigator>
         </px-vis-timeseries>
 
-         <br />
+         <!--<br />
         <br />
         <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
@@ -220,7 +221,7 @@
             auto
             last-response="{{apmData}}"
             >
-          </iron-ajax>
+          </iron-ajax>-->
 
         <br />
         <br />
@@ -334,13 +335,43 @@
               "to":"2015-04-01T20:42:00.000Z"
             };
 
-          btnSnap.addEventListener('click', function() {
-            timeSerie.getCombinedImage(function(result) {
-              var img = document.createElement('img');
-              img.src= result.image;
-              document.body.appendChild(img);
-           //   window.open().location = result.image;
-            }, true);
+        var menuConfig = [
+          {
+            'name': 'Delete',
+            'action': function(itemConfig, additionalDetail) {
+              var conf = this.seriesConfig;
+              delete conf[additionalDetail.name];
+              this.set('seriesConfig', {});
+              this.set('seriesConfig', conf);
+            },
+            'actionContext': timeSerie,
+            'eventName': 'delete',
+            'icon': 'fa-trash',
+          },
+          {
+            'name': 'Bring To Front',
+            'action': function(itemConfig, additionalDetail) {
+              this.set('serieToRedrawOnTop', additionalDetail.name);
+            },
+            'actionContext': timeSerie,
+            'eventName': 'bring-to-front',
+            'icon': 'fa-arrow-up'
+          }
+        ];
+        
+        timeSerie.set('dynamicMenuConfig', menuConfig);
+
+        timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
+          console.log('test delete')
+        }); 
+
+        btnSnap.addEventListener('click', function() {
+          timeSerie.getCombinedImage(function(result) {
+            var img = document.createElement('img');
+            img.src= result.image;
+            document.body.appendChild(img);
+         //   window.open().location = result.image;
+          }, true);
         });
       });
     });

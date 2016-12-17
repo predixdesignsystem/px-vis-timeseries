@@ -47,6 +47,7 @@ Creates an interactive timeseries chart
         <div class$="{{_registerWrapperClass}}">
           <px-vis-register
             id="register"
+            dynamic-menu-config="[[dynamicMenuConfig]]"
             height="[[registerHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, margin.*, marginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
@@ -369,7 +370,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.layers,
       PxVisBehaviorChart.navigatorConfig,
       PxVisBehavior.serieToRedrawOnTop,
-      PxVisBehaviorChart.dataVisColorTheming
+      PxVisBehavior.dynamicMenuConfig,
+      PxColorsBehavior.dataVisColorTheming
     ],
 
     /**
@@ -516,7 +518,7 @@ Creates an interactive timeseries chart
       '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
-      '_registerConfigChanged(registerConfig.*, registerLocation)'
+      '_registerConfigChanged(registerConfig.*)'
     ],
 
     listeners: {
