@@ -1,6 +1,10 @@
-v0.6.3
+v0.6.4
 ==================
 * Bump color design
+
+v0.6.3
+==================
+* Hotfix for wrapper class lost when vulcanizing APM
 
 v0.6.2
 ==================
