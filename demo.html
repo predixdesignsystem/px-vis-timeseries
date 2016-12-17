@@ -209,7 +209,10 @@
               "yMin": "dynamic",
               "yMax": "dynamic"
             }'
-          chart-data="[[apmData]]">
+          chart-data="[[apmData]]"
+          chart-extents='{
+            "y": [-25, 25]
+          }'>
           </px-vis-timeseries>
           <iron-ajax
             url="../px-demo-data/demo-data/apm/timeseries.json"
