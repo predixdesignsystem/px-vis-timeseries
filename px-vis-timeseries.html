@@ -49,7 +49,7 @@ Creates an interactive timeseries chart
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
             height="[[registerHeight]]"
-            margin="[[_chartOrNavMargin(disableNavigator, margin.*, marginNav.*)]]"
+            margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
             tooltip-data="[[tooltipData]]"
@@ -65,7 +65,7 @@ Creates an interactive timeseries chart
               class="flex__item"
               width="[[width]]"
               height="[[height]]"
-              margin="[[margin]]"
+              margin="[[_internalMargin]]"
               canvas-context="{{canvasContext}}"
               svg="{{svg}}"
               px-svg-elem="{{pxSvgElem}}"
@@ -79,7 +79,7 @@ Creates an interactive timeseries chart
                   y-axis-type="linear"
                   width="[[width]]"
                   height="100"
-                  margin="[[marginNav]]"
+                  margin="[[_internalMarginNav]]"
                   default-series-config="[[defaultSeriesConfig]]"
                   series-config="[[seriesConfig]]"
                   include-all-series="[[includeAllSeries]]"
@@ -103,7 +103,7 @@ Creates an interactive timeseries chart
         hover-target=[[mouseRect]]
         mouse-position="[[mousePosition]]"
         width="250"
-        margin="[[margin]]"
+        margin="[[_internalMargin]]"
         chart-data="[[chartData]]"
         tooltip-data="[[tooltipData]]"
         complete-series-config="[[completeSeriesConfig]]"
@@ -114,7 +114,7 @@ Creates an interactive timeseries chart
     </template>
     <px-vis-zoom
       id="zoom"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
       extents-data="[[extentsData]]"
@@ -128,7 +128,7 @@ Creates an interactive timeseries chart
       y-axis-type="linear"
       width="[[width]]"
       height="[[height]]"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       chart-data="[[chartData]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-extents="[[chartExtents]]"
@@ -146,7 +146,7 @@ Creates an interactive timeseries chart
       y="[[y]]"
       width="[[width]]"
       height="[[height]]"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       clip-path="{{clipPath}}"
       series-clip-path="{{seriesClipPath}}">
     </px-vis-clip-path>
@@ -167,7 +167,7 @@ Creates an interactive timeseries chart
             no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
             width="[[width]]"
             height="[[height]]"
-            margin="[[margin]]"
+            margin="[[_internalMargin]]"
             clip-path
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
@@ -240,7 +240,7 @@ Creates an interactive timeseries chart
       <px-vis-gridlines
         svg="[[svgLower]]"
         axis="[[x]]"
-        margin="[[margin]]"
+        margin="[[_internalMargin]]"
         length="[[height]]"
         orientation="bottom"
         current-domain="[[currentDomainX]]"
@@ -252,7 +252,7 @@ Creates an interactive timeseries chart
       <px-vis-gridlines
         svg="[[svgLower]]"
         axis="[[y]]"
-        margin="[[margin]]"
+        margin="[[_internalMargin]]"
         length="[[width]]"
         orientation="left"
         current-domain="[[currentDomainY]]"
@@ -265,7 +265,7 @@ Creates an interactive timeseries chart
       svg="[[layer.0]]"
       axis="[[x]]"
       axis-type="time"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
       orientation="bottom"
@@ -280,7 +280,7 @@ Creates an interactive timeseries chart
       svg="[[layer.0]]"
       axis="[[y]]"
       axis-type="linear"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
       orientation="left"
@@ -294,7 +294,7 @@ Creates an interactive timeseries chart
       svg="[[layer.3]]"
       width="[[width]]"
       height="[[height]]"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       x-axis-type="time"
       series-keys="[[_seriesKeys]]"
       complete-series-config="[[completeSeriesConfig]]"
@@ -315,7 +315,7 @@ Creates an interactive timeseries chart
       svg="[[layer.2]]"
       width="[[width]]"
       height="[[height]]"
-      margin="[[margin]]"
+      margin="[[_internalMargin]]"
       vertical-line="[[verticalLine]]"
       horizontal-line="[[horizontalLine]]"
       circle-point="[[circlePoint]]"
@@ -387,14 +387,14 @@ Creates an interactive timeseries chart
        *
        * @type Array
        */
-      series:{
+      series: {
         type:Array
       },
       /**
        *
        * @type Array
        */
-      events:{
+      events: {
         type:Array
       },
       /**
@@ -406,7 +406,7 @@ Creates an interactive timeseries chart
        * @type String
        * @default bottom
        */
-      xAxisLocation:{
+      xAxisLocation: {
         type:String,
         value:'bottom'
       },
@@ -419,7 +419,7 @@ Creates an interactive timeseries chart
        * @type String
        * @default left
        */
-      yAxisLocation:{
+      yAxisLocation: {
         type:String,
         value:'left'
       },
@@ -431,7 +431,15 @@ Creates an interactive timeseries chart
        * @default { top: 5, right: 5, bottom: 5, left: 5}
        * @private
        */
-      marginNav:{
+      marginNav: {
+        type:Object,
+        value: { top: 5, right: 5, bottom: 5, left: 5},
+      },
+      _internalMargin: {
+        type: Object,
+        value: { top: 0, right: 0, bottom: 0, left: 0},
+      },
+      _internalMarginNav: {
         type:Object,
         value: { top: 5, right: 5, bottom: 5, left: 5},
       },
@@ -441,7 +449,7 @@ Creates an interactive timeseries chart
        * @property options
        * @type Object
       */
-      options:{
+      options: {
         type:Object,
         notify:true,
         observer:'_setConfig'
@@ -454,7 +462,7 @@ Creates an interactive timeseries chart
        * @property eventData
        * @type Object
        */
-      eventData:{
+      eventData: {
         type: Array,
         notify: true
       },
@@ -481,7 +489,7 @@ Creates an interactive timeseries chart
         value: false
       },
 
-      mousePosition:{
+      mousePosition: {
         type: Array
       },
       renderToCanvas: {
@@ -518,7 +526,8 @@ Creates an interactive timeseries chart
       '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
-      '_registerConfigChanged(registerConfig.*)'
+      '_registerConfigChanged(registerConfig.*)',
+      '_calcMargins(margin.*, marginNav.*)'
     ],
 
     listeners: {
@@ -526,7 +535,7 @@ Creates an interactive timeseries chart
       'px-vis-selected-domain-updated': '_setSelectedDomain'
     },
 
-    ready:function(){
+    ready:function() {
       this.set('numberOfLayers',4);
       this.set('registerHeight', this.height);
       this._calcMargins();
@@ -545,14 +554,14 @@ Creates an interactive timeseries chart
      *
      * @method _setConfig
      */
-    _setConfig: function(){
-      if(typeof(this.options) !== 'object'){
+    _setConfig: function() {
+      if(typeof(this.options) !== 'object') {
         console.error('Configuration options must be valid JSON');
         return;
       }
 
       var keys = Object.keys(this.options);
-      for(var i = 0; i < keys.length; i++){
+      for(var i = 0; i < keys.length; i++) {
         var key = keys[i];
         this.set(key, this.options[key]);
       }
@@ -585,41 +594,44 @@ Creates an interactive timeseries chart
      *
      * @method _calcMargins
      */
-    _calcMargins:function(){
-      var topMargin = 25,
-          rightMargin = 10,
-          bottomMargin = 10,
-          leftMargin = 10;
+    _calcMargins:function() {
+      this.debounce('_calcMargin', function() {
 
-      if(this.xAxisLocation === 'bottom'){
-        bottomMargin = 40;
-      } else if(this.xAxisLocation === 'top'){
-        topMargin = 40;
-      }
+        var topMargin = 25,
+            rightMargin = 10,
+            bottomMargin = 10,
+            leftMargin = 10;
 
-      // TODO if multiple Y...
-      if(this.yAxisLocation === 'left'){
-        leftMargin = 50;
-      } else if(this.yAxisLocation === 'right'){
-        rightMargin = 40;
-      }
+        if(this.xAxisLocation === 'bottom') {
+          bottomMargin = 40;
+        } else if(this.xAxisLocation === 'top') {
+          topMargin = 40;
+        }
 
-      this.set('margin', {
-        'top': topMargin,
-        'right': rightMargin,
-        'bottom': bottomMargin,
-        'left': leftMargin
-      });
-      this.set('marginNav', {
-        'top': 5,
-        'right': rightMargin,
-        'bottom': 20,
-        'left': leftMargin
-      });
+        // TODO if multiple Y...
+        if(this.yAxisLocation === 'left') {
+          leftMargin = 50;
+        } else if(this.yAxisLocation === 'right') {
+          rightMargin = 40;
+        }
+
+        this.set('_internalMargin', {
+          'top': topMargin + Number(this.margin.top),
+          'right': rightMargin + Number(this.margin.right),
+          'bottom': bottomMargin + Number(this.margin.bottom),
+          'left': leftMargin + Number(this.margin.left)
+        });
+        this.set('_internalMarginNav', {
+          'top': 5 + Number(this.marginNav.top),
+          'right': rightMargin + Number(this.marginNav.right),
+          'bottom': 20 + Number(this.marginNav.bottom),
+          'left': leftMargin + Number(this.marginNav.left)
+        });
+      }, 5);
     },
 
     _chartOrNavMargin: function(disableNavigator) {
-      return disableNavigator ? this.margin : this.marginNav;
+      return disableNavigator ? this._internalMargin : this._internalMarginNav;
     },
 
     _onIronResize: function() {
