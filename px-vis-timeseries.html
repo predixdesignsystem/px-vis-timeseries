@@ -151,7 +151,7 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[y]]"
+            y="[[_returnYScale(item,seriesConfig)]]"
             domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
@@ -171,7 +171,7 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[y]]"
+            y="[[_returnYScale(item,seriesConfig)]]"
             domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
@@ -187,7 +187,7 @@ Creates an interactive timeseries chart
           chart-data="[[chartData]]"
           complete-series-config="[[completeSeriesConfig]]"
           x="[[x]]"
-          y="[[y]]"
+          y="[[_returnYScale(item,seriesConfig)]]"
           current-domain-x="[[currentDomainX]]"
           current-domain-y="[[currentDomainY]]"
           domain-changed="[[domainChanged]]"
@@ -222,7 +222,7 @@ Creates an interactive timeseries chart
       display-title="[[displayThresholdTitle]]"
       threshold-config="[[thresholdConfig]]"
       x="[[x]]"
-      y="[[y]]"
+      y="[[_returnYScale(item,seriesConfig)]]"
       current-domain-x="[[currentDomainX]]"
       current-domain-y="[[currentDomainY]]"
       show-threshold-box="[[showThresholdBox]]">
@@ -236,7 +236,7 @@ Creates an interactive timeseries chart
       margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
-      orientation="bottom"
+      orientation="[[xAxisLocation]]"
       label-position="after"
       complete-series-config="[[completeSeriesConfig]]"
       prevent-series-bar
@@ -244,7 +244,7 @@ Creates an interactive timeseries chart
       current-domain="[[currentDomainX]]">
     </px-vis-axis>
 
-    <template is="dom-if" if="[[!_isMultiAxis]]" restamp>
+    <template id="singleAxisTemplate" is="dom-if" if="[[!_isMultiAxis]]" restamp>
       <px-vis-axis
         id="yAxis"
         svg="[[layer.0]]"
@@ -253,7 +253,7 @@ Creates an interactive timeseries chart
         margin="[[_internalMargin]]"
         width="[[width]]"
         height="[[height]]"
-        orientation="left"
+        orientation="[[yAxisLocation]]"
         complete-series-config="[[completeSeriesConfig]]"
         muted-series=[[mutedSeries]]
         domain-changed="[[domainChanged]]"
@@ -261,10 +261,38 @@ Creates an interactive timeseries chart
       </px-vis-axis>
     </template>
 
-    <template is="dom-if" if="[[_isMultiAxis]]" restamp>
-      <!-- Multi Scale -->
-      <!-- Multi Axis Left -->
-      <!-- Multi Axis Right -->
+    <template id="multiAxisTemplate" is="dom-if" if="[[_isMultiAxis]]" restamp>
+      <px-vis-multi-scale
+        width="[[width]]"
+        height="[[height]]"
+        margin="[[margin]]"
+        axes="[[axes]]"
+        dimensions="[[dimensions]]"
+        chart-data="[[chartData]]"
+        chart-extents="[[_internalMultiChartExtents]]"
+        y="{{_multiY}}"
+        current-domain-y="{{_multiCurrentDomainY}}"
+        domain-changed="{{_multiDomainChanged}}">
+      </px-vis-multi-scale>
+      <px-vis-multi-axis
+        id="multiAxisLeft"
+        orientation="left"
+        svg="[[layer.0]]"
+        width="[[width]]"
+        height="[[height]]"
+        margin="[[margin]]"
+        x="[[_multiX]]"
+        y="[[_multiY]]"
+        domain-changed="[[_multiDomainChanged]]"
+        complete-series-config="{{completeSeriesConfig}}"
+        series-key="[[seriesKey]]"
+        chart-data="[[chartData]]"
+        dimensions="[[dimensions]]"
+        axes="[[axes]]"
+        match-ticks="[[matchTicks]]"
+        append-unit-in-title
+        axis-groups="{{axisGroups}}">
+      </px-vis-multi-axis>
     </template>
 
     <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
@@ -572,8 +600,21 @@ Creates an interactive timeseries chart
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
     },
     _yAxisConfigChanged: function(conf) {
-      this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+      if(this.$$('#yAxis')) {
+        this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+      } else if(!this.$$('#yAxis') && !this._isMultiAxis) {
+        this.$.singleAxisTemplate.render();
+        this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+      }
     },
+    // _multiYConfigChanged: function(conf) {
+    //   if(this.$$('#yAxis')) {
+    //     this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+    //   } else if(!this.$$('#yAxis') && !this._isMultiAxis) {
+    //     this.$.singleAxisTemplate.render();
+    //     this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+    //   }
+    // },
     _tooltipConfigChanged: function(conf) {
       if(this.$$('#tooltip')) {
         this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
@@ -614,7 +655,7 @@ Creates an interactive timeseries chart
           if(this.yAxisLocation === 'left') {
             leftMargin = 50;
           } else if(this.yAxisLocation === 'right') {
-            rightMargin = 40;
+            rightMargin = 50;
           }
 
           margin = {
