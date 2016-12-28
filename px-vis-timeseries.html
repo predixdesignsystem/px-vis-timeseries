@@ -20,6 +20,7 @@
 <link rel="import" href="../px-vis/px-vis-threshold.html"/>
 <link rel="import" href="../px-vis/px-vis-clip-path.html"/>
 <link rel="import" href="../px-vis/px-vis-toolbar.html"/>
+<link rel="import" href="../px-vis/px-vis-multi-axis.html"/>
 
 
 <!--
@@ -159,8 +160,8 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[_returnYScale(item,seriesConfig)]]"
-            domain-changed="[[domainChanged]]"
+            y="[[_returnYScale(item, seriesConfig, domainChanged, _multiDomainChanged)]]"
+            domain-changed="[[_returnDomainChanged(domainChanged, _multiDomainChanged)]]"
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
             no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
@@ -179,8 +180,8 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[_returnYScale(item,seriesConfig)]]"
-            domain-changed="[[domainChanged]]"
+            y="[[_returnYScale(item, seriesConfig, domainChanged, _multiDomainChanged)]]"
+            domain-changed="[[_returnDomainChanged(domainChanged, _multiDomainChanged)]]"
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
@@ -195,10 +196,10 @@ Creates an interactive timeseries chart
           chart-data="[[chartData]]"
           complete-series-config="[[completeSeriesConfig]]"
           x="[[x]]"
-          y="[[_returnYScale(item,seriesConfig)]]"
+          y="[[_returnYScale(item, seriesConfig, domainChanged, _multiDomainChanged)]]"
+          domain-changed="[[_returnDomainChanged(domainChanged, _multiDomainChanged)]]"
           current-domain-x="[[currentDomainX]]"
           current-domain-y="[[currentDomainY]]"
-          domain-changed="[[domainChanged]]"
           clip-path="[[seriesClipPath]]"
           muted-series="[[mutedSeries]]"
           serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
@@ -230,7 +231,7 @@ Creates an interactive timeseries chart
       display-title="[[displayThresholdTitle]]"
       threshold-config="[[thresholdConfig]]"
       x="[[x]]"
-      y="[[_returnYScale(item,seriesConfig)]]"
+      y="[[y]]"
       current-domain-x="[[currentDomainX]]"
       current-domain-y="[[currentDomainY]]"
       show-threshold-box="[[showThresholdBox]]">
@@ -270,6 +271,7 @@ Creates an interactive timeseries chart
     </template>
 
     <template id="multiAxisTemplate" is="dom-if" if="[[_isMultiAxis]]" restamp>
+      [[_isMultiAxis]]
       <px-vis-multi-scale
         width="[[width]]"
         height="[[height]]"
@@ -279,8 +281,8 @@ Creates an interactive timeseries chart
         chart-data="[[chartData]]"
         chart-extents="[[_internalMultiChartExtents]]"
         y="{{_multiY}}"
-        current-domain-y="{{_multiCurrentDomainY}}"
-        domain-changed="{{_multiDomainChanged}}">
+        domain-changed="{{_multiDomainChanged}}"
+        current-domain-y="{{_multiCurrentDomainY}}">
       </px-vis-multi-scale>
       <px-vis-multi-axis
         id="multiAxisLeft"
@@ -292,7 +294,7 @@ Creates an interactive timeseries chart
         x="[[_multiX]]"
         y="[[_multiY]]"
         domain-changed="[[_multiDomainChanged]]"
-        complete-series-config="{{completeSeriesConfig}}"
+        complete-series-config="[[completeSeriesConfig]]"
         series-key="[[seriesKey]]"
         chart-data="[[chartData]]"
         dimensions="[[dimensions]]"
