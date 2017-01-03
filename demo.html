@@ -47,7 +47,7 @@
             { "for":"y1", "type":"mean", "value":75 },
             { "for":"", "type":"quartile", "value":17 }
           ]',
-          selection-type="xAxis"
+          selection-type="xy"
           show-tooltip
           event-config= '{
             "Recalibrate":{
@@ -93,15 +93,6 @@
             }
           }'
           display-threshold-title
-          default-series-config='{
-              "type": "line",
-              "yAxisUnit": "Hz",
-              "x": "TimeStamp",
-              "xMin": "dynamic",
-              "xMax": "dynamic",
-              "yMin": 0,
-              "yMax": "dynamic"
-            }'
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]">
@@ -285,56 +276,56 @@
               converter = document.getElementById('converter'),
               aggregatedData = [];
 
-            // var myChart = document.getElementById('myChart');
-            // var sc = myChart.seriesConfig;
-            // for(var i = 0; i < 40; i++){
-            //   var n = 'series' + i
-            //   sc[n] = {
-            //     "name": "mySeries" + i,
-            //     "x": "x",
-            //     "y": "y",
-            //   }
-            // }
-            // myChart.seriesConfig = {};
-            // myChart.set('seriesConfig', sc);
+          // var myChart = document.getElementById('myChart');
+          // var sc = myChart.seriesConfig;
+          // for(var i = 0; i < 40; i++){
+          //   var n = 'series' + i
+          //   sc[n] = {
+          //     "name": "mySeries" + i,
+          //     "x": "x",
+          //     "y": "y",
+          //   }
+          // }
+          // myChart.seriesConfig = {};
+          // myChart.set('seriesConfig', sc);
 
-            var processData = function(data) {
-              aggregatedData.push(data);
-              if(aggregatedData.length === 2) {
-                aggregatedData[0]["axis"] = "left_1";
-                aggregatedData[1]["axis"] = "right_1";
-                converter.set('originalData', aggregatedData);
-              }
-            };
-
-            //get both set of data for 1st chart
-            var handleResponse = function(evt) {
-              processData(evt.detail.response);
+          var processData = function(data) {
+            aggregatedData.push(data);
+            if(aggregatedData.length === 2) {
+              aggregatedData[0]["axis"] = "left_1";
+              aggregatedData[1]["axis"] = "right_1";
+              converter.set('originalData', aggregatedData);
             }
+          };
 
-            fetch1.addEventListener('response', handleResponse);
-            fetch2.addEventListener('response', handleResponse);
+          //get both set of data for 1st chart
+          var handleResponse = function(evt) {
+            processData(evt.detail.response);
+          }
 
-            //if the data has been fetched already manually kick the event handler
-            if(fetch1.lastResponse) {
-              processData(fetch1.lastResponse);
-            }
-            if(fetch2.lastResponse) {
-              processData(fetch2.lastResponse);
-            }
+          fetch1.addEventListener('response', handleResponse);
+          fetch2.addEventListener('response', handleResponse);
 
-            chart.svg.append('rect')
-              .attr("y", 200)
-              .attr("x", 0)
-              .attr("height", 100)
-              .attr("width", 1000)
-              .attr('opacity',0.25)
-              .attr('fill', 'rgb(70,173,0)');
+          //if the data has been fetched already manually kick the event handler
+          if(fetch1.lastResponse) {
+            processData(fetch1.lastResponse);
+          }
+          if(fetch2.lastResponse) {
+            processData(fetch2.lastResponse);
+          }
 
-            rangepicker.range = {
-              "from":"2014-04-10T04:01:00.000Z",
-              "to":"2015-04-01T20:42:00.000Z"
-            };
+          // chart.svg.append('rect')
+          //   .attr("y", 200)
+          //   .attr("x", 0)
+          //   .attr("height", 100)
+          //   .attr("width", 1000)
+          //   .attr('opacity',0.25)
+          //   .attr('fill', 'rgb(70,173,0)');
+
+          rangepicker.set('range', {
+            "from":"2014-04-10T04:01:00.000Z",
+            "to":"2015-04-01T20:42:00.000Z"
+          });
 
         var menuConfig = [
           {
