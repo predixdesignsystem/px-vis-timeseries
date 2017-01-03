@@ -163,6 +163,7 @@ Creates an interactive timeseries chart
             x="[[x]]"
             y="[[y]]"
             domain-changed="[[domainChanged]]"
+            show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
             no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
             width="[[width]]"
@@ -182,6 +183,7 @@ Creates an interactive timeseries chart
             x="[[x]]"
             y="[[y]]"
             domain-changed="[[domainChanged]]"
+            show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
@@ -334,7 +336,8 @@ Creates an interactive timeseries chart
     is: 'px-vis-timeseries',
 
     behaviors: [
-      PxVisBehavior.sizing,
+      PxVisBehavior.baseSize,
+      PxVisBehavior.margins,
       PxVisBehavior.formatting,
       PxVisBehavior.dataset,
       PxVisBehavior.completeSeriesConfig,
@@ -371,7 +374,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.navigatorConfig,
       PxVisBehavior.serieToRedrawOnTop,
       PxVisBehavior.dynamicMenuConfig,
-      PxColorsBehavior.dataVisColorTheming
+      PxColorsBehavior.dataVisColorTheming,
+      PxVisBehaviorD3.lineGaps
     ],
 
     /**
@@ -381,22 +385,6 @@ Creates an interactive timeseries chart
      * @type Object
      */
     properties: {
-      /**
-       *
-       *
-       *
-       * @type Array
-       */
-      series: {
-        type:Array
-      },
-      /**
-       *
-       * @type Array
-       */
-      events: {
-        type:Array
-      },
       /**
        * Defines where to locate the X-axis.
        * - `bottom`
@@ -478,7 +466,7 @@ Creates an interactive timeseries chart
       },
       pxSvgElem : {
         type: Object,
-        value: function() { return {};}
+        value: function() { return {}; }
       },
       /**
        * Flag to not show a navigator in the timeseries. Set to true to disable the navigator. Default false which shows the navigator
@@ -596,37 +584,66 @@ Creates an interactive timeseries chart
      */
     _calcMargins:function() {
       this.debounce('_calcMargin', function() {
+        var margin,
+            marginNav,
+            leftAxisMargin,
+            rightAxisMargin;
 
-        var topMargin = 25,
-            rightMargin = 10,
-            bottomMargin = 10,
-            leftMargin = 10;
+        // if the dev didnt set the margin, then calc it
+        if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
+          var topMargin = 25,
+              rightMargin = 10,
+              bottomMargin = 10,
+              leftMargin = 10;
 
-        if(this.xAxisLocation === 'bottom') {
-          bottomMargin = 40;
-        } else if(this.xAxisLocation === 'top') {
-          topMargin = 40;
+          if(this.xAxisLocation === 'bottom') {
+            bottomMargin = 40;
+          } else if(this.xAxisLocation === 'top') {
+            topMargin = 40;
+          }
+
+          if(this.yAxisLocation === 'left') {
+            leftMargin = 50;
+          } else if(this.yAxisLocation === 'right') {
+            rightMargin = 40;
+          }
+
+          margin = {
+            'top': topMargin,
+            'right': rightMargin,
+            'bottom': bottomMargin,
+            'left': leftMargin
+          };
+        } else { //is dev set, use it
+          margin = {
+            'top': Number(this.margin.top),
+            'right': Number(this.margin.right),
+            'bottom': Number(this.margin.bottom),
+            'left':  Number(this.margin.left)
+          };
         }
 
-        // TODO if multiple Y...
-        if(this.yAxisLocation === 'left') {
-          leftMargin = 50;
-        } else if(this.yAxisLocation === 'right') {
-          rightMargin = 40;
+        //if marginNav not dev set
+        if(JSON.stringify(this.properties.marginNav.value) === JSON.stringify(this.marginNav)) {
+          //match side margins by default
+          marginNav = {
+            'top': 5,
+            'right': margin.right,
+            'bottom': 20,
+            'left': margin.left
+          };
+        } else {
+          marginNav = {
+            'top': Number(this.marginNav.top),
+            'right': Number(this.marginNav.right),
+            'bottom': Number(this.marginNav.bottom),
+            'left': Number(this.marginNav.left)
+          };
         }
 
-        this.set('_internalMargin', {
-          'top': topMargin + Number(this.margin.top),
-          'right': rightMargin + Number(this.margin.right),
-          'bottom': bottomMargin + Number(this.margin.bottom),
-          'left': leftMargin + Number(this.margin.left)
-        });
-        this.set('_internalMarginNav', {
-          'top': 5 + Number(this.marginNav.top),
-          'right': rightMargin + Number(this.marginNav.right),
-          'bottom': 20 + Number(this.marginNav.bottom),
-          'left': leftMargin + Number(this.marginNav.left)
-        });
+        this.set('_internalMargin', margin);
+        this.set('_internalMarginNav', marginNav);
+
       }, 5);
     },
 

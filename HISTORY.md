@@ -13,7 +13,7 @@ v1.0.0
 * added the ability to redraw one serie on top of the others
 * added the ability to pass a navigator config and configure navigator axis
 * Updated register length to be dynamic based on if the navigator is included
-* margin and marginNav can now be set at initializationa as well (=as attributes) and dynamically adjusted
+* margin and marginNav can now be set at initialization as well (=as attributes) and dynamically adjusted
 
 v0.6.2
 ==================
