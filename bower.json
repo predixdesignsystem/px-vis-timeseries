@@ -15,7 +15,7 @@
         "px-vis-timeseries.png"
     ],
     "dependencies": {
-        "polymer": "^1.6.1",
+        "polymer": "^1.7.1",
         "px-theme": "^2.0.1",
         "px-demo-data": "~0.0.17",
         "px-datetime-common": "^0.7.0",
