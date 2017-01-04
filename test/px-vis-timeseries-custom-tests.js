@@ -67,16 +67,16 @@ function runCustomTests() {
     });
 
     test('margin calcMargin set the margin', function() {
-      assert.equal(margin.margin.top, 0);
-      assert.equal(margin.margin.right, 10);
-      assert.equal(margin.margin.bottom, 10);
-      assert.equal(margin.margin.left, 50);
+      assert.equal(margin._internalMargin.top, 40);
+      assert.equal(margin._internalMargin.right, 10);
+      assert.equal(margin._internalMargin.bottom, 10);
+      assert.equal(margin._internalMargin.left, 50);
     });
     test('margin calcMargin set the marginNav', function() {
-      assert.equal(margin.marginNav.top, 10);
-      assert.equal(margin.marginNav.right, 10);
-      assert.equal(margin.marginNav.bottom, 20);
-      assert.equal(margin.marginNav.left, 50);
+      assert.equal(margin._internalMarginNav.top, 5);
+      assert.equal(margin._internalMarginNav.right, 10);
+      assert.equal(margin._internalMarginNav.bottom, 20);
+      assert.equal(margin._internalMarginNav.left, 50);
     });
   });
 
@@ -95,16 +95,16 @@ function runCustomTests() {
     });
 
     test('margin calcMargin set the margin', function() {
-      assert.equal(margin.margin.top, 0);
-      assert.equal(margin.margin.right, 40);
-      assert.equal(margin.margin.bottom, 40);
-      assert.equal(margin.margin.left, 10);
+      assert.equal(margin._internalMargin.top, 25);
+      assert.equal(margin._internalMargin.right, 40);
+      assert.equal(margin._internalMargin.bottom, 40);
+      assert.equal(margin._internalMargin.left, 10);
     });
     test('margin calcMargin set the marginNav', function() {
-      assert.equal(margin.marginNav.top, 40);
-      assert.equal(margin.marginNav.right, 40);
-      assert.equal(margin.marginNav.bottom, 20);
-      assert.equal(margin.marginNav.left, 10);
+      assert.equal(margin._internalMarginNav.top, 5);
+      assert.equal(margin._internalMarginNav.right, 40);
+      assert.equal(margin._internalMarginNav.bottom, 20);
+      assert.equal(margin._internalMarginNav.left, 10);
     });
   });
 
