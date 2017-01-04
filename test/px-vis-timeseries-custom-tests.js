@@ -67,13 +67,13 @@ function runCustomTests() {
     });
 
     test('margin calcMargin set the margin', function() {
-      assert.equal(margin.margin.top, 40);
+      assert.equal(margin.margin.top, 0);
       assert.equal(margin.margin.right, 10);
       assert.equal(margin.margin.bottom, 10);
       assert.equal(margin.margin.left, 50);
     });
     test('margin calcMargin set the marginNav', function() {
-      assert.equal(margin.marginNav.top, 5);
+      assert.equal(margin.marginNav.top, 10);
       assert.equal(margin.marginNav.right, 10);
       assert.equal(margin.marginNav.bottom, 20);
       assert.equal(margin.marginNav.left, 50);
@@ -95,13 +95,13 @@ function runCustomTests() {
     });
 
     test('margin calcMargin set the margin', function() {
-      assert.equal(margin.margin.top, 25);
+      assert.equal(margin.margin.top, 0);
       assert.equal(margin.margin.right, 40);
       assert.equal(margin.margin.bottom, 40);
       assert.equal(margin.margin.left, 10);
     });
     test('margin calcMargin set the marginNav', function() {
-      assert.equal(margin.marginNav.top, 5);
+      assert.equal(margin.marginNav.top, 40);
       assert.equal(margin.marginNav.right, 40);
       assert.equal(margin.marginNav.bottom, 20);
       assert.equal(margin.marginNav.left, 10);
