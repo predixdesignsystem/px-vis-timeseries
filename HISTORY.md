@@ -15,6 +15,14 @@ v1.0.0
 * Updated register length to be dynamic based on if the navigator is included
 * margin and marginNav can now be set at initialization as well (=as attributes) and dynamically adjusted
 
+v0.6.4
+==================
+* Bump color design
+
+v0.6.3
+==================
+* Hotfix for wrapper class lost when vulcanizing APM
+
 v0.6.2
 ==================
 * Themeable
