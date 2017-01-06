@@ -40,7 +40,10 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
-          match-ticks
+          chart-extents='{
+            "left_1":[0,"dynamic"],
+            "right_1":[0,100]
+          }'
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
@@ -72,12 +75,10 @@
           }'
           navigator-config='{
             "xAxisConfig": {
-              "tickFormat": "%b %d"
             }
           }'
           x-axis-config= '{
-            "title": "Date",
-            "tickFormat": "%b %d"
+            "title": "Date"
           }'
           y-axis-config= '{
             "title": "Hz"
