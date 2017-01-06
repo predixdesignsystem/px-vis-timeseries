@@ -60,9 +60,10 @@ Creates an interactive timeseries chart
             x-axis-type="time">
           </px-vis-register>
           <!-- chart + navigator -->
-          <div class="flex--col flex__item inline--flex" on-mousemove="_calcMousePos">
+          <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
             <px-vis-svg-canvas
-              class="flex__item"
+              id="svgCanvas"
+              class="flex__item--no-grow"
               width="[[width]]"
               height="[[height]]"
               margin="[[_internalMargin]]"
@@ -72,7 +73,7 @@ Creates an interactive timeseries chart
               svg-lower="{{svgLower}}">
             </px-vis-svg-canvas>
             <template is="dom-if" if="[[!disableNavigator]]">
-              <div class="flex__item inline--flex" style="height:100px">
+              <div class="flex__item--no-grow inline--flex" style="height:100px">
                 <px-vis-chart-navigator
                   id="navigator"
                   x-axis-type="time"
@@ -515,7 +516,8 @@ Creates an interactive timeseries chart
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
-      '_calcMargins(margin.*, marginNav.*)'
+      '_calcMargins(margin.*, marginNav.*)',
+      '_computeRegisterHeight(height)'
     ],
 
     listeners: {
@@ -673,10 +675,22 @@ Creates an interactive timeseries chart
 
           this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
           this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-          this.set('registerHeight', Math.max(wrapperRect.height, 0));
+          this._computeRegisterHeight(navigatorRect.height);
         }
       },50);
     },
+
+  _computeRegisterHeight: function(navHeight) {
+
+    this.debounce('_computeRegisterHeight', function() {
+
+      if(!navHeight) {
+        navHeight = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect();
+      }
+
+      this.set('registerHeight', Math.max(svgCanvasHeight + navHeight, 0));
+    }.bind(this), 50);
+  },
 
     /**
      * gets a combined graphical snapshot of the chart and its navigator
