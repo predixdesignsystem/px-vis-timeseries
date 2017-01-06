@@ -130,6 +130,7 @@
                   <template is="dom-if" if="{{isOption1(index)}}" restamp>
                     <div style="height:500px">
                       <px-vis-timeseries
+                        id="timeserie"
                         width = "{{item.width}}"
                         height = "{{item.height}}"
                         prevent-resize = "{{item.preventResize}}"
@@ -137,9 +138,10 @@
                         register-location = "{{item.registerLocation}}"
                         chart-horizontal-alignment = "{{item.chartHorizontalAlignment}}"
                         chart-vertical-alignment = "{{item.chartVerticalAlignment}}"
-                        include-all-series
+                        series-config="{{item.seriesConfig}}"
                         selection-type= "{{item.selectionType}}"
-                        chart-data="{{item.chartData}}">
+                        chart-data="{{item.chartData}}"
+                        dynamic-menu-config="{{item.dynamicMenuConfig}}">
                       </px-vis-timeseries>
                     </div>
                   </template>
@@ -228,6 +230,49 @@ window.addEventListener('WebComponentsReady', function() {
         {"x": 1397318100000, "y0": "1.5",   "y1": "0.5"},
         {"x": 1397342100000, "y0": "3.0",   "y1": "2.0"},
         {"x": 1397390820000, "y0": "0.897", "y1": "1.5"}],
+        seriesConfig = {
+                        "y0": {
+                          "name": "y0",
+                          "x": "x",
+                          "y": "y0"
+                        },
+                        "y1": {
+                          "name": "y1",
+                          "x": "x",
+                          "y": "y1"
+                        }
+                      },
+      menuConfig = [
+          {
+            'name': 'Delete',
+            'action': function(itemConfig, additionalDetail) {
+              //usually we would just pass the chart as the context for this action,
+              //unfortunately due to how our demo dynamically build the charts we don't
+              //have access to the chart when creating this config, so we manually
+              //get the chart every time
+              var chart = document.getElementById('timeserie'),
+                  conf = chart.seriesConfig;
+              delete conf[additionalDetail.name];
+              chart.set('seriesConfig', {});
+              chart.set('seriesConfig', conf);
+            },
+            'eventName': 'delete',
+            'icon': 'fa-trash',
+          },
+          {
+            'name': 'Bring To Front',
+            'action': function(itemConfig, additionalDetail) {
+              //usually we would just pass the chart as the context for this action,
+              //unfortunately due to how our demo dynamically build the charts we don't
+              //have access to the chart when creating this config, so we manually
+              //get the chart every time
+              var chart = document.getElementById('timeserie');
+              chart.set('serieToRedrawOnTop', additionalDetail.name);
+            },
+            'eventName': 'bring-to-front',
+            'icon': 'fa-arrow-up'
+          }
+        ],
       optionsArray = [
         {
           "height":300,
@@ -240,6 +285,8 @@ window.addEventListener('WebComponentsReady', function() {
           "includeAllSeries": true,
           "chartHorizontalAlignment": "center",
           "chartVerticalAlignment": "center",
+          "dynamicMenuConfig": menuConfig,
+          "seriesConfig": seriesConfig
         }
         // {
         //   "height":300,
