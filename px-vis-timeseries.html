@@ -132,7 +132,7 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[_returnYScale(item, seriesConfig, domainChanged)]]"
+            y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
             domain-changed="[[domainChanged)]]"
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
@@ -152,7 +152,7 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[_returnYScale(item, seriesConfig, domainChanged)]]"
+            y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
             domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
@@ -168,7 +168,7 @@ Creates an interactive timeseries chart
           chart-data="[[chartData]]"
           complete-series-config="[[completeSeriesConfig]]"
           x="[[x]]"
-          y="[[_returnYScale(item, seriesConfig, domainChanged)]]"
+          y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
           domain-changed="[[domainChanged]]"
           clip-path="[[seriesClipPath]]"
           muted-series="[[mutedSeries]]"
@@ -203,8 +203,7 @@ Creates an interactive timeseries chart
       margin="[[_internalMargin]]"
       y="[[y]]"
       domain-changed="[[domainChanged]]"
-      show-threshold-box="[[showThresholdBox]]"
-      is-multi-axis="[[_isMultiAxis]]">
+      show-threshold-box="[[showThresholdBox]]">
     </px-vis-threshold>
 
     <px-vis-axis
@@ -222,47 +221,29 @@ Creates an interactive timeseries chart
       domain-changed="[[domainChanged]]">
     </px-vis-axis>
 
-    <template id="singleAxisTemplate" is="dom-if" if="[[!_isMultiAxis]]" restamp>
-      <px-vis-axis
-        id="yAxis"
-        svg="[[layer.0]]"
-        axis="[[y]]"
-        axis-type="linear"
-        margin="[[_internalMargin]]"
-        width="[[width]]"
-        height="[[height]]"
-        orientation="[[yAxisLocation]]"
-        complete-series-config="[[completeSeriesConfig]]"
-        muted-series=[[mutedSeries]]
-        domain-changed="[[domainChanged]]">
-      </px-vis-axis>
-    </template>
-
-    <template id="multiAxisTemplate" is="dom-if" if="[[_isMultiAxis]]" restamp>
-      <px-vis-multi-axis
-        id="multiAxisLeft"
-        svg="[[layer.0]]"
-        width="[[width]]"
-        height="[[height]]"
-        margin="[[_internalMargin]]"
-        left-axis-size="[[_leftAxisSize]]"
-        right-axis-size="[[_rightAxisSize]]"
-        x="[[_axisX]]"
-        y="[[y]]"
-        domain-changed="[[domainChanged]]"
-        complete-series-config="[[completeSeriesConfig]]"
-        series-key="[[seriesKey]]"
-        chart-data="[[chartData]]"
-        dimensions="[[dimensions]]"
-        axes="[[axes]]"
-        append-unit-in-title
-        orientation-from-dimensions
-        disable-brush
-        series-to-axes="[[seriesToAxes]]"
-        muted-series=[[mutedSeries]]
-        axis-groups="{{axisGroups}}">
-      </px-vis-multi-axis>
-    </template>
+    <px-vis-multi-axis
+      id="multiAxisLeft"
+      svg="[[layer.0]]"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[_internalMargin]]"
+      left-axis-size="[[_leftAxisSize]]"
+      right-axis-size="[[_rightAxisSize]]"
+      x="[[_axisX]]"
+      y="[[y]]"
+      domain-changed="[[domainChanged]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      series-key="[[seriesKey]]"
+      chart-data="[[chartData]]"
+      dimensions="[[dimensions]]"
+      axes="[[axes]]"
+      append-unit-in-title
+      orientation-from-dimensions
+      disable-brush
+      cartesian-drag-behavior
+      series-to-axes="[[seriesToAxes]]"
+      muted-series=[[mutedSeries]]>
+    </px-vis-multi-axis>
 
     <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
       <px-vis-gridlines
@@ -274,7 +255,7 @@ Creates an interactive timeseries chart
         domain-changed="[[domainChanged]]">
       </px-vis-gridlines>
     </template>
-    <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, _isMultiAxis, matchTicks)]]" restamp>
+    <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, axes, matchTicks)]]" restamp>
       <px-vis-gridlines
         svg="[[svgLower]]"
         axis="[[_returnGridAxis(domainChanged)]]"
@@ -297,7 +278,6 @@ Creates an interactive timeseries chart
       x="[[x]]"
       y="[[y]]"
       domain-changed="[[domainChanged]]"
-      is-multi-axis="[[_isMultiAxis]]"
       selection-type="[[selectionType]]"
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
@@ -325,7 +305,6 @@ Creates an interactive timeseries chart
       margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
-      is-multi-axis="[[_isMultiAxis]]"
       extents-data="[[extentsData]]"
       px-svg-elem=[[pxSvgElem]]
       selected-domain="{{selectedDomain}}"
@@ -542,10 +521,10 @@ Creates an interactive timeseries chart
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
 
+      '_calcAxes(completeSeriesConfig)',
       '_calcMargins(margin.*, marginNav.*, _numRightAxes, _numLeftAxes)',
       '_setXScale(width, _internalMargin)',
-      '_calcYScale(height, _internalMargin, _isMultiAxis)',
-      '_calcMultiYScale(height, _internalMargin, axes.*, _isMultiAxis)',
+      '_setMultiYScale(height, _internalMargin, axes.*)',
       '_setDomain(_chartDataHasChanged.*, x, y, completeSeriesConfig, dataExtents, seriesToAxes)',
       '_setDomain(chartExtents, dataExtents)',
       '_updateDomain(selectedDomain)',
@@ -599,12 +578,12 @@ Creates an interactive timeseries chart
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
     },
     _yAxisConfigChanged: function(conf) {
-      if(this.$$('#yAxis')) {
-        this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
-      } else if(!this.$$('#yAxis') && !this._isMultiAxis) {
-        this.$.singleAxisTemplate.render();
-        this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
-      }
+      // if(this.$$('#yAxis')) {
+      //   this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+      // } else if(!this.$$('#yAxis')) {
+      //   this.$.singleAxisTemplate.render();
+      //   this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
+      // }
     },
     // _multiYConfigChanged: function(conf) {
     //   if(this.$$('#yAxis')) {
@@ -664,9 +643,7 @@ Creates an interactive timeseries chart
             'left': leftMargin
           };
 
-          if(this._isMultiAxis) {
-            this._calcMultiMargins(margin, 50, 50);
-          }
+          this._calcMultiMargins(margin, 50, 50);
 
         } else { //is dev set, use it
           margin = {
@@ -678,9 +655,7 @@ Creates an interactive timeseries chart
 
           // FIXME
           // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
-          if(this._isMultiAxis) {
-            this._calcMultiMargins(margin, Number(this.margin.left), Number(this.margin.right));
-          }
+          this._calcMultiMargins(margin, Number(this.margin.left), Number(this.margin.right));
         }
 
         //if marginNav not dev set
@@ -773,12 +748,12 @@ Creates an interactive timeseries chart
       this.set('selectedDomain', e.detail.data);
     },
 
-    _showHorizontalGrid: function(hideGrid, isMultiY, matchTicks) {
+    _showHorizontalGrid: function(hideGrid, axes, matchTicks) {
       if(hideGrid) {
         return false;
       }
 
-      if(isMultiY && !matchTicks) {
+      if(this.axes.length > 1 && !matchTicks) {
         return false;
       }
 
@@ -786,21 +761,7 @@ Creates an interactive timeseries chart
     },
 
     _returnGridAxis: function() {
-      if(this._isMultiAxis) {
         return this.y[this.axes[0]];
-      }
-      return this.y;
-    },
-
-    _calcYScale: function() {
-      if(this._isMultiAxis === false && this.height && this._internalMargin) {
-        this._setYScale(this.height, this._internalMargin);
-      }
-    },
-    _calcMultiYScale: function() {
-      if(this._isMultiAxis && this.height && this._internalMargin) {
-        this._setMultiYScale(this.height, this._internalMargin, this.axes);
-      }
     },
 
     _returnXDomain: function() {
