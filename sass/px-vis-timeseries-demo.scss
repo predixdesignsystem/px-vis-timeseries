@@ -51,8 +51,119 @@ $inuit-enable-input--regular : true;
 $inuit-enable-list-inline--delimited : true;
 @import "px-list-inline-design/_objects.list-inline.scss";
 
-@import "px-demo-doc-design/_component.demo-doc.scss";
- 
+// Component
+.mega-demo{
+  background: $gray1;
+  width: 100%;
+}
+
+.description-text{
+  max-width: calculateRem(700px);
+}
+
+.properties{
+  flex: 0 0 calculateRem(250px);
+  background: $white;
+  border: 1px solid $gray4;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-right: calculateRem(20px);
+}
+
+.demoContainer {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.demoSnippet {
+  min-height: calculateRem(150px);
+}
+.componentHeader {
+  border-bottom: 1px solid $gray4;
+  font-size: calculateRem(25px);
+}
+.childrenAssociated {
+  :first-of-type {
+    margin-right: calculateRem(50px);
+  }
+}
+.demo{
+  min-height: calculateRem(300px);
+  background: $white;
+  border: 1px solid $gray4;
+  overflow: auto;
+}
+.componentList {
+  a {
+    color: $predixBlue;
+  }
+  ul {
+    list-style-type: none;
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+  }
+}
+.api {
+  width:80%;
+  margin:0 auto;
+  max-width:calculateRem(1200px);
+}
+.apiContainer {
+  margin: 0 auto;
+  background-color: $white;
+}
+.tabContainer {
+  height:auto;
+  background: $gray1;
+}
+
+.footer{
+  background-color: $gray7;
+}
+.footer__container{
+  flex-basis: 90%;
+  color: $gray4;
+  font-size: 12px;
+  align-items: center;
+  display: inline-flex;
+  justify-content: space-between;
+}
+.footer__list--lnk{
+  color: $gray4;
+  text-decoration: none;
+  &:link,
+  &:visited,
+  &:active,
+  &:focus {
+    color: $gray4;
+  }
+  &:hover{
+    color: $gray2;
+  }
+  &:active {
+    color: $grey4;
+  }
+}
+.footer__img{
+  width: 150px;
+}
+
+@media screen  and (max-width: calculateRem(672px)){
+  .mega-demo {
+    flex-direction: column;
+  }
+  .properties{
+    margin-right: 0px;
+  }
+  .footer__container{
+    flex-direction: column;
+  }
+  .footer__list{
+    padding-top: $inuit-base-spacing-unit--small;
+    text-align: center;
+  }
+}
 // Trumps
 $inuit-enable-margins : true;
 $inuit-enable-margins--tiny : true;
