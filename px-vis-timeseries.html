@@ -383,7 +383,8 @@ Creates an interactive timeseries chart
       PxVisBehavior.dynamicMenuConfig,
       PxColorsBehavior.dataVisColorTheming,
       PxVisBehaviorD3.lineGaps,
-      PxVisBehavior.actionConfig
+      PxVisBehavior.actionConfig,
+      PxVisBehaviorChart.zooming
     ],
 
     /**
@@ -545,8 +546,6 @@ Creates an interactive timeseries chart
     listeners: {
       'iron-resize': '_onIronResize',
       'px-vis-selected-domain-updated': '_setSelectedDomain',
-      'px-vis-toolbar-reset-zoom': '_resetZoom',
-      'px-vis-toolbar-undo-zoom': '_undoZoom',
       'px-vis-interaction-space-start-panning': '_startPanning',
       'px-vis-interaction-space-stop-panning': '_stopPanning'
     },
@@ -756,12 +755,6 @@ Creates an interactive timeseries chart
     },
     _setSelectedDomain: function(e) {
       this.set('selectedDomain', e.detail.data);
-    },
-    _resetZoom: function() {
-      this.$.zoom.resetZoom();
-    },
-    _undoZoom: function() {
-      this.$.zoom.undoZoom();
     },
     _startPanning: function() {
 
