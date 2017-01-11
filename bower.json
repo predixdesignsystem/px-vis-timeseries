@@ -43,6 +43,7 @@
         "px-polymer-font-awesome": "^1.1.0",
         "px-dropdown": "^2.1.0",
         "px-rangepicker": "^1.3.0",
-        "iron-ajax": "~1.4.3"
+        "iron-ajax": "~1.4.3",
+        "px-demo-doc-design": "^1.0.0"
     }
 }

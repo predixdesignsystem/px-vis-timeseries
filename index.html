@@ -4,12 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>px-vis-timeseries Demo</title>
-  <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries-demo.css"/>
+
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <script src="../webcomponentsjs/webcomponents-lite.js"></script>
 
   <link rel="import" href="../px-theme/px-theme-styles.html">
   <style include="px-theme-styles" is="custom-style"></style>
+  <link rel="import" type="css" href="css/px-vis-timeseries-demo-styles.html"/>
+  <style include="px-vis-timeseries-demo-styles" is="custom-style"></style>
 
   <link rel="import" href="../px-api-viewer/px-api-viewer.html" />
   <link rel="import" href="../px-tabs/px-tab-set.html" />
@@ -37,14 +39,14 @@
   <!-- Wrap elements with auto-binding template to -->
   <!-- allow use of Polymer bindings in main document -->
   <template id="just-for-demo" is="dom-bind" >
-    <!-- discription -->
-    <div class="hero u-p++ text--shadow">
+    <!-- description -->
+    <div class="hero demo-u-pb+++ u-p++ text--shadow">
       <a class="actionable flex flex--right flex--middle" href="https://github.com/PredixDev/px-vis-timeseries" target="_blank"><iron-icon class="menu__open" icon="fa:fa-github"></iron-icon>View on Github</a>
   		<h1 class="delta">px-vis-timeseries</h1>
   		<p>
   			The	<code>px-vis-timeseries</code> component creates a timeseries chart.
   		</p>
-      <p class="description-text">
+      <p class="demo-text-width--max">
         With timeseries, you can create line and scatter timeseries charts complete with user interaction, events, thresholds, and a navigator.
       </p>
       <p>
@@ -59,7 +61,7 @@
     <br />
     <!-- mega demo -->
     <div style="position: relative;" class="u-pb++ flex flex--col" id="defaultTab">
-      <div class="tabContainer u-pt++ u-pl++">
+      <div class="u-pt++ u-pl++">
         <px-tab-set selected="{{selected}}" bare no-bottom-border>
           <template is="dom-repeat" items="{{optionsArray}}">
             <px-tab>Option {{indexPlusOne(index)}}</px-tab>
@@ -69,7 +71,7 @@
       <px-tab-pages selected="{{selected}}">
         <template is="dom-repeat" items="{{optionsArray}}">
           <section class="tab-page">
-            <div class="mega-demo flex u-ph++ u-pb++">
+            <div class="demo-background--interactive flex u-ph++ u-pb++">
             <!-- Properties -->
             <div class="properties u-ph+ u-pb+ u-mt+" id="properties">
               <p class="epsilon">Properties</p>
@@ -186,7 +188,7 @@
               </div>
             </div>
           </div>
-          <div class="apiContainer">
+          <div class="demo-background--api">
             <div class="flex flex--col api u-mt++" >
               <div>
                 <px-api-viewer source="px-vis-timeseries"></px-api-viewer>
@@ -197,7 +199,7 @@
       </template>
     </px-tab-pages>
   </div>
-  <footer class="footer flex flex--center">
+  <footer class="demo-background--footer flex flex--center">
     <div class="footer__container u-pv++">
       <div>
         <a href="https://ge.com/digital" >

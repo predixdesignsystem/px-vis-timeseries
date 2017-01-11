@@ -35,7 +35,7 @@ function buildCSS(){
   return combiner.obj([
     $.sass(sassOptions),
     $.autoprefixer({
-      browsers: ['last 2 versions', 'Safari 8.0'],
+      browsers: ['last 2 versions'],
       cascade: false
     }),
     gulpif(!argv.debug, $.cssmin())
@@ -62,8 +62,13 @@ gulp.task('sass', function() {
 gulp.task('demosass', function() {
   return gulp.src(['./sass/*-demo.scss'])
     .pipe(buildCSS())
+    .pipe(stylemod({
+      moduleId: function(file) {
+        return path.basename(file.path, path.extname(file.path)) + '-styles';
+      }
+    }))
     .pipe(gulp.dest('css'))
-    .pipe(browserSync.stream({match: '**/*.css'}));
+    .pipe(browserSync.stream({match: 'css/*.html'}));
 });
 
 gulp.task('watch', function() {

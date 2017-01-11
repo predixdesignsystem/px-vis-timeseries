@@ -78,13 +78,10 @@
             "title": "Date",
             "tickFormat": "%b %d"
           }'
-          y-axis-config= '{
-            "title": "Hz"
-          }'
+
           register-config='{
               "height": 50,
               "type": "vertical"}'
-          series-config='[[seriesConfig]]'
           threshold-config='{
             "max": {
               "color": "red",
@@ -93,15 +90,55 @@
             }
           }'
           display-threshold-title
+          y-axis-config='{
+            "title": "Hz"
+          }'
+          series-config='{
+            "y0": {
+              "name":"y0",
+              "y":"y0"
+            },
+            "y1": {
+              "name":"y1",
+              "y":"y1"
+            }}'
           default-series-config='{
-              "type": "line",
-              "yAxisUnit": "Hz",
-              "x": "TimeStamp",
-              "xMin": "dynamic",
-              "xMax": "dynamic",
-              "yMin": 0,
-              "yMax": "dynamic"
+            "type": "line",
+            "yAxisUnit": "Hz",
+            "x":"x"
             }'
+          toolbar-config='{
+            "zoom": true,
+            "pan": true,
+            "tooltip": true,
+            "logHover": {
+              "tooltipLabel": "Log messages on hover",
+              "icon": "fa-leaf",
+              "actionConfig": {
+                "mousemove": "function() { console.log(\"hover, context of function: \" + this.outerHTML);}"
+              },
+              "subConfig": {
+                "customClick": {
+                  "icon": "fa-coffee",
+                  "tooltipLabel": "logs some messages on chart click",
+                  "eventName": "my-custom-click",
+                  "actionConfig": {
+                    "mousedown": "function() {console.log(\"custom mouse down 1 on chart\")}",
+                    "mouseup": "function() {console.log(\"custom mouse up 1 on chart\")}"
+                  }
+                },
+                "customClick2": {
+                  "icon": "fa-fire-extinguisher",
+                  "tooltipLabel": "logs some other messages on chart click",
+                  "actionConfig": {
+                    "mousedown": "function() {console.log(\"custom mouse down 2 on chart\")}",
+                    "mouseup": "function() {console.log(\"custom mouse up 2 on chart\")}",
+                    "mousemove": "function() { console.log(\"custom hover 2\" + this.outerHTML);}"
+                  }
+                }
+              }
+            }
+          }'
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]">

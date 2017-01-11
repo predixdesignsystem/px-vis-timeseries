@@ -20,6 +20,7 @@
 <link rel="import" href="../px-vis/px-vis-threshold.html"/>
 <link rel="import" href="../px-vis/px-vis-zoom.html"/>
 <link rel="import" href="../px-vis/px-vis-clip-path.html"/>
+<link rel="import" href="../px-vis/px-vis-toolbar.html"/>
 
 
 <!--
@@ -61,6 +62,10 @@ Creates an interactive timeseries chart
           </px-vis-register>
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
+            <px-vis-toolbar
+              toolbar-config='[[toolbarConfig]]'
+              action-config='{{actionConfig}}'>
+            </px-vis-toolbar>
             <px-vis-svg-canvas
               id="svgCanvas"
               class="flex__item--no-grow"
@@ -310,7 +315,8 @@ Creates an interactive timeseries chart
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
       interaction-svg="{{interactionSvg}}"
-      extents-data="{{extentsData}}">
+      extents-data="{{extentsData}}"
+      action-config="{{actionConfig}}">
     </px-vis-interaction-space>
 
     <px-vis-cursor
@@ -358,7 +364,7 @@ Creates an interactive timeseries chart
       PxVisBehaviorD3.axes,
       PxVisBehaviorD3.axis,
       PxVisBehaviorD3.selectedTimeDomain,
-     // PxVisBehaviorD3.interaction,
+      // PxVisBehaviorD3.interaction,
       PxVisBehaviorD3.clipPath,
       PxVisBehaviorD3.axisConfig,
       PxVisBehaviorChart.chartCommon,
@@ -376,7 +382,8 @@ Creates an interactive timeseries chart
       PxVisBehavior.serieToRedrawOnTop,
       PxVisBehavior.dynamicMenuConfig,
       PxColorsBehavior.dataVisColorTheming,
-      PxVisBehaviorD3.lineGaps
+      PxVisBehaviorD3.lineGaps,
+      PxVisBehavior.actionConfig
     ],
 
     /**
@@ -506,6 +513,21 @@ Creates an interactive timeseries chart
 
       registerHeight: {
         type: Number
+      },
+      /**
+       * Configuration object for the toolbar
+       */
+      toolbarConfig: {
+        type: Object,
+        value: function() {
+          return {"pan": true, "zoom": true, "tooltip": true};
+        }
+      },
+      /**
+       * holds the previous drawing debounce timing (before panning)
+       */
+      _oldDrawDebouncedTime: {
+        type: Number
       }
     },
 
@@ -517,12 +539,16 @@ Creates an interactive timeseries chart
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
       '_calcMargins(margin.*, marginNav.*)',
-      '_computeRegisterHeight(height)'
+      '_heightChanged(height)'
     ],
 
     listeners: {
       'iron-resize': '_onIronResize',
-      'px-vis-selected-domain-updated': '_setSelectedDomain'
+      'px-vis-selected-domain-updated': '_setSelectedDomain',
+      'px-vis-toolbar-reset-zoom': '_resetZoom',
+      'px-vis-toolbar-undo-zoom': '_undoZoom',
+      'px-vis-interaction-space-start-panning': '_startPanning',
+      'px-vis-interaction-space-stop-panning': '_stopPanning'
     },
 
     ready:function() {
@@ -662,6 +688,7 @@ Creates an interactive timeseries chart
           var wrapperRect = this.$.wrapper.getBoundingClientRect(),
               navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
               registerRect = this.$.register.getBoundingClientRect(),
+
               widthDeduct = 0,
               heightDeduct = 0;
 
@@ -680,17 +707,21 @@ Creates an interactive timeseries chart
       },50);
     },
 
-  _computeRegisterHeight: function(navHeight) {
+    _computeRegisterHeight: function(navHeight) {
 
-    this.debounce('_computeRegisterHeight', function() {
+      this.debounce('_computeRegisterHeight', function() {
 
-      if(!navHeight) {
-        navHeight = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect();
-      }
+        if(!navHeight) {
+          navHeight = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect();
+        }
 
-      this.set('registerHeight', Math.max(this.$.svgCanvas.height + navHeight, 0));
-    }.bind(this), 50);
-  },
+        this.set('registerHeight', Math.max(this.$.svgCanvas.height + navHeight, 0));
+      }.bind(this), 50);
+    },
+
+    _heightChanged: function() {
+      this._computeRegisterHeight();
+    },
 
     /**
      * gets a combined graphical snapshot of the chart and its navigator
@@ -725,6 +756,32 @@ Creates an interactive timeseries chart
     },
     _setSelectedDomain: function(e) {
       this.set('selectedDomain', e.detail.data);
+    },
+    _resetZoom: function() {
+      this.$.zoom.resetZoom();
+    },
+    _undoZoom: function() {
+      this.$.zoom.undoZoom();
+    },
+    _startPanning: function() {
+
+      //remove draw debounce to have a smooth panning
+      var lineType = this.renderToCanvas ? 'px-vis-line-canvas' : 'px-vis-line-svg',
+          lines = Polymer.dom(this.root).querySelectorAll(lineType);
+
+      this._oldDrawDebouncedTime = lines[0].drawDebounceTime;
+      for(var i=0; i<lines.length; i++) {
+        lines[i].set('drawDebounceTime', 0);
+      }
+    },
+    _stopPanning: function() {
+
+      var lineType = this.renderToCanvas ? 'px-vis-line-canvas' : 'px-vis-line-svg',
+          lines = Polymer.dom(this.root).querySelectorAll(lineType);
+
+      for(var i=0; i<lines.length; i++) {
+        lines[i].set('drawDebounceTime', this._oldDrawDebouncedTime);
+      }
     }
   });
 </script>
