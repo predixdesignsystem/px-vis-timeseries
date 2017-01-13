@@ -102,7 +102,7 @@ Creates an interactive timeseries chart
         </div>
     </div>
 
-    <template id="tooltipTemplate" is="dom-if" if="[[showTooltip]]">
+    <template id="tooltipTemplate" is="dom-if" if="[[showTooltip]]" restamp>
       <px-vis-tooltip
         id="tooltip"
         hover-target=[[mouseRect]]
@@ -117,17 +117,6 @@ Creates an interactive timeseries chart
         muted-series="[[mutedSeries]]">
       </px-vis-tooltip>
     </template>
-    <px-vis-zoom
-      id="zoom"
-      margin="[[_internalMargin]]"
-      width="[[width]]"
-      height="[[height]]"
-      extents-data="[[extentsData]]"
-      px-svg-elem=[[pxSvgElem]]
-      selected-domain="{{selectedDomain}}"
-      width="[[width]]"
-      height="[[height]]">
-    </px-vis-zoom>
     <px-vis-scale
       x-axis-type="time"
       y-axis-type="linear"
