@@ -1,0 +1,357 @@
+<!-- Common imports -->
+<link rel="import" href="../../polymer/polymer.html" />
+<link rel="import" href="../../px-polymer-font-awesome/polymer-font-awesome.html" />
+
+<!-- Common demo imports -->
+<link rel="import" href="../../px-demo/px-demo-header.html" />
+<link rel="import" href="../../px-demo/px-demo-api-viewer.html" />
+<link rel="import" href="../../px-demo/px-demo-footer.html" />
+<link rel="import" href="../../px-demo/px-demo-configs.html" />
+<link rel="import" href="../../px-demo/px-demo-props.html" />
+<link rel="import" href="../../px-demo/px-demo-interactive.html" />
+<link rel="import" href="../../px-demo/px-demo-component-snippet.html" />
+
+<!-- Light theme -->
+<link rel="import" href="../../px-theme/px-theme-styles.html">
+<!-- Dark theme -->
+<!-- <link rel="import" href="../../px-dark-theme/px-theme-styles.html"> -->
+<!-- <link rel="import" href="../../px-dark-demo-theme/px-dark-demo-theme-styles.html"> -->
+
+<!-- Imports for this componnent -->
+<link rel="import" href="../../px-demo/css/px-demo-styles.html" />
+<link rel="import" href="../../px-colors-design/colors.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-common.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-d3.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-chart.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-datetime.html" />
+<link rel="import" href="../px-vis-timeseries.html" />
+
+<!-- Demo DOM module -->
+<dom-module id="local-element-demo">
+  <template>
+    <style include="px-demo-styles" is="custom-style"></style>
+    <!-- Light theme -->
+    <style include="px-theme-styles" is="custom-style"></style>
+    <!-- Dark theme -->
+    <!--<style include="px-dark-demo-theme-styles" is="custom-style"></style>-->
+
+    <!-- Header -->
+    <px-demo-header
+        module-name="px-vis-timeseries"
+        description="The px-vis-timeseries component includes various elements used for structuring responsive layouts. This component allows the user to select a date or date range. The main use of this component is to be used in the px-range-panel.">
+    </px-demo-header>
+
+    <!-- Interactive -->
+    <px-demo-interactive>
+      <!-- Configs -->
+      <px-demo-configs configs="[[configs]]" props="{{props}}" chosen-config="{{consenConfig}}"></px-demo-configs>
+
+      <!-- Props -->
+      <px-demo-props props="{{props}}" config="[[chosenConfig]]"></px-demo-props>
+
+      <!-- Component ---------------------------------------------------------->
+      <px-demo-component>
+        <px-vis-timeseries
+          id="timeserie"
+          width = "{{props.width.value}}"
+          height = "{{props.height.value}}"
+          prevent-resize = "{{props.preventResize.value}}"
+          show-tooltip = "{{props.showTooltip.value}}"
+          register-location = "{{props.registerLocation.value}}"
+          chart-horizontal-alignment = "{{props.chartHorizontalAlignment.value}}"
+          chart-vertical-alignment = "{{props.chartVerticalAlignment.value}}"
+          series-config="{{props.seriesConfig.value}}"
+          selection-type= "{{props.selectionType.value}}"
+          chart-data="{{props.chartData.value}}"
+          dynamic-menu-config="{{props.dynamicMenuConfig.value}}">
+        </px-vis-timeseries>
+      </px-demo-component>
+      <!-- END Component ------------------------------------------------------>
+
+      <px-demo-component-snippet
+          element-properties="{{props}}"
+          element-name="px-vis-timeseries"
+          links-includes="[[linksIncludes]]">
+      </px-demo-component-snippet>
+    </px-demo-interactive>
+
+    <!-- API Viewer -->
+    <px-demo-api-viewer source="px-demo"></px-demo-api-viewer>
+
+    <!-- Footer -->
+    <px-demo-footer></px-demo-footer>
+
+  </template>
+
+</dom-module>
+<script>
+  Polymer({
+    is: 'local-element-demo',
+
+    properties: {
+
+      /**
+       * Note: The actual data/values for `props` are placed in `this.demoProps`
+       * to create a static reference that Polymer shouldn't overwrite.
+       *
+       * On object containing all the properties the user can configure for this
+       * demo. Usually a pretty similar copy of the component's `properties` block
+       * with some additional sugar added to describe what kind of input the
+       * user will be shown and how that input should be configured.
+       *
+       * Note that `value` for each property is the default that will be set
+       * unless a config from `configs` is applied by default.
+       *
+       * @example
+       *
+       * `demoProps` is an object containing multipe objects. Each sub-object has
+       * should have a key with the name of the configurable property, and a set
+       * of values that describe that property. At a high level, you might have:
+       *
+       * ```
+       *     {
+       *       preventRangeSelection: { ... },
+       *       displayMode: { ... },
+       *       blockDatesBefore: { ... }
+       *     }
+       * ```
+       *
+       * Each sub-object should contain information about the configurable property's
+       * `type` (a reference to the JavaScript literal), a default value, and a set
+       * of additional keys that describe the input it can be changed with.
+       * The following inputs types are currently available:
+       *
+       * - 'toggle' - A toggle switch input to set Boolean values
+       * - 'text' - A simple single-line text input to set String or stringified Array/Object values
+       * - 'dropdown' - A dropdown picker that can be used to select any kind of value from a list of available options
+       *
+       * Full examples for each input:
+       *
+       * ```
+       *     {
+       *       preventRangeSelection: {
+       *         type: Boolean,
+       *         value: false,
+       *         inputType: 'toggle'
+       *       },
+       *       displayMode: {
+       *         type: String,
+       *         value: 'day',
+       *         inputType: 'dropdown',
+       *         inputChoices: ['day', 'month', 'year']
+       *       },
+       *       blockDatesBefore: {
+       *         type: String,
+       *         value: '2016-10-10T00:00:00.000Z',
+       *         inputType: 'text',
+       *         inputPlaceholder: 'ISO 8601 String'
+       *       }
+       *     }
+       * ```
+       *
+       * By default, the configurable property names are converted from camelCase
+       * to Title Case and used as input labels (e.g. 'displayMode' -> 'Display Mode').
+       * Labels can be set manually through the key `inputLabel`:
+       *
+       * ```
+       *     {
+       *       preventRangeSelection: {
+       *         type: Boolean,
+       *         value: false,
+       *         inputType: 'toggle',
+       *         inputLabel: "Stop range selection"
+       *       }
+       *     }
+       * ```
+       *
+       * @property demoProps
+       * @type {Object}
+       */
+      props: {
+        type: Object,
+        value: function(){ return this.demoProps; }
+      },
+
+      /**
+       * An array of pre-configured `props` that can be used to provide the user
+       * with a set of common examples. These configs will be made available
+       * as a set of tabs the user can click that will automatically change
+       * the `props` to specific values.
+       *
+       * @example
+       *
+       * Each config is an object. Its keys should be the names of the configurable
+       * properties defined in your `demoProps` above. Each key's value should
+       * be the new prop value for the configuration. You can also include these
+       * optional keys:
+       *
+       * - `configName` - a String value that will be used for the title of the tab
+       * - `configReset` - a Boolean, if `true` resets all props (even those not specified in the config) when this config is selected. Defaults to `false`.
+       *
+       * Example of two configs:
+       *
+       * ```
+       *     [
+       *       {
+       *         configName: "Basic",
+       *         preventRangeSelection: true,
+       *         displayMode: 'year',
+       *         blockDatesBefore: '2016-10-10T00:00:00.000Z'
+       *       },
+       *       {
+       *         configName: "Advanced",
+       *         preventRangeSelection: false,
+       *         displayMode: 'day',
+       *         blockDatesBefore: '2010-10-10T00:00:00.000Z'
+       *       }
+       *     ]
+       * ```
+       *
+       * @property demoProps
+       * @type {Array}
+       */
+      configs: {
+        type: Array,
+        value: function() {
+          
+          return [
+            { configName: "Default" },
+            {
+              "height":300,
+              "width":800,
+              "preventResize":false,
+              "selectionType":'xy',
+              "showTooltip":false,
+              "registerLocation":"top",
+              "chartHorizontalAlignment": "center",
+              "chartVerticalAlignment": "center",
+              "dynamicMenuConfig": this.demoProps.dynamicMenuConfig.defaultValue,
+              "seriesConfig": this.demoProps.seriesConfig.defaultValue
+            }
+          ]
+        }
+      }
+    },
+    
+    /**
+     * A reference for `this.props`. Read the documentation there.
+     */
+    demoProps: {
+      height: {
+        type: Number,
+        defaultValue: 500,
+        inputType: 'text'
+      },
+
+      width: {
+        type: Number,
+        defaultValue: 800,
+        inputType: 'text'
+      },
+
+      preventResize: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      selectionType: {
+        type: String,
+        defaultValue: 'xy',
+        inputType: 'dropdown',
+        inputChoices: ['xy', 'yAxis', 'xAxis']
+      },
+
+      showTooltip: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      chartData: {
+        type: Object,
+        defaultValue: [
+        {"x": 1397177400000, "y0": "0.0",   "y1": "2.0"},
+        {"x": 1397228040000, "y0": "0.897", "y1": "2.5"},
+        {"x": 1397248260000, "y0": "1.0",   "y1": "3.5"},
+        {"x": 1397291280000, "y0": "2.0",   "y1": "1.5"},
+        {"x": 1397318100000, "y0": "1.5",   "y1": "0.5"},
+        {"x": 1397342100000, "y0": "3.0",   "y1": "2.0"},
+        {"x": 1397390820000, "y0": "0.897", "y1": "1.5"}],
+        inputType: 'text'
+      },
+
+      includeAllSeries: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      chartHorizontalAlignment: {
+        type: String,
+        inputType: 'dropdown',
+        inputChoices: ['center', 'left', 'right']
+      },
+
+      chartVerticalAlignment: {
+        type: String,
+        inputType: 'dropdown',
+        inputChoices: ['center', 'top', 'bottom']
+      },
+
+      dynamicMenuConfig: {
+        type: Object,
+        defaultValue: [
+          {
+            'name': 'Delete',
+            'action': function(itemConfig, additionalDetail) {
+              //usually we would just pass the chart as the context for this action,
+              //unfortunately due to how our demo dynamically build the charts we don't
+              //have access to the chart when creating this config, so we manually
+              //get the chart every time
+              var chart = document.getElementById('timeserie'),
+                  conf = chart.seriesConfig;
+              delete conf[additionalDetail.name];
+              chart.set('seriesConfig', {});
+              chart.set('seriesConfig', conf);
+            },
+            'eventName': 'delete',
+            'icon': 'fa-trash',
+          },
+          {
+            'name': 'Bring To Front',
+            'action': function(itemConfig, additionalDetail) {
+              //usually we would just pass the chart as the context for this action,
+              //unfortunately due to how our demo dynamically build the charts we don't
+              //have access to the chart when creating this config, so we manually
+              //get the chart every time
+              var chart = document.getElementById('timeserie');
+              chart.set('serieToRedrawOnTop', additionalDetail.name);
+            },
+            'eventName': 'bring-to-front',
+            'icon': 'fa-arrow-up'
+          }
+        ],
+        inputType: 'text'
+      },
+
+      seriesConfig: {
+        type: Object,
+        defaultValue: {
+                        "y0": {
+                          "name": "y0",
+                          "x": "x",
+                          "y": "y0"
+                        },
+                        "y1": {
+                          "name": "y1",
+                          "x": "x",
+                          "y": "y1"
+                        }
+                      },
+        inputType: 'text'
+      },
+
+    }   
+  });
+</script>
