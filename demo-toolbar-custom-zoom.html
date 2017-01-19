@@ -1,0 +1,262 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>px-vis-timeseries Demo</title>
+        <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+        <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+        <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+
+        <link rel="import" href="../px-theme/px-theme-styles.html">
+        <!-- <link rel="import" href="../px-dark-theme/px-dark-theme-styles.html"> -->
+        <style include="px-theme-styles" is="custom-style"></style>
+
+        <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+        <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+
+    </head>
+
+    <body style="padding:30px; ">
+    <!-- <body style="padding:30px; background-color: rgb(27,42,51);"> -->
+      <template id="template" is="dom-bind">
+        <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+
+        <br/>
+        <px-vis-timeseries
+          id="timeSerie"
+          height="500"
+          threshold-data='[
+            { "for":"y0", "type":"max", "value":35.4784 },
+            { "for":"y0", "type":"min", "value":7.6531 },
+            { "for":"y0", "type":"mean", "value":15.330657585139331 },
+            { "for":"y1", "type":"mean", "value":75 },
+            { "for":"", "type":"quartile", "value":17 }
+          ]'
+          selection-type="xAxis"
+          show-tooltip
+          event-config= '{
+            "Recalibrate":{
+              "color": "blue",
+              "icon": "fa-camera",
+              "type": "fa",
+              "offset":[0,0]
+            },
+            "Fan start":{
+              "color": "green",
+              "icon": "\uf015",
+              "type": "unicode",
+              "offset":[1,0]
+            },
+            "Fan stop":{
+              "icon": "ge_logo.png",
+              "type": "image",
+              "offset":[0,-20],
+              "size":"20"
+            }
+          }'
+          navigator-config='{
+            "xAxisConfig": {
+              "tickFormat": "%b %d"
+            }
+          }'
+          x-axis-config= '{
+            "title": "Date",
+            "tickFormat": "%b %d"
+          }'
+          dynamic-menu-config='[{
+            "name": "Delete",
+            "action": "function(data) {  var conf = this.seriesConfig; delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf); }",
+            "eventName": "delete",
+            "icon": "fa-trash"
+          },
+          {
+            "name": "Bring To Front",
+            "action": "function(data) {this.set(\"serieToRedrawOnTop\", data.additionalDetail.name);}",
+            "eventName": "bring-to-front",
+            "icon": "fa-arrow-up"
+          }]'
+          register-config='{
+              "height": 50,
+              "type": "vertical"}'
+          threshold-config='{
+            "max": {
+              "color": "red",
+              "dashPattern": "5,0",
+              "title": "MAX"
+            }
+          }'
+          display-threshold-title
+          y-axis-config='{
+            "title": "Hz"
+          }'
+          series-config='{
+            "y0": {
+              "name":"y0",
+              "y":"y0"
+            },
+            "y1": {
+              "name":"y1",
+              "y":"y1"
+            }}'
+          default-series-config='{
+            "type": "line",
+            "yAxisUnit": "Hz",
+            "x":"x"
+            }'
+          toolbar-config='{
+            "customZoom": {
+              "tooltipLabel": "zoom",
+              "icon": "fa-search",
+              "selectable": true,
+              "actionConfig": {
+                "mousedown": "startZooming",
+                "mouseup": "stopZooming"
+              },
+              "subConfig": {
+                "x": {
+                  "title": "X",
+                  "tooltipLabel": "Zoom on X axis only",
+                  "eventName": "my-custom-click",
+                  "selectable": true,
+                  "selected": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
+                },
+                "y": {
+                  "title": "Y",
+                  "tooltipLabel": "Zoom on Y axis only",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
+                },
+                "xy": {
+                  "title": "XY",
+                  "tooltipLabel": "Zoom on X and Y axis",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
+                },
+                "zoomIn": {
+                  "icon": "fa-plus",
+                  "tooltipLabel": "zoom in",
+                  "eventName": "px-vis-toolbar-zoom-in"
+                },
+                "zoomOut": {
+                  "icon": "fa-minus",
+                  "tooltipLabel": "zoom out",
+                  "eventName": "px-vis-toolbar-zoom-out"
+                },
+                "undoZoom": {
+                  "icon": "fa-undo",
+                  "tooltipLabel": "undo zoom",
+                  "eventName": "px-vis-toolbar-undo-zoom"
+                },
+                "resetZoom": {
+                  "icon": "fa-expand",
+                  "tooltipLabel": "reset zoom to inital value",
+                  "eventName": "px-vis-toolbar-reset-zoom"
+                }
+              }
+            },
+            "pan": true,
+            "tooltip": true,
+            "logHover": {
+              "tooltipLabel": "run action on click",
+              "icon": "fa-leaf",
+              "onClick": "function(data) { console.log(\"click on leaf, context:\" + this.outerHTML); console.log(\"click on leaf, data:\" + JSON.stringify(data));}",
+              "subConfig": {
+                "customClick": {
+                  "icon": "fa-coffee",
+                  "tooltipLabel": "logs some messages on chart click",
+                  "eventName": "my-custom-click",
+                  "actionConfig": {
+                    "mousedown": "function() {console.log(\"custom mouse down 1 on chart\")}",
+                    "mouseup": "function() {console.log(\"custom mouse up 1 on chart\")}",
+                    "mousemove": ""
+                  }
+                },
+                "customClick2": {
+                  "icon": "fa-fire-extinguisher",
+                  "tooltipLabel": "logs some other messages on chart click",
+                  "actionConfig": {
+                    "mousedown": "function() {console.log(\"custom mouse down 2 on chart\")}",
+                    "mouseup": "function() {console.log(\"custom mouse up 2 on chart\")}",
+                    "mousemove": "function() { console.log(\"custom hover 2\");}"
+                  }
+                }
+              }
+            }
+          }'
+          chart-data="[[chartData]]"
+          event-data="[[eventData]]"
+          range="[[range]]">
+        </px-vis-timeseries>
+        <iron-ajax
+          id="fetch1"
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch2"
+          url="../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+
+        <px-vis-data-converter
+          id="converter"
+          data-key = "series"
+          id-key = "name"
+          original-data = '[[originalData]]'
+          series-config="{{seriesConfig}}"
+          chart-data="{{chartData}}">
+        </px-vis-data-converter>
+        <iron-ajax
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
+          handle-as="json"
+          auto
+          last-response="{{eventData}}">
+        </iron-ajax>
+    </template>
+    <script>
+      window.addEventListener('WebComponentsReady', function() {
+        setTimeout(function() {
+          var chart = document.getElementById('chartCustom'),
+              rangepicker = document.getElementById('rangepicker'),
+              btnSnap = document.getElementById('btnSnap'),
+              timeSerie = document.getElementById('timeSerie'),
+              bigChart =  document.getElementById('bigChart'),
+              fetch1 = document.getElementById('fetch1'),
+              fetch2 = document.getElementById('fetch2'),
+              converter = document.getElementById('converter'),
+              aggregatedData = [];
+
+            var processData = function(data) {
+              aggregatedData.push(data);
+              if(aggregatedData.length === 2) {
+                converter.set('originalData', aggregatedData);
+              }
+            };
+
+            //get both set of data for 1st chart
+            var handleResponse = function(evt) {
+              processData(evt.detail.response);
+            }
+
+            fetch1.addEventListener('response', handleResponse);
+            fetch2.addEventListener('response', handleResponse);
+
+            //if the data has been fetched already manually kick the event handler
+            if(fetch1.lastResponse) {
+              processData(fetch1.lastResponse);
+            }
+            if(fetch2.lastResponse) {
+              processData(fetch2.lastResponse);
+            }
+      });
+    });
+    </script>
+    </body>
+</html>
