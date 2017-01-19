@@ -525,7 +525,8 @@ Creates an interactive timeseries chart
     ],
 
     listeners: {
-      'iron-resize': '_onIronResize'
+      'iron-resize': '_onIronResize',
+      'px-vis-selected-domain-updated': '_setSelectedDomain'
     },
 
     ready:function() {
@@ -732,6 +733,9 @@ Creates an interactive timeseries chart
       if(this.showTooltip && this.tooltipConfig) {
         this._tooltipConfigChanged();
       }
+    },
+    _setSelectedDomain: function(e) {
+      this.set('selectedDomain', e.detail.data);
     }
   });
 </script>

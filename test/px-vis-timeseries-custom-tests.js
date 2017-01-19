@@ -214,6 +214,7 @@ function runCustomTests() {
       var ttD = {
         "mouse": null,
         "time": null,
+        "hidden": true, 
         "xArr": null,
         "yArr": null,
         "series": [{
@@ -224,6 +225,7 @@ function runCustomTests() {
           "value": null
         }]
       }
+
       assert.deepEqual(IASChart.tooltipData, ttD);
     });
 
@@ -368,6 +370,7 @@ function runCustomTests() {
       var ttD = {
         "mouse": null,
         "time": null,
+        "hidden": true,
         "xArr": null,
         "yArr": null,
         "series": [{
