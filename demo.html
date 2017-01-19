@@ -77,6 +77,12 @@
             "title": "Date"
           }'
 
+          y-axis-config= '{
+            "axis1": {
+              "title": "Temperature",
+              "titleTruncation": false
+            }
+          }'
           register-config='{
               "height": 50,
               "type": "vertical"}'
@@ -425,10 +431,10 @@
           var processData = function(data) {
             aggregatedData.push(data);
             if(aggregatedData.length === 4) {
-              aggregatedData[0]["axis"] = {"id": "axis1", "side": "left", "number": "1"};
-              aggregatedData[1]["axis"] = {"id": "axis2", "side": "right", "number": "1"};
-              aggregatedData[2]["axis"] = {"id": "axis3", "side": "left", "number": "2"};
-              aggregatedData[3]["axis"] = {"id": "axis3", "side": "right", "number": "2"};
+              // aggregatedData[0]["axis"] = {"id": "axis1", "side": "left", "number": "1"};
+              // aggregatedData[1]["axis"] = {"id": "axis2", "side": "right", "number": "1"};
+              // aggregatedData[2]["axis"] = {"id": "axis3", "side": "left", "number": "2"};
+              // aggregatedData[3]["axis"] = {"id": "axis3", "side": "right", "number": "2"};
               converter.set('originalData', aggregatedData);
             }
           };

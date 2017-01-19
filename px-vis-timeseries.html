@@ -149,6 +149,7 @@ Creates an interactive timeseries chart
             height="[[height]]"
             margin="[[_internalMargin]]"
             clip-path
+            interpolation-function="[[interpolationFunction]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
         </template>
@@ -165,6 +166,7 @@ Creates an interactive timeseries chart
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
+            interpolation-function="[[interpolationFunction]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-svg>
         </template>
@@ -230,7 +232,7 @@ Creates an interactive timeseries chart
     </px-vis-axis>
 
     <px-vis-multi-axis
-      id="multiAxisLeft"
+      id="yAxes"
       svg="[[layer.0]]"
       width="[[width]]"
       height="[[height]]"
@@ -239,12 +241,13 @@ Creates an interactive timeseries chart
       right-axis-size="[[_rightAxisSize]]"
       x="[[_axisX]]"
       y="[[y]]"
-      domain-changed="[[domainChanged]]"
-      complete-series-config="[[completeSeriesConfig]]"
+      domain-changed="[[_bothDomainsSet(_axisDomainChanged, domainChanged)]]"
+      complete-series-config="[[_multiAxisSeriesConfig]]"
       series-key="[[seriesKey]]"
       chart-data="[[chartData]]"
       dimensions="[[dimensions]]"
       axes="[[axes]]"
+      axis-config="[[yAxisConfig]]"
       append-unit-in-title
       orientation-from-dimensions
       disable-brush
@@ -525,24 +528,27 @@ Creates an interactive timeseries chart
       showThresholdBox: {
         type:Boolean,
         value:false
+      },
+      interpolationFunction: {
+        type: Object,
+        notify: true
       }
     },
 
     observers: [
       '_navigatorConfigChanged(navigatorConfig.*)',
       '_xAxisConfigChanged(xAxisConfig.*)',
-      '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
 
       '_heightChanged(height)',
-      '_calcAxes(completeSeriesConfig)',
+      '_calcAxes(completeSeriesConfig.*)',
       '_calcMargins(margin.*, marginNav.*, _numRightAxes, _numLeftAxes)',
       '_setXScale(width, _internalMargin)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
-      '_setDomain(_chartDataHasChanged.*, x, y, completeSeriesConfig, dataExtents, seriesToAxes)',
-      '_setDomain(chartExtents, dataExtents)',
+      '_setDomainCaller(_chartDataHasChanged.*, dataExtents, seriesToAxes.*)',
+      '_setDomainCaller(chartExtents, dataExtents)',
       '_updateDomain(selectedDomain)',
       '_chartDataChanged(chartData.*)'
     ],
@@ -593,22 +599,6 @@ Creates an interactive timeseries chart
     _xAxisConfigChanged: function(conf) {
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
     },
-    _yAxisConfigChanged: function(conf) {
-      // if(this.$$('#yAxis')) {
-      //   this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
-      // } else if(!this.$$('#yAxis')) {
-      //   this.$.singleAxisTemplate.render();
-      //   this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
-      // }
-    },
-    // _multiYConfigChanged: function(conf) {
-    //   if(this.$$('#yAxis')) {
-    //     this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
-    //   } else if(!this.$$('#yAxis') && !this._isMultiAxis) {
-    //     this.$.singleAxisTemplate.render();
-    //     this._applyConfigToElement(this.yAxisConfig, this.$$('#yAxis'));
-    //   }
-    // },
     _tooltipConfigChanged: function(conf) {
       if(this.$$('#tooltip')) {
         this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
@@ -801,6 +791,18 @@ Creates an interactive timeseries chart
     _returnXDomain: function() {
       if(this.domainChanged !== null) {
         return this.x.domain();
+      }
+    },
+
+    _setDomainCaller: function() {
+      if(this._doesObjHaveValues(this.seriesToAxes)) {
+        this._setDomain();
+      }
+    },
+
+    _bothDomainsSet: function() {
+      if(this.domainChanged !== null & this._axisDomainChanged !== null) {
+        return !this.$.yAxes.domainChanged;
       }
     }
   });
