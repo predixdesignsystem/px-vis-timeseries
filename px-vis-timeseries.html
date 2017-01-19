@@ -62,8 +62,12 @@ Creates an interactive timeseries chart
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
             <px-vis-toolbar
+              id="toolbar"
               toolbar-config='[[toolbarConfig]]'
-              action-config='{{actionConfig}}'>
+              current-sub-config='[[toolbarSubConfig]]'
+              action-config='{{actionConfig}}'
+              within-chart
+              chart-margin="[[_internalMargin]]">
             </px-vis-toolbar>
             <px-vis-svg-canvas
               id="svgCanvas"
@@ -372,7 +376,11 @@ Creates an interactive timeseries chart
       PxColorsBehavior.dataVisColorTheming,
       PxVisBehaviorD3.lineGaps,
       PxVisBehavior.actionConfig,
-      PxVisBehaviorChart.zooming
+      PxVisBehaviorChart.zooming,
+      PxVisBehaviorChart.actionRequest,
+      PxVisBehaviorChart.toolbarSubConfig,
+      PxVisBehaviorChart.noDebounceOnPanning,
+      PxVisBehavior.toolbarConfig
     ],
 
     /**
@@ -502,21 +510,6 @@ Creates an interactive timeseries chart
 
       registerHeight: {
         type: Number
-      },
-      /**
-       * Configuration object for the toolbar
-       */
-      toolbarConfig: {
-        type: Object,
-        value: function() {
-          return {"pan": true, "zoom": true, "tooltip": true};
-        }
-      },
-      /**
-       * holds the previous drawing debounce timing (before panning)
-       */
-      _oldDrawDebouncedTime: {
-        type: Number
       }
     },
 
@@ -532,15 +525,13 @@ Creates an interactive timeseries chart
     ],
 
     listeners: {
-      'iron-resize': '_onIronResize',
-      'px-vis-selected-domain-updated': '_setSelectedDomain',
-      'px-vis-interaction-space-start-panning': '_startPanning',
-      'px-vis-interaction-space-stop-panning': '_stopPanning'
+      'iron-resize': '_onIronResize'
     },
 
     ready:function() {
       this.set('numberOfLayers',4);
       this.set('registerHeight', this.height);
+      this.set('xAxisType', 'time');
       this._calcMargins();
     },
 
@@ -675,7 +666,7 @@ Creates an interactive timeseries chart
           var wrapperRect = this.$.wrapper.getBoundingClientRect(),
               navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
               registerRect = this.$.register.getBoundingClientRect(),
-
+              toolbarRect = this.$.toolbar.getBoundingClientRect(),
               widthDeduct = 0,
               heightDeduct = 0;
 
@@ -685,6 +676,7 @@ Creates an interactive timeseries chart
             widthDeduct += registerRect.width;
           }
 
+          heightDeduct += toolbarRect.height;
           heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
 
           this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
@@ -739,29 +731,6 @@ Creates an interactive timeseries chart
 
       if(this.showTooltip && this.tooltipConfig) {
         this._tooltipConfigChanged();
-      }
-    },
-    _setSelectedDomain: function(e) {
-      this.set('selectedDomain', e.detail.data);
-    },
-    _startPanning: function() {
-
-      //remove draw debounce to have a smooth panning
-      var lineType = this.renderToCanvas ? 'px-vis-line-canvas' : 'px-vis-line-svg',
-          lines = Polymer.dom(this.root).querySelectorAll(lineType);
-
-      this._oldDrawDebouncedTime = lines[0].drawDebounceTime;
-      for(var i=0; i<lines.length; i++) {
-        lines[i].set('drawDebounceTime', 0);
-      }
-    },
-    _stopPanning: function() {
-
-      var lineType = this.renderToCanvas ? 'px-vis-line-canvas' : 'px-vis-line-svg',
-          lines = Polymer.dom(this.root).querySelectorAll(lineType);
-
-      for(var i=0; i<lines.length; i++) {
-        lines[i].set('drawDebounceTime', this._oldDrawDebouncedTime);
       }
     }
   });

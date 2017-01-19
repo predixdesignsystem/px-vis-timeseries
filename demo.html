@@ -55,7 +55,7 @@
               "icon": "fa-camera",
               "type": "fa",
               "offset":[0,0]
-            },
+            },a
             "Fan start":{
               "color": "green",
               "icon": "\uf015",
@@ -108,32 +108,97 @@
             "x":"x"
             }'
           toolbar-config='{
-            "zoom": true,
+            "customzoom": {
+              "tooltipLabel": "zoom",
+              "icon": "fa-search",
+              "buttonGroup": 1,
+              "actionConfig": {
+                "mousedown": "startZooming",
+                "mouseup": "stopZooming",
+                "mouseout": "null",
+                "mousemove": "null"
+              },
+              "subConfig": {
+                "x": {
+                  "title": "X",
+                  "tooltipLabel": "Zoom on X axis only",
+                  "eventName": "my-custom-click",
+                  "selectable": true,
+                  "selected": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
+                },
+                "y": {
+                  "title": "Y",
+                  "tooltipLabel": "Zoom on Y axis only",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
+                },
+                "xy": {
+                  "title": "XY",
+                  "tooltipLabel": "Zoom on X and Y axis",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
+                },
+                "zoomIn": {
+                  "icon": "fa-plus",
+                  "tooltipLabel": "zoom in",
+                  "eventName": "px-vis-toolbar-zoom-in"
+                },
+                "zoomOut": {
+                  "icon": "fa-minus",
+                  "tooltipLabel": "zoom out",
+                  "eventName": "px-vis-toolbar-zoom-out"
+                },
+                "undoZoom": {
+                  "icon": "fa-undo",
+                  "tooltipLabel": "undo zoom",
+                  "eventName": "px-vis-toolbar-undo-zoom"
+                },
+                "resetZoom": {
+                  "icon": "fa-expand",
+                  "tooltipLabel": "reset zoom to inital value",
+                  "eventName": "px-vis-toolbar-reset-zoom"
+                }
+              }
+            },
             "pan": true,
             "tooltip": true,
             "logHover": {
-              "tooltipLabel": "Log messages on hover",
+              "buttonGroup": 2,
+              "tooltipLabel": "run action on click",
               "icon": "fa-leaf",
-              "actionConfig": {
-                "mousemove": "function() { console.log(\"hover, context of function: \" + this.outerHTML);}"
-              },
               "subConfig": {
                 "customClick": {
                   "icon": "fa-coffee",
                   "tooltipLabel": "logs some messages on chart click",
                   "eventName": "my-custom-click",
                   "actionConfig": {
-                    "mousedown": "function() {console.log(\"custom mouse down 1 on chart\")}",
-                    "mouseup": "function() {console.log(\"custom mouse up 1 on chart\")}"
                   }
                 },
                 "customClick2": {
                   "icon": "fa-fire-extinguisher",
                   "tooltipLabel": "logs some other messages on chart click",
                   "actionConfig": {
-                    "mousedown": "function() {console.log(\"custom mouse down 2 on chart\")}",
-                    "mouseup": "function() {console.log(\"custom mouse up 2 on chart\")}",
-                    "mousemove": "function() { console.log(\"custom hover 2\" + this.outerHTML);}"
+                  }
+                }
+              }
+            },
+            "logHover2": {
+              "buttonGroup": 2,
+              "tooltipLabel": "run action on click",
+              "icon": "fa-leaf",
+              "subConfig": {
+                "customClick": {
+                  "icon": "fa-coffee",
+                  "tooltipLabel": "logs some messages on chart click",
+                  "eventName": "my-custom-click",
+                  "actionConfig": {
+                  }
+                },
+                "customClick2": {
+                  "icon": "fa-fire-extinguisher",
+                  "tooltipLabel": "logs some other messages on chart click",
+                  "actionConfig": {
                   }
                 }
               }
@@ -374,22 +439,20 @@
         var menuConfig = [
           {
             'name': 'Delete',
-            'action': function(itemConfig, additionalDetail) {
+            'action': function(data) {
               var conf = this.seriesConfig;
-              delete conf[additionalDetail.name];
+              delete conf[data.additionalDetail.name];
               this.set('seriesConfig', {});
               this.set('seriesConfig', conf);
             },
-            'actionContext': timeSerie,
             'eventName': 'delete',
             'icon': 'fa-trash',
           },
           {
             'name': 'Bring To Front',
-            'action': function(itemConfig, additionalDetail) {
-              this.set('serieToRedrawOnTop', additionalDetail.name);
+            'action': function(data) {
+              this.set('serieToRedrawOnTop', data.additionalDetail.name);
             },
-            'actionContext': timeSerie,
             'eventName': 'bring-to-front',
             'icon': 'fa-arrow-up'
           }

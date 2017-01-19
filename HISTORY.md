@@ -18,6 +18,8 @@ v1.0.0
 * added the ability to pass a navigator config and configure navigator axis
 * Updated register length to be dynamic based on if the navigator is included
 * margin and marginNav can now be set at initialization as well (=as attributes) and dynamically adjusted
+* added dynamic menus on registers
+* added toolbar and advanced zooming
 
 v0.6.4
 ==================

@@ -245,34 +245,80 @@ window.addEventListener('WebComponentsReady', function() {
       menuConfig = [
           {
             'name': 'Delete',
-            'action': function(itemConfig, additionalDetail) {
-              //usually we would just pass the chart as the context for this action,
-              //unfortunately due to how our demo dynamically build the charts we don't
-              //have access to the chart when creating this config, so we manually
-              //get the chart every time
-              var chart = document.getElementById('timeserie'),
-                  conf = chart.seriesConfig;
+            'action': function(data) {
+              var conf = this.seriesConfig;
               delete conf[additionalDetail.name];
-              chart.set('seriesConfig', {});
-              chart.set('seriesConfig', conf);
+              this.set('seriesConfig', {});
+              this.set('seriesConfig', conf);
             },
             'eventName': 'delete',
             'icon': 'fa-trash',
           },
           {
             'name': 'Bring To Front',
-            'action': function(itemConfig, additionalDetail) {
-              //usually we would just pass the chart as the context for this action,
-              //unfortunately due to how our demo dynamically build the charts we don't
-              //have access to the chart when creating this config, so we manually
-              //get the chart every time
-              var chart = document.getElementById('timeserie');
-              chart.set('serieToRedrawOnTop', additionalDetail.name);
+            'action': function(data) {
+              this.set('serieToRedrawOnTop', data.additionalDetail.name);
             },
             'eventName': 'bring-to-front',
             'icon': 'fa-arrow-up'
           }
         ],
+      toolbarConfig = {
+            "customzoom": {
+              "tooltipLabel": "zoom",
+              "icon": "fa-search",
+              "selectable": true,
+              "selected": true,
+              "actionConfig": {
+                "mousedown": "startZooming",
+                "mouseup": "stopZooming"
+              },
+              "subConfig": {
+                "x": {
+                  "title": "X",
+                  "tooltipLabel": "Zoom on X axis only",
+                  "eventName": "my-custom-click",
+                  "selectable": true,
+                  "selected": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
+                },
+                "y": {
+                  "title": "Y",
+                  "tooltipLabel": "Zoom on Y axis only",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
+                },
+                "xy": {
+                  "title": "XY",
+                  "tooltipLabel": "Zoom on X and Y axis",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
+                },
+                "zoomIn": {
+                  "icon": "fa-plus",
+                  "tooltipLabel": "zoom in",
+                  "eventName": "px-vis-toolbar-zoom-in"
+                },
+                "zoomOut": {
+                  "icon": "fa-minus",
+                  "tooltipLabel": "zoom out",
+                  "eventName": "px-vis-toolbar-zoom-out"
+                },
+                "undoZoom": {
+                  "icon": "fa-undo",
+                  "tooltipLabel": "undo zoom",
+                  "eventName": "px-vis-toolbar-undo-zoom"
+                },
+                "resetZoom": {
+                  "icon": "fa-expand",
+                  "tooltipLabel": "reset zoom to inital value",
+                  "eventName": "px-vis-toolbar-reset-zoom"
+                }
+              }
+            },
+            "pan": true,
+            "tooltip": true
+          },
       optionsArray = [
         {
           "height":300,
@@ -280,7 +326,6 @@ window.addEventListener('WebComponentsReady', function() {
           "preventResize":false,
           "selectionType":'xy',
           "showTooltip":false,
-          "registerLocation":"top",
           "chartData":chartData1,
           "includeAllSeries": true,
           "chartHorizontalAlignment": "center",
