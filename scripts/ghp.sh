@@ -3,66 +3,140 @@
 # Exit with nonzero exit code if anything fails
 set -e
 
+# ------------------------------------------------------------------------------
+# CONFIGURE SCRIPT
+# ------------------------------------------------------------------------------
 
-#set our source and traget branches
+# Set our source branch (where we'll build from) and our target branch (where we
+# want to send the build page to)
 SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 REPO=`git config remote.origin.url`
 
-#pull requests and commits to other branches shouldn't try to deploy
+# Prep git credentials
+GIT_USER_NAME="Travis CI"
+GIT_USER_EMAIL="PredixtravisCI@ge.com"
+GIT_COMMIT_MESSAGE="[Travis] Rebuild documentation for Github Pages"
+
+# Check if we should run a deploy, or if we should skip it. Only commits to master
+# should trigger a build. Pull requests and commits to features branches should not.
 if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
     echo "Skipping deploy; just doing a build."
     exit 0
 fi
 
-#create a temp directory that will store the bower.json file
-mkdir tmp_bower
+# ------------------------------------------------------------------------------
+# PREPARE FILESYSTEM
+# ------------------------------------------------------------------------------
 
-#clone this repo, and go into that folder.
-git clone ${REPO} ghp_tmp
-cd ghp_tmp
+cd $TRAVIS_BUILD_DIR
 
-#find out our repo name from the bower file
+# Find out our repo name from the bower file
 REPO_NAME=$(grep "name" bower.json | sed 's/"name": "//' | sed 's/",//')
 echo "repo name is ${REPO_NAME}"
 
-#set up our variables and configs
-git config user.name "Travis CI"
-git config user.email "PredixtravisCI@ge.com"
-
-SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
-
-#copy the bower.json file out of the directory to a temp one
-cp bower.json ../tmp_bower/bower.json
-#and checkout gh-pages - create it if it doesn't exist.
-git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
-
-#remove the old .bowerrc, and replace it with one that tells bower to install everything in THIS folder, and not bower_components
+#delete all the files!
+rm -rf node_modules
+rm -rf bower_components
+rm -rf css
+rm -rf sass
+rm -rf scripts
+rm -rf test
+rm *.html
+rm *.json
+rm *.enc
+rm *.js
+rm *.png
+rm *.lock
+rm *.ico
+rm *.md
+rm *.pdf
+yes | rm .travis.yml
 rm .bowerrc
+rm .editorconfig
+rm -rf .github
+rm .gitignore
+rm .jshintrc
+
+# force installation of bower packages at the root
 echo "{ \"directory\": \".\" }" > .bowerrc
 
-#copy the bower.json file from our temp directory into the current one, overriding it, and passing a yes in there's a prompt
-yes | cp ../tmp_bower/bower.json bower.json
+#make sure the deploy key isn't saved into the git repo
+echo "deploy_key" > .gitignore
 
-#install your new tag through bower, it will fail without forcing it.
-bower install ${REPO_NAME} --force
+# add the redirect.
+# Note: We are not overwriting the component's documentation `index.html` file
+# here, we are making sure that http://url/px-something/ redirects to
+# http://url/px-something/px-something/, where the demo page is installed
+meta_temp='<META http-equiv=refresh content="0;URL=COMPONENT_NAME/">'
+echo ${meta_temp/'COMPONENT_NAME'/$REPO_NAME} > index.html
 
-#optimize for production
-cd ${REPO_NAME} #go into the component folder
-npm install vulcanize -g
-vulcanize index.html -o index.vulcanized.html --inline-scripts --inline-css --strip-comments
-vulcanize demo.html -o demo.vulcanized.html --inline-scripts --inline-css --strip-comments
-yes | cp index.vulcanized.html index.html
-yes | cp demo.vulcanized.html demo.html
-rm demo.vulcanized.html
-cd ../ #remember to exit out of the component before you do any git stuff
+# ------------------------------------------------------------------------------
+# BOWER
+# ------------------------------------------------------------------------------
+#
+#for some reason, bower isn't available here, so, install it globally, so it doesn't end up as another folder.
+npm install bower -g
+bower cache clean
+# Install the repo and the dark-theme.
+bower install ${REPO_NAME} px-dark-theme px-dark-demo-theme
 
-#do the git stuff
-git add .
-git commit -m "rebuild github pages"
+#copy the bower file into our root
+yes | cp ${REPO_NAME}/bower.json bower.json
+
+#and run install
+bower install
+
+# ------------------------------------------------------------------------------
+# BUILD PROJECT
+# ------------------------------------------------------------------------------
+
+# Go into the component folder we've just installed from bower
+# cd ${REPO_NAME}
+
+# ------------------------------------------------------------------------------
+# SW-PRECACHE
+# ------------------------------------------------------------------------------
+
+# npm install sw-precache
+# sw-precache  --root='.' --static-file-globs='**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff}'
+
+# ------------------------------------------------------------------------------
+# GIT PUSH TO REMOTES
+# ------------------------------------------------------------------------------
+
+# Remember to exit out of the component before we do any git stuff
+# cd ../
+
+# Do the git stuff
+
+# checkout a new orphan
+git checkout --orphan $TARGET_BRANCH
+
+git add -A .
+git commit -m "${GIT_COMMIT_MESSAGE}"
+
+# Set git credentials (defined in settings above)
+git config user.name ${GIT_USER_NAME}
+git config user.email ${GIT_USER_EMAIL}
+
+
+# We get the URL in this format: "https://github.com/PredixDev/px-something"
+# First, we need to replace https-style remote URL with a SSH-style remote
+# URL we can push to below
+SSH_GIT=${REPO/https:\/\/github.com\//git@github.com:}
+
+# Now, the URL is in this format: "git@github.com:PredixDev/px-something"
+# Next, replace `PredixDev` Github organization with `predix-ui` so configure
+# the correct remote to push to.
+# The resulting URL will be: "git@github.com:predix-ui/px-something"
+SSH_GIT_PREDIXUI=${SSH_GIT/:PredixDev\//:predix-ui\/}
+
+# Prepare ssh key, which we'll use to authenticate for SSH-push deploy
 eval `ssh-agent -s`
-#and cahnge permissions
+# ... and change permissions for deploy key
 chmod 0400 $TRAVIS_BUILD_DIR/deploy_key
+
+# Push to predix-ui/repo `gh-pages` branch (force to override out-of-date refs)
 ssh-add $TRAVIS_BUILD_DIR/deploy_key
-#Now that we're all set up, we can push.
-git push $SSH_REPO $TARGET_BRANCH
+git push $SSH_GIT_PREDIXUI $TARGET_BRANCH --force

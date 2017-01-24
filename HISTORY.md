@@ -1,3 +1,7 @@
+v0.6.6
+===================
+* Added new configurable demo
+
 v0.6.5
 ==================
 * Updated to cool grays
