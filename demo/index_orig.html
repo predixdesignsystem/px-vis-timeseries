@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>px-vis-timeseries Demo</title>
+  <link rel="stylesheet" type="text/css" href="css/px-vis-timeseries-demo.css"/>
+  <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+  <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../px-theme/px-theme-styles.html">
+  <style include="px-theme-styles" is="custom-style"></style>
+
+  <link rel="import" href="../px-api-viewer/px-api-viewer.html" />
+  <link rel="import" href="../px-tabs/px-tab-set.html" />
+  <link rel="import" href="../px-dropdown/px-dropdown.html"/>
+
+  <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+
+  <link rel="import" href="../px-colors-design/colors.html" />
+  <link rel="import" href="../px-vis/px-vis-behavior-common.html" />
+  <link rel="import" href="../px-vis/px-vis-behavior-d3.html" />
+  <link rel="import" href="../px-vis/px-vis-behavior-chart.html" />
+  <link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
+
+  <link rel="import" href="px-vis-timeseries.html"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+  <link rel="import" href="../px-demo-snippet/px-demo-snippet.html">
+  <link rel="import" href="../px-polymer-font-awesome/polymer-font-awesome.html">
+  <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+
+  </head>
+
+<body>
+
+  <!-- Wrap elements with auto-binding template to -->
+  <!-- allow use of Polymer bindings in main document -->
+  <template id="just-for-demo" is="dom-bind" >
+    <!-- discription -->
+    <div class="hero u-p++ text--shadow">
+      <a class="actionable flex flex--right flex--middle" href="https://github.com/PredixDev/px-vis-timeseries" target="_blank"><iron-icon class="menu__open" icon="fa:fa-github"></iron-icon>View on Github</a>
+  		<h1 class="delta">px-vis-timeseries</h1>
+  		<p>
+  			The	<code>px-vis-timeseries</code> component creates a timeseries chart.
+  		</p>
+      <p class="description-text">
+        With timeseries, you can create line and scatter timeseries charts complete with user interaction, events, thresholds, and a navigator.
+      </p>
+      <p>
+        The chart is built off px-vis components which utilize d3 4.x.
+      </p>
+  		<div class="flex">
+  			<img class="u-mr--" src="https://img.shields.io/travis/PredixDev/px-vis-timeseries/master.svg?style=flat-square" alt="Travis" onerror="this.style.display='none'"/>
+  			<img class="u-mr--" src="https://img.shields.io/bower/v/px-vis-timeseries.svg?style=flat-square" alt="Bower" onerror="this.style.display='none'"/>
+  			<img class="u-mr--" src="https://img.shields.io/github/issues-raw/PredixDev/px-vis-timeseries.svg?style=flat-square" alt="Issues" onerror="this.style.display='none'"/>
+  		</div>
+  	</div>
+    <br />
+    <!-- mega demo -->
+    <div style="position: relative;" class="u-pb++ flex flex--col" id="defaultTab">
+      <div class="tabContainer u-pt++ u-pl++">
+        <px-tab-set selected="{{selected}}" bare no-bottom-border>
+          <template is="dom-repeat" items="{{optionsArray}}">
+            <px-tab>Option {{indexPlusOne(index)}}</px-tab>
+          </template>
+        </px-tab-set>
+      </div>
+      <px-tab-pages selected="{{selected}}">
+        <template is="dom-repeat" items="{{optionsArray}}">
+          <section class="tab-page">
+            <div class="mega-demo flex u-ph++ u-pb++">
+            <!-- Properties -->
+            <div class="properties u-ph+ u-pb+ u-mt+" id="properties">
+              <p class="epsilon">Properties</p>
+              <div class="flex u-mb-">
+                <input id="showTooltip{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.showTooltip::change}}">
+                <label for$="showTooltip{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                <div class="u-ml-">Show Tooltip</div>
+              </div>
+              <div class="flex u-mb-">
+                <input id="preventResize{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.preventResize::change}}">
+                <label for$="preventResize{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                <div class="u-ml-">Prevent Resize</div>
+              </div>
+              <div class="u-mb-">Width: <input id="width" class="text-input" type="text" placeholder="{{item.width}}" value="{{item.width::input}}" /></div>
+              <div class="u-mb-">Height: <input id="height" class="text-input" type="text" placeholder="{{item.height}}" value="{{item.height::input}}" /></div>
+              <div class="u-mb-">Zoom Type:
+                <div style="width: 100%;">
+                  <px-dropdown id="showSelectionType" value="{{item.selectionType}}" display-value="{{item.selectionType}}" bound-target="properties">
+                    <px-dropdown-content
+                      items='[
+                        {"key":"one", "val": "xy"},
+                        {"key":"two", "val": "xAxis"},
+                        {"key":"three", "val": "yAxis"}]'>
+                    </px-dropdown-content>
+                  </px-dropdown>
+                </div>
+              </div>
+              <div class="u-mb-">Horizontal Alignment:
+                <div style="width: 100%;">
+                  <px-dropdown id="showSelectionType" value="{{item.chartHorizontalAlignment}}" display-value="{{item.chartHorizontalAlignment}}" bound-target="properties">
+                    <px-dropdown-content
+                      items='[
+                        {"key":"one", "val": "left"},
+                        {"key":"two", "val": "center"},
+                        {"key":"three", "val": "right"}]'>
+                    </px-dropdown-content>
+                  </px-dropdown>
+                </div>
+              </div>
+              <div class="u-mb-">Vertical Alignment:
+                <div style="width: 100%;">
+                  <px-dropdown id="showSelectionType" value="{{item.chartVerticalAlignment}}" display-value="{{item.chartVerticalAlignment}}" bound-target="properties">
+                    <px-dropdown-content
+                      items='[
+                        {"key":"one", "val": "top"},
+                        {"key":"two", "val": "center"},
+                        {"key":"three", "val": "bottom"}]'>
+                    </px-dropdown-content>
+                  </px-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="demoContainer clearfix u-mt+">
+              <!-- demo -->
+              <div class="flex flex--col full-height">
+                <div class="demo u-p+ full-height">
+                  <template is="dom-if" if="{{isOption1(index)}}" restamp>
+                    <div style="height:500px">
+                      <px-vis-timeseries
+                        id="timeserie"
+                        width = "{{item.width}}"
+                        height = "{{item.height}}"
+                        prevent-resize = "{{item.preventResize}}"
+                        show-tooltip = "{{item.showTooltip}}"
+                        register-location = "{{item.registerLocation}}"
+                        chart-horizontal-alignment = "{{item.chartHorizontalAlignment}}"
+                        chart-vertical-alignment = "{{item.chartVerticalAlignment}}"
+                        series-config="{{item.seriesConfig}}"
+                        selection-type= "{{item.selectionType}}"
+                        chart-data="{{item.chartData}}"
+                        dynamic-menu-config="{{item.dynamicMenuConfig}}">
+                      </px-vis-timeseries>
+                    </div>
+                  </template>
+                  <!-- <template is="dom-if" if="{{isOption1(index)}}" restamp>
+                    <px-vis-timeseries
+                      width="{{item.width}}"
+                      height="{{item.height}}"
+                      prevent-resize="{{item.preventResize}}"
+                      enable-tooltip="{{item.enableTooltip}}"
+                      register-location="{{item.registerLocation}}"
+                      include-all-series
+                      selection-type="{{item.selectionType}}"
+                      chart-data="{{item.chartData}}">
+                    </px-vis-timeseries>
+                    <px-vis-data
+                      id = "seriesAjax"
+                      request-data = '[{
+                          "url":"https://cdn.rawgit.com/PredixDev/px-demo-data/master/demo-data/aviation/delta-egt-cruise.json"
+                        }]'
+                      lists="flat"
+                      response-data="{{item.responseData}}">
+                    </px-vis-data>
+                    <px-vis-data-converter
+                    original-data="[[item.responseData]]"
+                    chart-data="{{item.chartData}}"
+                    data-key="series"
+                    id-key="name"
+                    series-config="{{seriesConfig}}">
+                    ></px-vis-data-converter>
+                  </template> -->
+                </div>
+                <div class="flex__item">
+                  <px-demo-snippet
+                    element-properties="{{item}}"
+                    element-name="px-vis-timeseries"
+                    scripts-includes="[[scriptsIncludes]]"
+                    links-includes="[[linksIncludes]]"
+                    polygit-includes="[[polygitIncludes]]"
+                    >
+                  </px-demo-snippet>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="apiContainer">
+            <div class="flex flex--col api u-mt++" >
+              <div>
+                <px-api-viewer source="px-vis-timeseries"></px-api-viewer>
+              </div>
+            </div>
+          </div>
+        </section>
+      </template>
+    </px-tab-pages>
+  </div>
+  <footer class="footer flex flex--center">
+    <div class="footer__container u-pv++">
+      <div>
+        <a href="https://ge.com/digital" >
+          <img src="monogram-wdmk.png" alt="GE Monogram" class="footer__img">
+        </a>
+      </div>
+      <div class="footer__list">
+        <ul class="list-inline list-inline--delimited">
+          <li>
+            <a href="http://predix.io/legal" class="footer__list--lnk">Legal</a>
+          </li>
+          <li>
+            <a href="mailto:info@predix.io" class="footer__list--lnk">Contact Us</a>
+          </li>
+          <li>Copyright &copy; 2016 General Electric Company. All rights reserved.</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</template>
+<script>
+window.addEventListener('WebComponentsReady', function() {
+
+  var template = document.querySelector('template[is=dom-bind]');
+  var  chartData1 = [
+        {"x": 1397177400000, "y0": "0.0",   "y1": "2.0"},
+        {"x": 1397228040000, "y0": "0.897", "y1": "2.5"},
+        {"x": 1397248260000, "y0": "1.0",   "y1": "3.5"},
+        {"x": 1397291280000, "y0": "2.0",   "y1": "1.5"},
+        {"x": 1397318100000, "y0": "1.5",   "y1": "0.5"},
+        {"x": 1397342100000, "y0": "3.0",   "y1": "2.0"},
+        {"x": 1397390820000, "y0": "0.897", "y1": "1.5"}],
+        seriesConfig = {
+                        "y0": {
+                          "name": "y0",
+                          "x": "x",
+                          "y": "y0"
+                        },
+                        "y1": {
+                          "name": "y1",
+                          "x": "x",
+                          "y": "y1"
+                        }
+                      },
+      menuConfig = [
+          {
+            'name': 'Delete',
+            'action': function(data) {
+              var conf = this.seriesConfig;
+              delete conf[additionalDetail.name];
+              this.set('seriesConfig', {});
+              this.set('seriesConfig', conf);
+            },
+            'eventName': 'delete',
+            'icon': 'fa-trash',
+          },
+          {
+            'name': 'Bring To Front',
+            'action': function(data) {
+              this.set('serieToRedrawOnTop', data.additionalDetail.name);
+            },
+            'eventName': 'bring-to-front',
+            'icon': 'fa-arrow-up'
+          }
+        ],
+      toolbarConfig = {
+            "customzoom": {
+              "tooltipLabel": "zoom",
+              "icon": "fa-search",
+              "selectable": true,
+              "selected": true,
+              "actionConfig": {
+                "mousedown": "startZooming",
+                "mouseup": "stopZooming"
+              },
+              "subConfig": {
+                "x": {
+                  "title": "X",
+                  "tooltipLabel": "Zoom on X axis only",
+                  "eventName": "my-custom-click",
+                  "selectable": true,
+                  "selected": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
+                },
+                "y": {
+                  "title": "Y",
+                  "tooltipLabel": "Zoom on Y axis only",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
+                },
+                "xy": {
+                  "title": "XY",
+                  "tooltipLabel": "Zoom on X and Y axis",
+                  "selectable": true,
+                  "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
+                },
+                "zoomIn": {
+                  "icon": "fa-plus",
+                  "tooltipLabel": "zoom in",
+                  "eventName": "px-vis-toolbar-zoom-in"
+                },
+                "zoomOut": {
+                  "icon": "fa-minus",
+                  "tooltipLabel": "zoom out",
+                  "eventName": "px-vis-toolbar-zoom-out"
+                },
+                "undoZoom": {
+                  "icon": "fa-undo",
+                  "tooltipLabel": "undo zoom",
+                  "eventName": "px-vis-toolbar-undo-zoom"
+                },
+                "resetZoom": {
+                  "icon": "fa-expand",
+                  "tooltipLabel": "reset zoom to inital value",
+                  "eventName": "px-vis-toolbar-reset-zoom"
+                }
+              }
+            },
+            "pan": true,
+            "tooltip": true
+          },
+      optionsArray = [
+        {
+          "height":300,
+          "width":800,
+          "preventResize":false,
+          "selectionType":'xy',
+          "showTooltip":false,
+          "chartData":chartData1,
+          "includeAllSeries": true,
+          "chartHorizontalAlignment": "center",
+          "chartVerticalAlignment": "center",
+          "dynamicMenuConfig": menuConfig,
+          "seriesConfig": seriesConfig
+        }
+        // {
+        //   "height":300,
+        //   "width":800,
+        //   "preventResize":true,
+        //   "selectionType":'xy',
+        //   "enableTooltip":false,
+        //   "registerLocation":"top",
+        //   "chartData":[],
+        //   "includeAllSeries": true
+        // }
+
+      ],
+      indexPlusOne = function(num) {
+        return num + 1;
+      };
+
+    template.selected = "0";
+    template.optionsArray = optionsArray;
+    template.indexPlusOne = indexPlusOne;
+    template.scriptsIncludes = ['https://cdn.rawgit.com/foretagsplatsen/numbro/1.7.1/numbro.js'];
+    template.linksIncludes = ['px-vis/px-polygit-imports-vis.html', 'px-datetime-common/px-polygit-imports-datetime.html', 'numbro-element/numbro-element.html'];
+    template.polygitIncludes = ['numbro*+MeTaNoV+*'];
+    template.chartData = chartData1;
+    template.isOption1 = function(index) {
+      return index + 1 === 1;
+    };
+    template.isOption2 = function(index) {
+      console.log(index);
+      return (index === 1);
+    };
+});
+</script>
+
+</body>
+</html>
