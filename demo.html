@@ -126,7 +126,7 @@
                   "buttonGroup": 1,
                   "selectable": true,
                   "selected": true,
-                  "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
+                  "onClick": "function() { debugger; this.set(\"selectionType\", \"xAxis\");}"
                 },
                 "y": {
                   "title": "Y",
@@ -176,6 +176,7 @@
                   "tooltipLabel": "logs some messages on chart click",
                   "eventName": "my-custom-click",
                   "actionConfig": {
+                    "mousedown": "function(mousePos) { debugger; console.log(JSON.stringify(this.tooltipData))}"
                   }
                 },
                 "customClick2": {
