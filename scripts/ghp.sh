@@ -130,7 +130,7 @@ SSH_GIT=${REPO/https:\/\/github.com\//git@github.com:}
 # Next, replace `PredixDev` Github organization with `predix-ui` so configure
 # the correct remote to push to.
 # The resulting URL will be: "git@github.com:predix-ui/px-something"
-SSH_GIT_PREDIXUI=${SSH_GIT/:PredixDev\//\/predix-ui\/}
+SSH_GIT_PREDIXUI=${SSH_GIT/:PredixDev\//:predix-ui\/}
 
 # Prepare ssh key, which we'll use to authenticate for SSH-push deploy
 eval `ssh-agent -s`
