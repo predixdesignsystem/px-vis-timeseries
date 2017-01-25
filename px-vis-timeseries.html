@@ -58,7 +58,8 @@ Creates an interactive timeseries chart
             complete-series-config="[[completeSeriesConfig]]"
             muted-series={{mutedSeries}}
             type="{{_registerType}}"
-            x-axis-type="time">
+            x-axis-type="time"
+            y-axis-type="[[yAxisType]]">
           </px-vis-register>
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
@@ -621,15 +622,14 @@ Creates an interactive timeseries chart
     _calcMargins:function() {
       this.debounce('_calcMargin', function() {
         var margin,
-            marginNav;
+            marginNav,
+            topMargin = 25,
+            rightMargin = 10,
+            bottomMargin = 10,
+            leftMargin = 10;
 
         // if the dev didnt set the margin, then calc it
         if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
-          var topMargin = 25,
-              rightMargin = 10,
-              bottomMargin = 10,
-              leftMargin = 10;
-
           if(this.xAxisLocation === 'bottom') {
             bottomMargin = 40;
           } else if(this.xAxisLocation === 'top') {
@@ -653,15 +653,15 @@ Creates an interactive timeseries chart
 
         } else { //is dev set, use it
           margin = {
-            'top': Number(this.margin.top),
-            'right': Number(this.margin.right),
-            'bottom': Number(this.margin.bottom),
-            'left':  Number(this.margin.left)
+            'top': Number(this.margin.top) || Number(this.margin.top) === 0 ? Number(this.margin.top) : topMargin,
+            'right': Number(this.margin.right) || Number(this.margin.right) === 0 ? Number(this.margin.right) : rightMargin,
+            'bottom': Number(this.margin.bottom) || Number(this.margin.bottom) === 0 ? Number(this.margin.bottom) : bottomMargin,
+            'left':  Number(this.margin.left) || Number(this.margin.left) === 0 ? Number(this.margin.left) : leftMargin
           };
 
           // FIXME
           // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
-          this._calcMultiMargins(margin, Number(this.margin.left), Number(this.margin.right));
+          this._calcMultiMargins(margin, margin.left, margin.right);
         }
 
         //if marginNav not dev set

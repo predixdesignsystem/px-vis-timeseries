@@ -40,6 +40,12 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
+          margin='{
+            "top": 25,
+            "bottom": 40,
+            "right": 100,
+            "left": 100
+          }'
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
@@ -80,7 +86,8 @@
           y-axis-config= '{
             "axis1": {
               "title": "Temperature",
-              "titleTruncation": false
+              "titleTruncation": false,
+              "tickFormat": ".5f"
             }
           }'
           register-config='{
@@ -97,7 +104,6 @@
           y-axis-config='{
             "title": "Hz"
           }'
-          series-config='{{seriesConfig}}'
           toolbar-config='{
             "customzoom": {
               "tooltipLabel": "zoom",
@@ -198,6 +204,7 @@
               }
             }
           }'
+          series-config="[[seriesConfig]]"
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]">
