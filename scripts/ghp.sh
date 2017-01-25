@@ -9,7 +9,7 @@ set -e
 
 # Set our source branch (where we'll build from) and our target branch (where we
 # want to send the build page to)
-SOURCE_BRANCH="master"
+# SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 REPO=`git config remote.origin.url`
 
@@ -20,7 +20,7 @@ GIT_COMMIT_MESSAGE="[Travis] Rebuild documentation for Github Pages"
 
 # Check if we should run a deploy, or if we should skip it. Only commits to master
 # should trigger a build. Pull requests and commits to features branches should not.
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     echo "Skipping deploy; just doing a build."
     exit 0
 fi
