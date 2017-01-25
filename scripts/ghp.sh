@@ -124,7 +124,7 @@ git config user.email ${GIT_USER_EMAIL}
 # We get the URL in this format: "https://github.com/PredixDev/px-something"
 # First, we need to replace https-style remote URL with a SSH-style remote
 # URL we can push to below
-SSH_GIT=${REPO/https:\/\/github.com\//git://github.com:}
+SSH_GIT=${REPO/https:\/\/github.com\//git@github.com:}
 
 # Now, the URL is in this format: "git@github.com:PredixDev/px-something"
 # Next, replace `PredixDev` Github organization with `predix-ui` so configure
