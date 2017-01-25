@@ -139,4 +139,5 @@ chmod 0400 $TRAVIS_BUILD_DIR/deploy_key
 
 # Push to predix-ui/repo `gh-pages` branch (force to override out-of-date refs)
 ssh-add $TRAVIS_BUILD_DIR/deploy_key
+echo $SSH_GIT_PREDIXUI
 git push $SSH_GIT_PREDIXUI $TARGET_BRANCH --force
