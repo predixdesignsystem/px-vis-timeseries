@@ -141,7 +141,8 @@
                         series-config="{{item.seriesConfig}}"
                         selection-type= "{{item.selectionType}}"
                         chart-data="{{item.chartData}}"
-                        dynamic-menu-config="{{item.dynamicMenuConfig}}">
+                        dynamic-menu-config="{{item.dynamicMenuConfig}}"
+                        toolbar-config="{{item.toolbarConfig}}">
                       </px-vis-timeseries>
                     </div>
                   </template>
@@ -263,12 +264,14 @@ window.addEventListener('WebComponentsReady', function() {
             'icon': 'fa-arrow-up'
           }
         ],
-      toolbarConfig = {
+      myToolbarConfig = { "config": {
             "customzoom": {
               "tooltipLabel": "zoom",
               "icon": "fa-search",
+              "buttonGroup": 1,
               "selectable": true,
-              "selected": true,
+              "onClick": "function() {this.set(\"showTooltip\", false);}",
+              "onClickContext": "toolbar",
               "actionConfig": {
                 "mousedown": "startZooming",
                 "mouseup": "stopZooming"
@@ -276,14 +279,15 @@ window.addEventListener('WebComponentsReady', function() {
               "subConfig": {
                 "x": {
                   "title": "X",
+                  "buttonGroup": 1,
                   "tooltipLabel": "Zoom on X axis only",
                   "eventName": "my-custom-click",
                   "selectable": true,
-                  "selected": true,
                   "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
                 },
                 "y": {
                   "title": "Y",
+                  "buttonGroup": 1,
                   "tooltipLabel": "Zoom on Y axis only",
                   "selectable": true,
                   "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
@@ -291,7 +295,9 @@ window.addEventListener('WebComponentsReady', function() {
                 "xy": {
                   "title": "XY",
                   "tooltipLabel": "Zoom on X and Y axis",
+                  "buttonGroup": 1,
                   "selectable": true,
+                  "selected": true,
                   "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
                 },
                 "zoomIn": {
@@ -318,7 +324,7 @@ window.addEventListener('WebComponentsReady', function() {
             },
             "pan": true,
             "tooltip": true
-          },
+        }},
       optionsArray = [
         {
           "height":300,
@@ -327,6 +333,7 @@ window.addEventListener('WebComponentsReady', function() {
           "selectionType":'xy',
           "showTooltip":false,
           "chartData":chartData1,
+          "toolbarConfig": myToolbarConfig,
           "includeAllSeries": true,
           "chartHorizontalAlignment": "center",
           "chartVerticalAlignment": "center",

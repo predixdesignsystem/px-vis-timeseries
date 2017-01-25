@@ -63,11 +63,11 @@ Creates an interactive timeseries chart
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
             <px-vis-toolbar
               id="toolbar"
-              toolbar-config='[[toolbarConfig]]'
               current-sub-config='[[toolbarSubConfig]]'
               action-config='{{actionConfig}}'
               within-chart
-              chart-margin="[[_internalMargin]]">
+              chart-margin="[[_internalMargin]]"
+              show-tooltip="{{_internalShowTooltip}}">
             </px-vis-toolbar>
             <px-vis-svg-canvas
               id="svgCanvas"
@@ -80,7 +80,7 @@ Creates an interactive timeseries chart
               px-svg-elem="{{pxSvgElem}}"
               svg-lower="{{svgLower}}">
             </px-vis-svg-canvas>
-            <template is="dom-if" if="[[!disableNavigator]]">
+            <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
               <div class="flex__item--no-grow inline--flex" style="height:100px">
                 <px-vis-chart-navigator
                   id="navigator"
@@ -106,21 +106,19 @@ Creates an interactive timeseries chart
         </div>
     </div>
 
-    <template id="tooltipTemplate" is="dom-if" if="[[showTooltip]]" restamp>
-      <px-vis-tooltip
-        id="tooltip"
-        hover-target=[[mouseRect]]
-        mouse-position="[[mousePosition]]"
-        width="250"
-        margin="[[_internalMargin]]"
-        chart-data="[[chartData]]"
-        tooltip-data="[[tooltipData]]"
-        complete-series-config="[[completeSeriesConfig]]"
-        x-axis-type="time"
-        tooltip-style="light"
-        muted-series="[[mutedSeries]]">
-      </px-vis-tooltip>
-    </template>
+    <px-vis-tooltip
+      id="tooltip"
+      hover-target=[[mouseRect]]
+      mouse-position="[[mousePosition]]"
+      width="250"
+      margin="[[_internalMargin]]"
+      chart-data="[[chartData]]"
+      tooltip-data="[[tooltipData]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      x-axis-type="time"
+      tooltip-style="light"
+      muted-series="[[mutedSeries]]">
+    </px-vis-tooltip>
     <px-vis-scale
       x-axis-type="time"
       y-axis-type="linear"
@@ -308,7 +306,8 @@ Creates an interactive timeseries chart
       tooltip-data="{{tooltipData}}"
       interaction-svg="{{interactionSvg}}"
       extents-data="{{extentsData}}"
-      action-config="{{actionConfig}}">
+      action-config="{{actionConfig}}"
+      show-tooltip="{{_computedShowTooltip}}">
     </px-vis-interaction-space>
 
     <px-vis-cursor
@@ -381,7 +380,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.actionRequest,
       PxVisBehaviorChart.toolbarSubConfig,
       PxVisBehaviorChart.noDebounceOnPanning,
-      PxVisBehavior.toolbarConfig
+      PxVisBehaviorChart.chartToolbarConfig,
+      PxVisBehaviorChart.showTooltip
     ],
 
     /**
@@ -460,16 +460,6 @@ Creates an interactive timeseries chart
         type: Array,
         notify: true
       },
-      /**
-        *
-        * Allows to show the tooltip
-        */
-      showTooltip: {
-        type: Boolean,
-        notify: true,
-        value: false,
-        observer: '_showTooltipChanged'
-      },
       pxSvgElem : {
         type: Object,
         value: function() { return {}; }
@@ -480,7 +470,8 @@ Creates an interactive timeseries chart
        */
       disableNavigator: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: '_disableNavigatorChanged'
       },
 
       mousePosition: {
@@ -522,7 +513,8 @@ Creates an interactive timeseries chart
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
       '_calcMargins(margin.*, marginNav.*)',
-      '_heightChanged(height)'
+      '_heightChanged(height)',
+      '_toolbarConfigChanged(toolbarConfig.*)',
     ],
 
     listeners: {
@@ -563,7 +555,9 @@ Creates an interactive timeseries chart
       }
     },
     _navigatorConfigChanged: function(conf) {
-      this._applyConfigToElement(this.navigatorConfig, this.$$('#navigator'));
+      if(this.$$('#navigator')) {
+        this._applyConfigToElement(this.navigatorConfig, this.$$('#navigator'));
+      }
     },
     _xAxisConfigChanged: function(conf) {
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
@@ -572,18 +566,16 @@ Creates an interactive timeseries chart
       this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
     },
     _tooltipConfigChanged: function(conf) {
-      if(this.$$('#tooltip')) {
-        this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
-      } else if(!this.$$('#tooltip') && this.enableTooltip) {
-        this.$.tooltipTemplate.render();
-        this._applyConfigToElement(this.tooltipConfig, this.$$('#tooltip'));
-      }
+        this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
     },
     _registerConfigChanged: function(conf) {
       this._applyConfigToElement(this.registerConfig, this.$.register);
     },
     _cursorConfigChanged: function(conf) {
       this._applyConfigToElement(this.cursorConfig, this.$.cursor);
+    },
+    _toolbarConfigChanged: function(conf) {
+      this._applyConfigToElement(this.toolbarConfig, this.$.toolbar);
     },
     /**
      * Overwrites default margins based on settings
@@ -725,18 +717,15 @@ Creates an interactive timeseries chart
         }
       }.bind(this), renderLegend);
     },
-
-    _showTooltipChanged: function() {
-
-      //make sure the dom if is processed....
-      this.$.tooltipTemplate.render();
-
-      if(this.showTooltip && this.tooltipConfig) {
-        this._tooltipConfigChanged();
-      }
-    },
     _setSelectedDomain: function(e) {
       this.set('selectedDomain', e.detail.data);
+    },
+    _disableNavigatorChanged: function() {
+      if(!this._disableNavigator && this.navigatorConfig) {
+        //make sure dom if is rendered
+        this.$.navTemplate.render();
+        this._navigatorConfigChanged();
+      }
     }
   });
 </script>
