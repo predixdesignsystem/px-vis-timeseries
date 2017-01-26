@@ -502,6 +502,10 @@ Creates an interactive timeseries chart
 
       registerHeight: {
         type: Number
+      },
+      _isReady: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -527,6 +531,7 @@ Creates an interactive timeseries chart
       this.set('registerHeight', this.height);
       this.set('xAxisType', 'time');
       this._calcMargins();
+      this._isReady = true;
     },
 
     _calcMousePos: function(evt) {
@@ -555,6 +560,13 @@ Creates an interactive timeseries chart
       }
     },
     _navigatorConfigChanged: function(conf) {
+
+      if(!this._isReady) {
+        setTimeout(function() {
+          this._navigatorConfigChanged(conf);
+        }.bind(this), 10);
+      }
+
       if(this.$$('#navigator')) {
         this._applyConfigToElement(this.navigatorConfig, this.$$('#navigator'));
       }
@@ -566,7 +578,7 @@ Creates an interactive timeseries chart
       this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
     },
     _tooltipConfigChanged: function(conf) {
-        this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
+      this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
     },
     _registerConfigChanged: function(conf) {
       this._applyConfigToElement(this.registerConfig, this.$.register);
