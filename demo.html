@@ -80,14 +80,16 @@
             }
           }'
           x-axis-config= '{
-            "title": "Date"
+            "title": "Date",
+            "tickFormat": "%B"
           }'
 
           y-axis-config= '{
             "axis1": {
               "title": "Temperature",
               "titleTruncation": false,
-              "tickFormat": ".5f"
+              "tickFormat": ".5f",
+              "unit": "C"
             }
           }'
           register-config='{
@@ -101,9 +103,7 @@
             }
           }'
           display-threshold-title
-          y-axis-config='{
-            "title": "Hz"
-          }'
+
           toolbar-config='{
             "customzoom": {
               "tooltipLabel": "zoom",
