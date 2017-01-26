@@ -1,3 +1,7 @@
+v0.6.7
+===================
+* Make default series values numbers
+
 v0.6.6
 ===================
 * Added new configurable demo
