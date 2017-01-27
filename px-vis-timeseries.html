@@ -4,6 +4,7 @@
 <link rel="import" href="../px-vis/px-vis-behavior-d3.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-chart.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
+<link rel="import" href="../px-vis/px-vis-behavior-scale.html" />
 <link rel="import" href="../px-vis/px-vis-svg-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line-svg.html"/>
@@ -12,7 +13,6 @@
 <link rel="import" href="../px-vis/px-vis-axis.html"/>
 <link rel="import" href="../px-vis/px-vis-gridlines.html"/>
 <link rel="import" href="../px-vis/px-vis-chart-navigator.html"/>
-<link rel="import" href="../px-vis/px-vis-scale.html"/>
 <link rel="import" href="../px-vis/px-vis-interaction-space.html"/>
 <link rel="import" href="../px-vis/px-vis-cursor.html"/>
 <link rel="import" href="../px-vis/px-vis-tooltip.html"/>
@@ -20,6 +20,7 @@
 <link rel="import" href="../px-vis/px-vis-threshold.html"/>
 <link rel="import" href="../px-vis/px-vis-clip-path.html"/>
 <link rel="import" href="../px-vis/px-vis-toolbar.html"/>
+<link rel="import" href="../px-vis/px-vis-multi-axis.html"/>
 
 
 <!--
@@ -57,7 +58,8 @@ Creates an interactive timeseries chart
             complete-series-config="[[completeSeriesConfig]]"
             muted-series={{mutedSeries}}
             type="{{_registerType}}"
-            x-axis-type="time">
+            x-axis-type="time"
+            y-axis-type="[[yAxisType]]">
           </px-vis-register>
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
@@ -94,8 +96,7 @@ Creates an interactive timeseries chart
                   include-all-series="[[includeAllSeries]]"
                   chart-data="[[chartData]]"
                   nav-series-limit="[[navSeriesLimit]]"
-                  chart-domain-x="[[currentDomainX]]"
-                  chart-domain-y="[[currentDomainY]]"
+                  chart-domain-x="[[_returnXDomain(domainChanged)]]"
                   range="[[range]]"
                   disable-empty-render
                   prevent-resize="[[preventResize]]">
@@ -106,40 +107,24 @@ Creates an interactive timeseries chart
         </div>
     </div>
 
-    <px-vis-tooltip
-      id="tooltip"
-      hover-target=[[mouseRect]]
-      mouse-position="[[mousePosition]]"
-      width="250"
-      margin="[[_internalMargin]]"
-      chart-data="[[chartData]]"
-      tooltip-data="[[tooltipData]]"
-      complete-series-config="[[completeSeriesConfig]]"
-      x-axis-type="time"
-      tooltip-style="light"
-      muted-series="[[mutedSeries]]">
-    </px-vis-tooltip>
-    <px-vis-scale
-      x-axis-type="time"
-      y-axis-type="linear"
-      width="[[width]]"
-      height="[[height]]"
-      margin="[[_internalMargin]]"
-      chart-data="[[chartData]]"
-      complete-series-config="[[completeSeriesConfig]]"
-      chart-extents="[[chartExtents]]"
-      data-extents="[[dataExtents]]"
-      selected-domain="[[selectedDomain]]"
-      x="{{x}}"
-      y="{{y}}"
-      current-domain-x="{{currentDomainX}}"
-      current-domain-y="{{currentDomainY}}"
-      domain-changed="{{domainChanged}}">
-    </px-vis-scale>
+    <template id="tooltipTemplate" is="dom-if" if="[[showTooltip]]" restamp>
+      <px-vis-tooltip
+        id="tooltip"
+        hover-target=[[mouseRect]]
+        mouse-position="[[mousePosition]]"
+        width="250"
+        margin="[[_internalMargin]]"
+        chart-data="[[chartData]]"
+        tooltip-data="[[tooltipData]]"
+        complete-series-config="[[completeSeriesConfig]]"
+        x-axis-type="time"
+        tooltip-style="light"
+        muted-series="[[mutedSeries]]">
+      </px-vis-tooltip>
+    </template>
+
     <px-vis-clip-path
       svg="[[layer.1]]"
-      x="[[x]]"
-      y="[[y]]"
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
@@ -157,8 +142,8 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[y]]"
-            domain-changed="[[domainChanged]]"
+            y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
+            domain-changed="[[domainChanged)]]"
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
             no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
@@ -166,6 +151,7 @@ Creates an interactive timeseries chart
             height="[[height]]"
             margin="[[_internalMargin]]"
             clip-path
+            interpolation-function="[[interpolationFunction]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
         </template>
@@ -177,11 +163,12 @@ Creates an interactive timeseries chart
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
-            y="[[y]]"
+            y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
             domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
+            interpolation-function="[[interpolationFunction]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-svg>
         </template>
@@ -193,9 +180,7 @@ Creates an interactive timeseries chart
           chart-data="[[chartData]]"
           complete-series-config="[[completeSeriesConfig]]"
           x="[[x]]"
-          y="[[y]]"
-          current-domain-x="[[currentDomainX]]"
-          current-domain-y="[[currentDomainY]]"
+          y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
           domain-changed="[[domainChanged]]"
           clip-path="[[seriesClipPath]]"
           muted-series="[[mutedSeries]]"
@@ -211,12 +196,11 @@ Creates an interactive timeseries chart
         x-key="time"
         event-id="[[item.id]]"
         event-data="[[item]]"
+        height="[[height]]"
+        margin="[[_internalMargin]]"
         x="[[x]]"
-        y="[[y]]"
         event-config="[[eventConfig]]"
         domain-changed="[[domainChanged]]"
-        current-domain-x="[[currentDomainX]]"
-        current-domain-y="[[currentDomainY]]"
         clip-path="[[clipPath]]">
       </px-vis-event>
     </template>
@@ -227,36 +211,12 @@ Creates an interactive timeseries chart
       threshold-data="[[thresholdData]]"
       display-title="[[displayThresholdTitle]]"
       threshold-config="[[thresholdConfig]]"
-      x="[[x]]"
+      width="[[width]]"
+      margin="[[_internalMargin]]"
       y="[[y]]"
-      current-domain-x="[[currentDomainX]]"
-      current-domain-y="[[currentDomainY]]"
+      domain-changed="[[domainChanged]]"
       show-threshold-box="[[showThresholdBox]]">
     </px-vis-threshold>
-
-    <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
-      <px-vis-gridlines
-        svg="[[svgLower]]"
-        axis="[[x]]"
-        margin="[[_internalMargin]]"
-        length="[[height]]"
-        orientation="bottom"
-        current-domain="[[currentDomainX]]"
-        domain-changed="[[domainChanged]]">
-      </px-vis-gridlines>
-    </template>
-
-    <template is="dom-if" if="[[!hideGridlinesY]]" restamp>
-      <px-vis-gridlines
-        svg="[[svgLower]]"
-        axis="[[y]]"
-        margin="[[_internalMargin]]"
-        length="[[width]]"
-        orientation="left"
-        current-domain="[[currentDomainY]]"
-        domain-changed="[[domainChanged]]">
-      </px-vis-gridlines>
-    </template>
 
     <px-vis-axis
       id="xAxis"
@@ -266,27 +226,59 @@ Creates an interactive timeseries chart
       margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
-      orientation="bottom"
+      orientation="[[xAxisLocation]]"
       label-position="after"
       complete-series-config="[[completeSeriesConfig]]"
       prevent-series-bar
-      domain-changed="[[domainChanged]]"
-      current-domain="[[currentDomainX]]">
+      domain-changed="[[domainChanged]]">
     </px-vis-axis>
-    <px-vis-axis
-      id="yAxis"
+
+    <px-vis-multi-axis
+      id="yAxes"
       svg="[[layer.0]]"
-      axis="[[y]]"
-      axis-type="linear"
-      margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
-      orientation="left"
-      complete-series-config="[[completeSeriesConfig]]"
-      muted-series=[[mutedSeries]]
-      domain-changed="[[domainChanged]]"
-      current-domain="[[currentDomainY]]">
-    </px-vis-axis>
+      margin="[[_internalMargin]]"
+      left-axis-size="[[_leftAxisSize]]"
+      right-axis-size="[[_rightAxisSize]]"
+      x="[[_axisX]]"
+      y="[[y]]"
+      domain-changed="[[_bothDomainsSet(_axisDomainChanged, domainChanged)]]"
+      complete-series-config="[[_multiAxisSeriesConfig]]"
+      series-key="[[seriesKey]]"
+      chart-data="[[chartData]]"
+      dimensions="[[dimensions]]"
+      axes="[[axes]]"
+      axis-config="[[yAxisConfig]]"
+      append-unit-in-title
+      orientation-from-dimensions
+      disable-brush
+      cartesian-drag-behavior
+      allow-empty-title
+      series-to-axes="[[seriesToAxes]]"
+      muted-series=[[mutedSeries]]>
+    </px-vis-multi-axis>
+
+    <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
+      <px-vis-gridlines
+        svg="[[svgLower]]"
+        axis="[[x]]"
+        margin="[[_internalMargin]]"
+        length="[[height]]"
+        orientation="bottom"
+        domain-changed="[[domainChanged]]">
+      </px-vis-gridlines>
+    </template>
+    <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, axes, matchTicks)]]" restamp>
+      <px-vis-gridlines
+        svg="[[svgLower]]"
+        axis="[[_returnGridAxis(domainChanged)]]"
+        margin="[[_internalMargin]]"
+        length="[[width]]"
+        orientation="left"
+        domain-changed="[[domainChanged]]">
+      </px-vis-gridlines>
+    </template>
 
     <px-vis-interaction-space
       svg="[[layer.3]]"
@@ -299,9 +291,8 @@ Creates an interactive timeseries chart
       chart-data="[[chartData]]"
       x="[[x]]"
       y="[[y]]"
-      current-domain-x="[[currentDomainX]]"
-      current-domain-y="[[currentDomainY]]"
-      selection-type=[[selectionType]]
+      domain-changed="[[domainChanged]]"
+      selection-type="[[selectionType]]"
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
       interaction-svg="{{interactionSvg}}"
@@ -325,6 +316,18 @@ Creates an interactive timeseries chart
       clip-path="[[seriesClipPath]]"
       muted-series="[[mutedSeries]]">
     </px-vis-cursor>
+
+    <px-vis-zoom
+      id="zoom"
+      margin="[[_internalMargin]]"
+      width="[[width]]"
+      height="[[height]]"
+      extents-data="[[extentsData]]"
+      px-svg-elem=[[pxSvgElem]]
+      selected-domain="{{selectedDomain}}"
+      width="[[width]]"
+      height="[[height]]">
+    </px-vis-zoom>
   </template>
 </dom-module>
 
@@ -356,7 +359,6 @@ Creates an interactive timeseries chart
       PxVisBehaviorD3.axes,
       PxVisBehaviorD3.axis,
       PxVisBehaviorD3.selectedTimeDomain,
-      // PxVisBehaviorD3.interaction,
       PxVisBehaviorD3.clipPath,
       PxVisBehaviorD3.axisConfig,
       PxVisBehaviorChart.chartCommon,
@@ -375,6 +377,9 @@ Creates an interactive timeseries chart
       PxVisBehavior.dynamicMenuConfig,
       PxColorsBehavior.dataVisColorTheming,
       PxVisBehaviorD3.lineGaps,
+      PxVisBehaviorChart.multiAxis,
+      PxVisBehavior.axisTypes,
+      PxVisBehaviorScale.scale,
       PxVisBehavior.actionConfig,
       PxVisBehaviorChart.zooming,
       PxVisBehaviorChart.actionRequest,
@@ -503,22 +508,52 @@ Creates an interactive timeseries chart
       _registerHeight: {
         type: Number
       },
+
       _isReady: {
         type: Boolean,
         value: false
+      },
+      /**
+       * A boolean to specify if the axis ticks should align (which affects their individual range). Default (false) is for each have their own ranges and tick marks may not align
+       *
+       */
+      matchTicks: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Boolean to show or hide the threshold box around the number
+       *
+       * @property showThresholdBox
+       * @type Boolean
+       */
+      showThresholdBox: {
+        type:Boolean,
+        value:false
+      },
+      interpolationFunction: {
+        type: Object,
+        notify: true
       }
     },
 
     observers: [
       '_navigatorConfigChanged(navigatorConfig.*)',
       '_xAxisConfigChanged(xAxisConfig.*)',
-      '_yAxisConfigChanged(yAxisConfig.*)',
       '_cursorConfigChanged(cursorConfig.*)',
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
-      '_calcMargins(margin.*, marginNav.*)',
-      '_heightChanged(height)',
       '_toolbarConfigChanged(toolbarConfig.*)',
+
+      '_heightChanged(height)',
+      '_calcAxes(completeSeriesConfig.*)',
+      '_calcMargins(margin.*, marginNav.*, _numRightAxes, _numLeftAxes)',
+      '_setXScale(width, _internalMargin)',
+      '_setMultiYScale(height, _internalMargin, axes.*)',
+      '_setDomainCaller(_chartDataHasChanged.*, dataExtents, seriesToAxes.*)',
+      '_setDomainCaller(chartExtents, dataExtents)',
+      '_updateDomain(selectedDomain)',
+      '_chartDataChanged(chartData.*)'
     ],
 
     listeners: {
@@ -529,7 +564,10 @@ Creates an interactive timeseries chart
     ready:function() {
       this.set('numberOfLayers',4);
       this.set('_registerHeight', this.height);
-      this.set('xAxisType', 'time');
+
+      if(!this.xAxisType) { this.set('xAxisType', 'time'); }
+      if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
+
       this._calcMargins();
       this._isReady = true;
     },
@@ -574,9 +612,6 @@ Creates an interactive timeseries chart
     _xAxisConfigChanged: function(conf) {
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
     },
-    _yAxisConfigChanged: function(conf) {
-      this._applyConfigToElement(this.yAxisConfig, this.$.yAxis);
-    },
     _tooltipConfigChanged: function(conf) {
       this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
     },
@@ -598,16 +633,13 @@ Creates an interactive timeseries chart
       this.debounce('_calcMargin', function() {
         var margin,
             marginNav,
-            leftAxisMargin,
-            rightAxisMargin;
+            topMargin = 25,
+            rightMargin = 10,
+            bottomMargin = 10,
+            leftMargin = 10;
 
         // if the dev didnt set the margin, then calc it
         if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
-          var topMargin = 25,
-              rightMargin = 10,
-              bottomMargin = 10,
-              leftMargin = 10;
-
           if(this.xAxisLocation === 'bottom') {
             bottomMargin = 40;
           } else if(this.xAxisLocation === 'top') {
@@ -617,7 +649,7 @@ Creates an interactive timeseries chart
           if(this.yAxisLocation === 'left') {
             leftMargin = 50;
           } else if(this.yAxisLocation === 'right') {
-            rightMargin = 40;
+            rightMargin = 50;
           }
 
           margin = {
@@ -626,13 +658,20 @@ Creates an interactive timeseries chart
             'bottom': bottomMargin,
             'left': leftMargin
           };
+
+          this._calcMultiMargins(margin, 50, 50);
+
         } else { //is dev set, use it
           margin = {
-            'top': Number(this.margin.top),
-            'right': Number(this.margin.right),
-            'bottom': Number(this.margin.bottom),
-            'left':  Number(this.margin.left)
+            'top': Number(this.margin.top) || Number(this.margin.top) === 0 ? Number(this.margin.top) : topMargin,
+            'right': Number(this.margin.right) || Number(this.margin.right) === 0 ? Number(this.margin.right) : rightMargin,
+            'bottom': Number(this.margin.bottom) || Number(this.margin.bottom) === 0 ? Number(this.margin.bottom) : bottomMargin,
+            'left':  Number(this.margin.left) || Number(this.margin.left) === 0 ? Number(this.margin.left) : leftMargin
           };
+
+          // FIXME
+          // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
+          this._calcMultiMargins(margin, margin.left, margin.right);
         }
 
         //if marginNav not dev set
@@ -668,7 +707,7 @@ Creates an interactive timeseries chart
         return;
       }
       this.debounce('ironresize', function() {
-        if(this.disableNavigator || this.$$('#navigator')) {
+        // if(this.disableNavigator || this.$$('#navigator')) {
           var wrapperRect = this.$.wrapper.getBoundingClientRect(),
               navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
               registerRect = this.$.register.getBoundingClientRect(),
@@ -688,7 +727,7 @@ Creates an interactive timeseries chart
           this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
           this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
           this._computeRegisterHeight(navigatorRect.height);
-        }
+        // }
       },50);
     },
 
@@ -732,11 +771,46 @@ Creates an interactive timeseries chart
     _setSelectedDomain: function(e) {
       this.set('selectedDomain', e.detail.data);
     },
+
     _disableNavigatorChanged: function() {
       if(!this._disableNavigator && this.navigatorConfig) {
         //make sure dom if is rendered
         this.$.navTemplate.render();
         this._navigatorConfigChanged();
+      }
+    },
+
+    _showHorizontalGrid: function(hideGrid, axes, matchTicks) {
+      if(hideGrid) {
+        return false;
+      }
+
+      if(this.axes.length > 1 && !matchTicks) {
+        return false;
+      }
+
+      return true;
+    },
+
+    _returnGridAxis: function() {
+        return this.y[this.axes[0]];
+    },
+
+    _returnXDomain: function() {
+      if(this.domainChanged !== null) {
+        return this.x.domain();
+      }
+    },
+
+    _setDomainCaller: function() {
+      if(this._doesObjHaveValues(this.seriesToAxes)) {
+        this._setDomain();
+      }
+    },
+
+    _bothDomainsSet: function() {
+      if(this.domainChanged !== null & this._axisDomainChanged !== null) {
+        return !this.$.yAxes.domainChanged;
       }
     }
   });

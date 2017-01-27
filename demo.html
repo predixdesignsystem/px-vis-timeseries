@@ -40,14 +40,20 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
+          margin='{
+            "top": 25,
+            "bottom": 40,
+            "right": 100,
+            "left": 100
+          }'
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
             { "for":"y0", "type":"mean", "value":15.330657585139331 },
             { "for":"y1", "type":"mean", "value":75 },
-            { "for":"", "type":"quartile", "value":17 }
+            { "for":"y1", "type":"quartile", "value":17 }
           ]'
-          selection-type="xAxis"
+          selection-type="xy"
           show-tooltip
           event-config= '{
             "Recalibrate":{
@@ -71,14 +77,23 @@
           }'
           navigator-config='{
             "xAxisConfig": {
-              "tickFormat": "%b %d"
+               "tickFormat": "%b %d"
             }
           }'
           x-axis-config= '{
             "title": "Date",
-            "tickFormat": "%b %d"
+            "tickFormat": "%B"
+
           }'
 
+          y-axis-config= '{
+            "axis1": {
+              "title": "Temperature",
+              "titleTruncation": false,
+              "tickFormat": ".5f",
+              "unit": "C"
+            }
+          }'
           register-config='{
               "height": 50,
               "type": "vertical"}'
@@ -103,18 +118,6 @@
             }
           ]'
           display-threshold-title
-          y-axis-config='{
-            "title": "Hz"
-          }'
-          series-config='{
-            "y0": {
-              "name":"y0",
-              "y":"y0"
-            },
-            "y1": {
-              "name":"y1",
-              "y":"y1"
-            }}'
           default-series-config='{
             "type": "line",
             "yAxisUnit": "Hz",
@@ -221,10 +224,20 @@
               }
             }
           }}'
+          series-config="[[seriesConfig]]"
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]">
         </px-vis-timeseries>
+
+        <!-- chart-extents='{
+          "x": ["dynamic","dynamic"],
+          "y": [-10,100]
+        }' -->
+        <!-- chart-extents='{
+          "left_1":[0,"dynamic"],
+          "right_1":[0,100]
+        }' -->
         <iron-ajax
           id="fetch1"
           url="../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
@@ -234,6 +247,18 @@
         <iron-ajax
           id="fetch2"
           url="../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch3"
+          url="../px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch4"
+          url="../px-demo-data/demo-data/aviation/fan-vibration-cruise2.json"
           handle-as="json"
           auto>
         </iron-ajax>
@@ -252,7 +277,7 @@
           auto
           last-response="{{eventData}}">
         </iron-ajax>
-
+<!--
         <br />
         <br />
         <h2>Example of a timeseries with mostly default data and using the new data format</h2>
@@ -305,7 +330,7 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries>
+        </px-vis-timeseries> -->
 
          <!--<br />
         <br />
@@ -341,7 +366,7 @@
             >
           </iron-ajax>-->
 
-        <br />
+        <!-- <br />
         <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
         <px-vis-timeseries
@@ -389,7 +414,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries>
+          ></px-vis-timeseries> -->
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -404,54 +429,65 @@
               converter = document.getElementById('converter'),
               aggregatedData = [];
 
-            // var myChart = document.getElementById('myChart');
-            // var sc = myChart.seriesConfig;
-            // for(var i = 0; i < 40; i++){
-            //   var n = 'series' + i
-            //   sc[n] = {
-            //     "name": "mySeries" + i,
-            //     "x": "x",
-            //     "y": "y",
-            //   }
-            // }
-            // myChart.seriesConfig = {};
-            // myChart.set('seriesConfig', sc);
-
-            var processData = function(data) {
-              aggregatedData.push(data);
-              if(aggregatedData.length === 2) {
-                converter.set('originalData', aggregatedData);
-              }
-            };
-
-            //get both set of data for 1st chart
-            var handleResponse = function(evt) {
-              processData(evt.detail.response);
+          // var myChart = document.getElementById('myChart');
+          // var sc = myChart.seriesConfig;
+          // for(var i = 0; i < 40; i++){
+          //   var n = 'series' + i
+          //   sc[n] = {
+          //     "name": "mySeries" + i,
+          //     "x": "x",
+          //     "y": "y",
+          //   }
+          // }
+          // myChart.seriesConfig = {};
+          // myChart.set('seriesConfig', sc);
+          var processData = function(data) {
+            aggregatedData.push(data);
+            if(aggregatedData.length === 4) {
+              aggregatedData[0]["axis"] = {"id": "axis1", "side": "left", "number": "1"};
+              aggregatedData[1]["axis"] = {"id": "axis2", "side": "right", "number": "1"};
+              aggregatedData[2]["axis"] = {"id": "axis3", "side": "left", "number": "2"};
+              aggregatedData[3]["axis"] = {"id": "axis3", "side": "right", "number": "2"};
+              converter.set('originalData', aggregatedData);
             }
+          };
 
-            fetch1.addEventListener('response', handleResponse);
-            fetch2.addEventListener('response', handleResponse);
+          //get both set of data for 1st chart
+          var handleResponse = function(evt) {
+            processData(evt.detail.response);
+          }
 
-            //if the data has been fetched already manually kick the event handler
-            if(fetch1.lastResponse) {
-              processData(fetch1.lastResponse);
-            }
-            if(fetch2.lastResponse) {
-              processData(fetch2.lastResponse);
-            }
+          fetch1.addEventListener('response', handleResponse);
+          fetch2.addEventListener('response', handleResponse);
+          fetch3.addEventListener('response', handleResponse);
+          fetch4.addEventListener('response', handleResponse);
 
-            chart.svg.append('rect')
-              .attr("y", 200)
-              .attr("x", 0)
-              .attr("height", 100)
-              .attr("width", 1000)
-              .attr('opacity',0.25)
-              .attr('fill', 'rgb(70,173,0)');
+          //if the data has been fetched already manually kick the event handler
+          if(fetch1.lastResponse) {
+            processData(fetch1.lastResponse);
+          }
+          if(fetch2.lastResponse) {
+            processData(fetch2.lastResponse);
+          }
+          if(fetch3.lastResponse) {
+            processData(fetch3.lastResponse);
+          }
+          if(fetch4.lastResponse) {
+            processData(fetch4.lastResponse);
+          }
 
-            rangepicker.range = {
-              "from":"2014-04-10T04:01:00.000Z",
-              "to":"2015-04-01T20:42:00.000Z"
-            };
+          // chart.svg.append('rect')
+          //   .attr("y", 200)
+          //   .attr("x", 0)
+          //   .attr("height", 100)
+          //   .attr("width", 1000)
+          //   .attr('opacity',0.25)
+          //   .attr('fill', 'rgb(70,173,0)');
+
+          rangepicker.set('range', {
+            "from":"2014-04-10T04:01:00.000Z",
+            "to":"2015-04-01T20:42:00.000Z"
+          });
 
         timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
           console.log('test delete')
