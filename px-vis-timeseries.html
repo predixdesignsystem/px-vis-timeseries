@@ -48,7 +48,7 @@ Creates an interactive timeseries chart
           <px-vis-register
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
-            height="[[registerHeight]]"
+            height="[[_registerHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
@@ -500,7 +500,7 @@ Creates an interactive timeseries chart
         value: false
       },
 
-      registerHeight: {
+      _registerHeight: {
         type: Number
       },
       _isReady: {
@@ -528,7 +528,7 @@ Creates an interactive timeseries chart
 
     ready:function() {
       this.set('numberOfLayers',4);
-      this.set('registerHeight', this.height);
+      this.set('_registerHeight', this.height);
       this.set('xAxisType', 'time');
       this._calcMargins();
       this._isReady = true;
@@ -700,7 +700,7 @@ Creates an interactive timeseries chart
           navHeight = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect();
         }
 
-        this.set('registerHeight', Math.max(this.$.svgCanvas.height + navHeight, 0));
+        this.set('_registerHeight', Math.max(this.$.svgCanvas.height + navHeight, 0));
       }.bind(this), 50);
     },
 

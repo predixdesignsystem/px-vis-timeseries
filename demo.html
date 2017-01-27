@@ -89,6 +89,19 @@
               "title": "MAX"
             }
           }'
+          dynamic-menu-config='[{
+              "name": "Delete",
+              "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
+              "eventName": "delete",
+              "icon": "fa-trash"
+            },
+            {
+              "name": "Bring To Front",
+              "action": "function(data) { this.set(\"serieToRedrawOnTop\", data.additionalDetail.name);}",
+              "eventName": "bring-to-front",
+              "icon": "fa-arrow-up"
+            }
+          ]'
           display-threshold-title
           y-axis-config='{
             "title": "Hz"
@@ -439,30 +452,6 @@
               "from":"2014-04-10T04:01:00.000Z",
               "to":"2015-04-01T20:42:00.000Z"
             };
-
-        var menuConfig = [
-          {
-            'name': 'Delete',
-            'action': function(data) {
-              var conf = this.seriesConfig;
-              delete conf[data.additionalDetail.name];
-              this.set('seriesConfig', {});
-              this.set('seriesConfig', conf);
-            },
-            'eventName': 'delete',
-            'icon': 'fa-trash',
-          },
-          {
-            'name': 'Bring To Front',
-            'action': function(data) {
-              this.set('serieToRedrawOnTop', data.additionalDetail.name);
-            },
-            'eventName': 'bring-to-front',
-            'icon': 'fa-arrow-up'
-          }
-        ];
-
-        timeSerie.set('dynamicMenuConfig', menuConfig);
 
         timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
           console.log('test delete')
