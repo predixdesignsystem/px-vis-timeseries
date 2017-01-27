@@ -423,7 +423,6 @@
           // }
           // myChart.seriesConfig = {};
           // myChart.set('seriesConfig', sc);
-
           var processData = function(data) {
             aggregatedData.push(data);
             if(aggregatedData.length === 4) {
@@ -442,6 +441,8 @@
 
           fetch1.addEventListener('response', handleResponse);
           fetch2.addEventListener('response', handleResponse);
+          fetch3.addEventListener('response', handleResponse);
+          fetch4.addEventListener('response', handleResponse);
 
           //if the data has been fetched already manually kick the event handler
           if(fetch1.lastResponse) {
