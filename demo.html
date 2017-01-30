@@ -124,62 +124,7 @@
             "x":"x"
             }'
           toolbar-config='{"config": {
-            "customzoom": {
-              "tooltipLabel": "zoom",
-              "icon": "fa-search",
-              "buttonGroup": 1,
-              "actionConfig": {
-                "mousedown": "startZooming",
-                "mouseup": "stopZooming",
-                "mouseout": "null",
-                "mousemove": "null"
-              },
-              "subConfig": {
-                "x": {
-                  "title": "X",
-                  "tooltipLabel": "Zoom on X axis only",
-                  "eventName": "my-custom-click",
-                  "buttonGroup": 1,
-                  "selectable": true,
-                  "selected": true,
-                  "onClick": "function() { debugger; this.set(\"selectionType\", \"xAxis\");}"
-                },
-                "y": {
-                  "title": "Y",
-                  "buttonGroup": 1,
-                  "tooltipLabel": "Zoom on Y axis only",
-                  "selectable": true,
-                  "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
-                },
-                "xy": {
-                  "title": "XY",
-                  "buttonGroup": 1,
-                  "tooltipLabel": "Zoom on X and Y axis",
-                  "selectable": true,
-                  "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
-                },
-                "zoomIn": {
-                  "icon": "fa-plus",
-                  "tooltipLabel": "zoom in",
-                  "eventName": "px-vis-toolbar-zoom-in"
-                },
-                "zoomOut": {
-                  "icon": "fa-minus",
-                  "tooltipLabel": "zoom out",
-                  "eventName": "px-vis-toolbar-zoom-out"
-                },
-                "undoZoom": {
-                  "icon": "fa-undo",
-                  "tooltipLabel": "undo zoom",
-                  "eventName": "px-vis-toolbar-undo-zoom"
-                },
-                "resetZoom": {
-                  "icon": "fa-expand",
-                  "tooltipLabel": "reset zoom to inital value",
-                  "eventName": "px-vis-toolbar-reset-zoom"
-                }
-              }
-            },
+            "advancedZoom": true,
             "pan": true,
             "tooltip": true,
             "logHover": {
