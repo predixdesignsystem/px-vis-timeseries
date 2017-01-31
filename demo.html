@@ -40,12 +40,6 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
-          margin='{
-            "top": 25,
-            "bottom": 40,
-            "right": 100,
-            "left": 100
-          }'
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
@@ -90,7 +84,6 @@
             "axis1": {
               "title": "Temperature",
               "titleTruncation": false,
-              "tickFormat": ".5f",
               "unit": "C"
             }
           }'
@@ -118,11 +111,6 @@
             }
           ]'
           display-threshold-title
-          default-series-config='{
-            "type": "line",
-            "yAxisUnit": "Hz",
-            "x":"x"
-            }'
           toolbar-config='{"config": {
             "customzoom": {
               "tooltipLabel": "zoom",
