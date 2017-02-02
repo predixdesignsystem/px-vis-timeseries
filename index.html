@@ -190,7 +190,18 @@
           <div class="apiContainer">
             <div class="flex flex--col api u-mt++" >
               <div>
-                <px-api-viewer source="px-vis-timeseries"></px-api-viewer>
+                <px-api-viewer
+                  source="px-vis-timeseries"
+                  hide='[[hide]]'
+                  mark-private='[]'
+                  mark-read-only='[]'
+                  change-description='[
+                    {
+                      "name": ""
+                      "desc": ""
+                    }
+                  ]'>
+                </px-api-viewer>
               </div>
             </div>
           </div>
@@ -314,6 +325,8 @@ window.addEventListener('WebComponentsReady', function() {
       console.log(index);
       return (index === 1);
     };
+
+    template.hide = ['margin'];
 });
 </script>
 
