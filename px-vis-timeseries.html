@@ -246,7 +246,6 @@ Creates an interactive timeseries chart
       y="[[y]]"
       domain-changed="[[_bothDomainsSet(_axisDomainChanged, domainChanged)]]"
       complete-series-config="[[_multiAxisSeriesConfig]]"
-      series-key="[[seriesKey]]"
       chart-data="[[chartData]]"
       dimensions="[[dimensions]]"
       axes="[[axes]]"
@@ -270,7 +269,7 @@ Creates an interactive timeseries chart
         domain-changed="[[domainChanged]]">
       </px-vis-gridlines>
     </template>
-    <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, axes, matchTicks)]]" restamp>
+    <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, axes, y, matchTicks)]]" restamp>
       <px-vis-gridlines
         svg="[[svgLower]]"
         axis="[[_returnGridAxis(domainChanged)]]"
@@ -437,11 +436,11 @@ Creates an interactive timeseries chart
       },
       _internalMargin: {
         type: Object,
-        value: { top: 0, right: 0, bottom: 0, left: 0},
+        notify: true
       },
       _internalMarginNav: {
         type:Object,
-        value: { top: 5, right: 5, bottom: 5, left: 5},
+        notify: true
       },
       /**
        * Configuration object for the chart. Key is the property name.
@@ -547,7 +546,7 @@ Creates an interactive timeseries chart
       '_toolbarConfigChanged(toolbarConfig.*)',
 
       '_heightChanged(height)',
-      '_calcAxes(completeSeriesConfig.*)',
+      '_calcAxes(completeSeriesConfig.*, _leftAxisSize, _rightAxisSize)',
       '_calcMargins(margin.*, marginNav.*, _numRightAxes, _numLeftAxes)',
       '_setXScale(width, _internalMargin)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
@@ -781,7 +780,7 @@ Creates an interactive timeseries chart
       }
     },
 
-    _showHorizontalGrid: function(hideGrid, axes, matchTicks) {
+    _showHorizontalGrid: function(hideGrid, axes, y, matchTicks) {
       if(hideGrid) {
         return false;
       }

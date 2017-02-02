@@ -1,9 +1,7 @@
-v1.0.1
-==================
-* changing ghp.sh to account for Alpha releases
 
 v1.0.0
 ==================
+* changing ghp.sh to account for Alpha releases
 * removed registerLocation in favor of hideRegister and registerConfig
 * allowed to split out the config options into smaller objects: registerConfig, tooltipConfig, eventConfig
 * renamed enableTooltip to showTooltip for framework consistency
@@ -14,12 +12,14 @@ v1.0.0
 * added lowerSVG
 * changed line to line-svg
 * changed dataExtents
-* added the ability to redraw one serie on top of the others
+* added the ability to redraw one series on top of the others
 * added the ability to pass a navigator config and configure navigator axis
 * Updated register length to be dynamic based on if the navigator is included
 * margin and marginNav can now be set at initialization as well (=as attributes) and dynamically adjusted
 * added dynamic menus on registers
 * added toolbar and advanced zooming
+* defaultSeriesConfig now updates \_defaultSeriesConfig so defaultSeriesConfig doesnt have to have all defaults
+* Multi-y axis
 
 v0.6.4
 ==================
