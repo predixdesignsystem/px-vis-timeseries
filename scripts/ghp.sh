@@ -147,4 +147,4 @@ git push $SSH_GIT_PREDIXUI $TARGET_BRANCH --force
 
 sleep 120s
 
-curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cloudflare_zone_identifier}/purge_cache" -H "X-Auth-Email: martin.wragg@ge.com" -H "X-Auth-Key: ${cloudflare}" -H "Content-Type: application/json" --data '{"purge_everything":true}'`;
+curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cloudflare_zone_identifier}/purge_cache" -H "X-Auth-Email: martin.wragg@ge.com" -H "X-Auth-Key: ${cloudflare}" -H "Content-Type: application/json" --data '{"purge_everything":true}'
