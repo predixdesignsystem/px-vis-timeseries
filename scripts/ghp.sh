@@ -21,6 +21,7 @@ GIT_COMMIT_MESSAGE="[Travis] Rebuild documentation for Github Pages"
 # Check if we should run a deploy, or if we should skip it. Only commits to master
 # should trigger a build. Pull requests and commits to features branches should not.
 if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
+# if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     echo "Skipping deploy; just doing a build."
     exit 0
 fi
@@ -79,7 +80,7 @@ echo ${meta_temp/'COMPONENT_NAME'/$REPO_NAME} > index.html
 npm install bower -g
 bower cache clean
 # Install the repo and the dark-theme.
-bower install ${REPO_NAME} px-dark-theme
+bower install ${REPO_NAME} px-dark-theme px-dark-demo-theme
 
 #copy the bower file into our root
 yes | cp ${REPO_NAME}/bower.json bower.json
@@ -92,13 +93,7 @@ bower install
 # ------------------------------------------------------------------------------
 
 # Go into the component folder we've just installed from bower
-cd ${REPO_NAME}
-
-# @DARK_THEME: Copy `index.html` to new file, where we will add dark theme
-yes | cp index.html index-dark.html
-
-# @DARK_THEME: Import dark-theme on the `index-dark.html` page
-sed 's/px-theme\/px-theme-styles.html/px-dark-theme\/px-dark-theme-styles.html/g;' index-dark.html
+# cd ${REPO_NAME}
 
 # ------------------------------------------------------------------------------
 # SW-PRECACHE
@@ -112,7 +107,7 @@ sed 's/px-theme\/px-theme-styles.html/px-dark-theme\/px-dark-theme-styles.html/g
 # ------------------------------------------------------------------------------
 
 # Remember to exit out of the component before we do any git stuff
-cd ../
+# cd ../
 
 # Do the git stuff
 
@@ -145,4 +140,11 @@ chmod 0400 $TRAVIS_BUILD_DIR/deploy_key
 
 # Push to predix-ui/repo `gh-pages` branch (force to override out-of-date refs)
 ssh-add $TRAVIS_BUILD_DIR/deploy_key
+
+echo $SSH_GIT_PREDIXUI
+
 git push $SSH_GIT_PREDIXUI $TARGET_BRANCH --force
+
+sleep 120s
+
+curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cloudflare_zone_identifier}/purge_cache" -H "X-Auth-Email: martin.wragg@ge.com" -H "X-Auth-Key: ${cloudflare}" -H "Content-Type: application/json" --data '{"purge_everything":true}'`;

@@ -1,4 +1,3 @@
-
 v1.0.0
 ==================
 * changing ghp.sh to account for Alpha releases
@@ -20,6 +19,18 @@ v1.0.0
 * added toolbar and advanced zooming
 * defaultSeriesConfig now updates \_defaultSeriesConfig so defaultSeriesConfig doesnt have to have all defaults
 * Multi-y axis
+
+v0.6.7
+===================
+* Make default series values numbers
+
+v0.6.6
+===================
+* Added new configurable demo
+
+v0.6.5
+==================
+* Updated to cool grays
 
 v0.6.4
 ==================

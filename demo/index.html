@@ -1,0 +1,323 @@
+<!-- Common imports -->
+<link rel="import" href="../../polymer/polymer.html" />
+<link rel="import" href="../../px-polymer-font-awesome/polymer-font-awesome.html" />
+
+<!-- Common demo imports -->
+<link rel="import" href="../../px-demo/px-demo-header.html" />
+<link rel="import" href="../../px-demo/px-demo-api-viewer.html" />
+<link rel="import" href="../../px-demo/px-demo-footer.html" />
+<link rel="import" href="../../px-demo/px-demo-configs.html" />
+<link rel="import" href="../../px-demo/px-demo-props.html" />
+<link rel="import" href="../../px-demo/px-demo-interactive.html" />
+<link rel="import" href="../../px-demo/px-demo-component-snippet.html" />
+<link rel="import" href="../../px-demo/px-demo-code-editor.html" />
+<link rel="import" href="../../px-demo/css/px-demo-styles.html" />
+
+<!-- Imports for this componnent -->
+<link rel="import" href="../../px-colors-design/colors.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-common.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-d3.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-chart.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-datetime.html" />
+<link rel="import" href="../px-vis-timeseries.html"/>
+
+<!-- Demo DOM module -->
+<dom-module id="local-element-demo">
+  <template>
+    <style include="px-demo-styles" is="custom-style"></style>
+
+    <!-- Header -->
+    <px-demo-header
+        module-name="px-vis-timeseries"
+        description="	The	px-vis-timeseries component creates a timeseries chart. With timeseries, you can create line and scatter timeseries charts complete with user interaction, events, thresholds, and a navigator. The chart is built off px-vis components which utilize d3.js 4.0+.">
+    </px-demo-header>
+
+    <!-- Interactive -->
+    <px-demo-interactive>
+      <!-- Configs -->
+      <px-demo-configs configs="[[configs]]" props="{{props}}" chosen-config="{{chosenConfig}}"></px-demo-configs>
+
+      <!-- Props -->
+      <px-demo-props props="{{props}}" config="[[chosenConfig]]"></px-demo-props>
+
+      <!-- Code Editor -->
+      <px-demo-code-editor props="{{props}}"></px-demo-code-editor>
+
+      <!-- Component ---------------------------------------------------------->
+      <px-demo-component class="flex__item flex">
+        <div style="width:100%;">
+        <px-vis-timeseries
+            include-all-series
+            width="{{props.width.value}}"
+            height="{{props.height.value}}"
+            prevent-resize="{{props.preventResize.value}}"
+            enable-tooltip="{{props.enableTooltip.value}}"
+            register-location="{{props.registerLocation.value}}"
+            selection-type= "{{props.selectionType.value}}"
+            chart-data="{{props.chartData.value}}">
+        </px-vis-timeseries>
+      </div>
+      </px-demo-component>
+      <!-- END Component ------------------------------------------------------>
+
+      <px-demo-component-snippet
+          element-properties="{{props}}"
+          element-name="px-vis-timeseries"
+          links-includes="[[linksIncludes]]">
+      </px-demo-component-snippet>
+    </px-demo-interactive>
+
+    <!-- API Viewer -->
+    <px-demo-api-viewer source="px-vis-timeseries"></px-demo-api-viewer>
+
+    <!-- Footer -->
+    <px-demo-footer></px-demo-footer>
+
+  </template>
+
+</dom-module>
+<script>
+  Polymer({
+    is: 'local-element-demo',
+
+    properties: {
+
+      /**
+       * Note: The actual data/values for `props` are placed in `this.demoProps`
+       * to create a static reference that Polymer shouldn't overwrite.
+       *
+       * On object containing all the properties the user can configure for this
+       * demo. Usually a pretty similar copy of the component's `properties` block
+       * with some additional sugar added to describe what kind of input the
+       * user will be shown and how that input should be configured.
+       *
+       * Note that `value` for each property is the default that will be set
+       * unless a config from `configs` is applied by default.
+       *
+       * @example
+       *
+       * `demoProps` is an object containing multipe objects. Each sub-object has
+       * should have a key with the name of the configurable property, and a set
+       * of values that describe that property. At a high level, you might have:
+       *
+       * ```
+       *     {
+       *       preventRangeSelection: { ... },
+       *       displayMode: { ... },
+       *       blockDatesBefore: { ... }
+       *     }
+       * ```
+       *
+       * Each sub-object should contain information about the configurable property's
+       * `type` (a reference to the JavaScript literal), a default value, and a set
+       * of additional keys that describe the input it can be changed with.
+       * The following inputs types are currently available:
+       *
+       * - 'toggle' - A toggle switch input to set Boolean values
+       * - 'text' - A simple single-line text input to set String or stringified Array/Object values
+       * - 'dropdown' - A dropdown picker that can be used to select any kind of value from a list of available options
+       *
+       * Full examples for each input:
+       *
+       * ```
+       *     {
+       *       preventRangeSelection: {
+       *         type: Boolean,
+       *         value: false,
+       *         inputType: 'toggle'
+       *       },
+       *       displayMode: {
+       *         type: String,
+       *         value: 'day',
+       *         inputType: 'dropdown',
+       *         inputChoices: ['day', 'month', 'year']
+       *       },
+       *       blockDatesBefore: {
+       *         type: String,
+       *         value: '2016-10-10T00:00:00.000Z',
+       *         inputType: 'text',
+       *         inputPlaceholder: 'ISO 8601 String'
+       *       }
+       *     }
+       * ```
+       *
+       * By default, the configurable property names are converted from camelCase
+       * to Title Case and used as input labels (e.g. 'displayMode' -> 'Display Mode').
+       * Labels can be set manually through the key `inputLabel`:
+       *
+       * ```
+       *     {
+       *       preventRangeSelection: {
+       *         type: Boolean,
+       *         value: false,
+       *         inputType: 'toggle',
+       *         inputLabel: "Stop range selection"
+       *       }
+       *     }
+       * ```
+       *
+       * @property demoProps
+       * @type {Object}
+       */
+      props: {
+        type: Object,
+        value: function(){ return this.demoProps; }
+      },
+
+      /**
+       * An array of pre-configured `props` that can be used to provide the user
+       * with a set of common examples. These configs will be made available
+       * as a set of tabs the user can click that will automatically change
+       * the `props` to specific values.
+       *
+       * @example
+       *
+       * Each config is an object. Its keys should be the names of the configurable
+       * properties defined in your `demoProps` above. Each key's value should
+       * be the new prop value for the configuration. You can also include these
+       * optional keys:
+       *
+       * - `configName` - a String value that will be used for the title of the tab
+       * - `configReset` - a Boolean, if `true` resets all props (even those not specified in the config) when this config is selected. Defaults to `false`.
+       *
+       * Example of two configs:
+       *
+       * ```
+       *     [
+       *       {
+       *         configName: "Basic",
+       *         preventRangeSelection: true,
+       *         displayMode: 'year',
+       *         blockDatesBefore: '2016-10-10T00:00:00.000Z'
+       *       },
+       *       {
+       *         configName: "Advanced",
+       *         preventRangeSelection: false,
+       *         displayMode: 'day',
+       *         blockDatesBefore: '2010-10-10T00:00:00.000Z'
+       *       }
+       *     ]
+       * ```
+       *
+       * @property demoProps
+       * @type {Array}
+       */
+      configs: {
+        type: Array,
+        value: function(){
+          return [
+            { configName: "Default",
+              configReset: true,
+              width: 800,
+              height: 400 }
+          ]
+        }
+      }
+    },
+
+    /**
+     * A reference for `this.props`. Read the documentation there.
+     */
+    demoProps: {
+      includeAllSeries: {
+        type: Boolean,
+        defaultValue: true
+      },
+
+      enableTooltip: {
+        type: Boolean,
+        defaultValue: true
+      },
+
+      preventResize: {
+        type: Boolean,
+        defaultValue: true,
+        inputType: 'toggle'
+      },
+
+      width: {
+        type: Number,
+        defaultValue: 0,
+        inputType: 'text'
+      },
+
+      height: {
+        type: Number,
+        defaultValue: 0,
+        inputType: 'text'
+      },
+
+      selectionType: {
+        type: String,
+        defaultValue: 'xy',
+        inputType: 'dropdown',
+        inputChoices: ['xy', 'xAxis', 'yAxis']
+      },
+
+      registerLocation: {
+        type: String,
+        defaultValue: 'top',
+        inputType: 'dropdown',
+        inputChoices: ['none', 'top', 'side', 'both']
+      },
+
+      chartData: {
+        type: Array,
+        defaultValue: [
+          {"x": 1397177400000, "y0": 0.0,   "y1": 2.0},
+          {"x": 1397228040000, "y0": 0.897, "y1": 2.5},
+          {"x": 1397248260000, "y0": 1.0,   "y1": 3.5},
+          {"x": 1397291280000, "y0": 2.0,   "y1": 1.5},
+          {"x": 1397318100000, "y0": 1.5,   "y1": 0.5},
+          {"x": 1397342100000, "y0": 3.0,   "y1": 2.0},
+          {"x": 1397390820000, "y0": 0.897, "y1": 1.5}
+        ],
+        inputType: 'code:JSON'
+      }
+      //
+      // seriesConfig: {
+      //   type: Object,
+      //   defaultValue: {
+      //     "seriesKey": {  //seriesKey is a unique identifier for the configuration
+      //       "type": "line",  //line or scatter
+      //       "markerSymbol": "diamond", //if using scatter different markerSymbol can be used. See "markerSymbol" in px-vis-scatter
+      //       "markerScale": "2", //if using scatter allows to scale the size of markers
+      //       "markerFillOpacity": "0.5", //if using scatter allows to specify the opacity of the inside of the marker
+      //       "markerStrokeOpacity": "1", //if using scatter allows to specify the opacity of the outside of the marker
+      //       "mutedOpacity": "0.3", //opacity value to use when muting a serie
+      //       "name": "My Series",  //human readable name
+      //       "x": "x",  //index or key name for independent variable
+      //       "y": "y",  //index or key name for dependent variable
+      //       "xAxisUnit": "Volt", //Unit to be used for the X axis. Can be ignored if x axis is time based
+      //       "yAxisUnit": "Oranges", //unit to be used for the Y axis.
+      //       "xMin": 0,  // minimum x value
+      //       "xMax": 100,  //maximum x value
+      //       "yMin": 5,  //minimum y value
+      //       "yMax": 50,  //maximum y value
+      //       "color": "rgb(0,0,0)", //color you want the chart
+      //       "axis": "axis1"  //axis the chart should be on
+      //     }
+      //   },
+      //   inputType: 'code:JSON'
+      // }
+    },
+
+    listeners: {
+      'px-demo-component-light-dom-loaded' : '_handleDemoLoaded'
+    },
+
+    /**
+     * When the chart is loaded, try to call `notifyResize()` on it to ensure
+     * that it resizes to the correct dimensions.
+     */
+    _handleDemoLoaded: function() {
+      var chart = this.$$('px-vis-timeseries');
+      if (chart && typeof chart.notifyResize === 'function') {
+        // Wait 1000ms to make sure the parent is sized and ready for the redraw
+        this.async(function(){
+          chart.notifyResize();
+        }, 1000);
+      }
+    }
+  });
+</script>

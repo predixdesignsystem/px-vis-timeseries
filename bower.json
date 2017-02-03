@@ -1,49 +1,43 @@
 {
-    "name": "px-vis-timeseries",
-    "version": "1.0.0",
-    "main": [
-        "px-vis-timeseries.html"
-    ],
-    "ignore": [
-        ".*",
-        "npm-debug.log",
-        "gulpfile.js",
-        "sass",
-        "bower_components",
-        "node_modules",
-        "test",
-        "px-vis-timeseries.png"
-    ],
-    "dependencies": {
-        "polymer": "^1.7.1",
-        "px-theme": "^2.0.1",
-        "px-datetime-common": "^0.7.0",
-        "px-colors-design": "^0.3.1",
-        "px-vis": "^1.0.0",
-        "iron-resizable-behavior": "^1.0.5"
-    },
-    "devDependencies": {
-        "px-demo-data": "~0.0.17",
-        "px-starter-kit-design": "^0.7.0",
-        "px-forms-design": "^1.1.0",
-        "px-tables-design": "^1.1.0",
-        "px-spacing-design": "^0.4.0",
-        "px-buttons-design": "^1.1.0",
-        "px-button-group-design": "^1.0.3",
-        "px-typography-design": "^1.2.0",
-        "iron-demo-helpers": "~1.2.5",
-        "px-tabs": "^0.6.0",
-        "px-api-viewer": "^0.2.0",
-        "px-demo-snippet": "^0.6.9",
-        "px-toggle-design": "^1.1.0",
-        "px-headings-design": "^0.3.0",
-        "px-actionable-text-icons-design": "^1.1.0",
-        "px-code-design": "^1.1.0",
-        "px-list-inline-design": "^0.3.0",
-        "px-polymer-font-awesome": "^1.1.0",
-        "px-dropdown": "^2.1.0",
-        "px-rangepicker": "^1.3.0",
-        "iron-ajax": "~1.4.3",
-        "px-demo-doc-design": "^1.0.0"
-    }
+  "name": "px-vis-timeseries",
+  "version": "1.0.0",
+  "main": [
+    "px-vis-timeseries.html"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "sass",
+    "HISTORY.md",
+    "CONTRIBUTING.md",
+    "OSS_Notice.pdf",
+    "scripts",
+    ".github",
+    ".editorconfig",
+    ".jshintrc",
+    ".gitignore",
+    "LICENSE.md",
+    "gulpfile.js",
+    "monogram-wdmk.png",
+    "README.md",
+    "wct.conf.json",
+    "test",
+    "px-vis-timeseries.png"
+  ],
+  "dependencies": {
+      "polymer": "^1.7.1",
+      "px-theme": "^2.0.1",
+      "px-datetime-common": "^0.7.0",
+      "px-colors-design": "^0.3.1",
+      "px-vis": "^1.0.0",
+      "iron-resizable-behavior": "^1.0.5"
+  },
+  "devDependencies": {
+    "px-starter-kit-design": "^0.7.0",
+    "px-demo": "^1.2.3",
+    "px-demo-data": "~0.0.17",
+    "px-rangepicker": "^1.3.0",
+    "iron-ajax": "~1.4.3"
+  }
 }

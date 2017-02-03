@@ -347,7 +347,6 @@ Creates an interactive timeseries chart
       PxVisBehavior.tooltipData,
       PxVisBehavior.extentsData,
       PxVisBehavior.commonMethods,
-      PxVisBehavior.axisTypes,
       PxVisBehavior.zoomSelection,
       PxVisBehavior.chartExtents,
       PxVisBehavior.dataExtents,
@@ -565,7 +564,7 @@ Creates an interactive timeseries chart
       this.set('numberOfLayers',4);
       this.set('_registerHeight', this.height);
 
-      if(!this.xAxisType) { this.set('xAxisType', 'time'); }
+      if(this.xAxisType !== 'time' || 'timeLocal') { this.set('xAxisType', 'time'); }
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
 
       this._calcMargins();
