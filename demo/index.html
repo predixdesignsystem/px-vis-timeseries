@@ -68,7 +68,13 @@
     </px-demo-interactive>
 
     <!-- API Viewer -->
-    <px-demo-api-viewer source="px-vis-timeseries"></px-demo-api-viewer>
+    <px-demo-api-viewer
+      source="px-vis-timeseries"
+      hide="[[apiHide]]"
+      mark-private="[[apiMarkPrivate]]"
+      mark-read-only="[[apliMarkReadOnly]]"
+      change-description="[[apiChangeDescription]]">
+    </px-demo-api-viewer>
 
     <!-- Footer -->
     <px-demo-footer></px-demo-footer>
@@ -211,6 +217,68 @@
               width: 800,
               height: 400 }
           ]
+        }
+      },
+
+      apiHide: {
+        type: Array,
+        value: function() {
+          return [
+            "defaultEventConfig",
+            "displayThresholdTitle",
+            "generateLayers",
+            "lineConfig",
+            "numberOfLayers",
+            "offset",
+            "renderToSvg",
+            "seriesKey",
+            "svg",
+            "svgLower",
+            "addClipPath",
+            "cloneSVGElem",
+            "generateRandomID",
+            "syncCSSTheme"
+          ]
+        }
+      },
+      apiMarkPrivate: {
+        type: Array,
+        value: function() {
+          return [
+            "dataExtents",
+            "layer",
+            "zoomStack"
+          ]
+        }
+      },
+      apliMarkReadOnly: {
+        type: Array,
+        value: function() {
+          return [
+            "axes",
+            "canvasContext",
+            "clipPath",
+            "domainChanged",
+            "drawnTickValues",
+            "extentsData",
+            "mousePosition",
+            "pxSvgElem",
+            "pxSvgElemLower",
+            "seriesClipPath",
+            "seriesToAxes",
+            "tooltipData",
+            "x",
+            "y"
+          ]
+        }
+      },
+      apiChangeDescription: {
+        type: Array,
+        value: function() {
+          return [{
+            "name": "xAxisType",
+            "desc": "Sets the type of data for the x values\n\nValid entries are:\n\n* `time`: for time domains in UTC [default].\n\n* `timeLocal`: for local time domains."
+          }]
         }
       }
     },

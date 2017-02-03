@@ -340,7 +340,6 @@ Creates an interactive timeseries chart
     behaviors: [
       PxVisBehavior.baseSize,
       PxVisBehavior.margins,
-      PxVisBehavior.formatting,
       PxVisBehavior.dataset,
       PxVisBehavior.completeSeriesConfig,
       PxVisBehavior.muteUnmuteSeries,
@@ -351,15 +350,12 @@ Creates an interactive timeseries chart
       PxVisBehavior.chartExtents,
       PxVisBehavior.dataExtents,
       PxVisBehavior.events,
-      PxVisBehaviorTime.datetime,
       PxVisBehaviorD3.svg,
       PxVisBehaviorD3.svgLower,
       PxVisBehaviorD3.canvas,
       PxVisBehaviorD3.axes,
-      PxVisBehaviorD3.axis,
       PxVisBehaviorD3.selectedTimeDomain,
       PxVisBehaviorD3.clipPath,
-      PxVisBehaviorD3.axisConfig,
       PxVisBehaviorChart.chartCommon,
       PxVisBehaviorChart.saveImage,
       PxVisBehaviorD3.domainUpdate,
@@ -385,7 +381,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.toolbarSubConfig,
       PxVisBehaviorChart.noDebounceOnPanning,
       PxVisBehaviorChart.chartToolbarConfig,
-      PxVisBehaviorChart.showTooltip
+      PxVisBehaviorChart.showTooltip,
+      PxVisBehaviorD3.interpolationFunction
     ],
 
     /**
@@ -519,20 +516,6 @@ Creates an interactive timeseries chart
       matchTicks: {
         type: Boolean,
         value: false
-      },
-      /**
-       * Boolean to show or hide the threshold box around the number
-       *
-       * @property showThresholdBox
-       * @type Boolean
-       */
-      showThresholdBox: {
-        type:Boolean,
-        value:false
-      },
-      interpolationFunction: {
-        type: Object,
-        notify: true
       }
     },
 
