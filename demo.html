@@ -213,7 +213,7 @@
           auto
           last-response="{{eventData}}">
         </iron-ajax>
-<!--
+
         <br />
         <br />
         <h2>Example of a timeseries with mostly default data and using the new data format</h2>
@@ -266,11 +266,11 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries> 
 
-         <!--<br />
+         <br />
         <br />
-        <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
+        <h2>Example of a timeseries rendering 40 series to canvas</h2>
         <px-vis-timeseries
           width="1000"
           height="500"
@@ -295,14 +295,14 @@
           }'>
           </px-vis-timeseries>
           <iron-ajax
-            url="../px-demo-data/demo-data/apm/timeseries.json"
+            url="../px-demo-data/demo-data/apm/timeseries10.json"
             handle-as="json"
             auto
             last-response="{{apmData}}"
             >
-          </iron-ajax>-->
+          </iron-ajax>
 
-        <!-- <br />
+         <br />
         <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
         <px-vis-timeseries
@@ -350,7 +350,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries> -->
+          ></px-vis-timeseries> 
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
