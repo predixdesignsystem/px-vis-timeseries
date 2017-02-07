@@ -84,25 +84,23 @@ Creates an interactive timeseries chart
               svg-lower="{{svgLower}}">
             </px-vis-svg-canvas>
             <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
-              <div class="flex__item--no-grow inline--flex" style="height:100px">
-                <px-vis-chart-navigator
-                  id="navigator"
-                  x-axis-type="time"
-                  y-axis-type="linear"
-                  width="[[width]]"
-                  height="100"
-                  margin="[[_internalMarginNav]]"
-                  default-series-config="[[defaultSeriesConfig]]"
-                  series-config="[[seriesConfig]]"
-                  include-all-series="[[includeAllSeries]]"
-                  chart-data="[[chartData]]"
-                  nav-series-limit="[[navSeriesLimit]]"
-                  chart-domain-x="[[_returnXDomain(domainChanged)]]"
-                  range="[[range]]"
-                  disable-empty-render
-                  prevent-resize="[[preventResize]]">
-                </px-vis-chart-navigator>
-              </div>
+              <px-vis-chart-navigator
+                id="navigator"
+                x-axis-type="time"
+                y-axis-type="linear"
+                width="[[width]]"
+                height="100"
+                margin="[[_internalMarginNav]]"
+                default-series-config="[[defaultSeriesConfig]]"
+                series-config="[[seriesConfig]]"
+                include-all-series="[[includeAllSeries]]"
+                chart-data="[[chartData]]"
+                nav-series-limit="[[navSeriesLimit]]"
+                chart-domain-x="[[_returnXDomain(domainChanged)]]"
+                range="[[range]]"
+                disable-empty-render
+                prevent-resize="[[preventResize]]">
+              </px-vis-chart-navigator>
             </template>
           </div>
         </div>
