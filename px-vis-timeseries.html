@@ -86,7 +86,7 @@ Creates an interactive timeseries chart
             <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
               <px-vis-chart-navigator
                 id="navigator"
-                x-axis-type="time"
+                  x-axis-type="[[xAxisType]]"
                 y-axis-type="linear"
                 width="[[width]]"
                 height="100"
@@ -191,7 +191,7 @@ Creates an interactive timeseries chart
     <template is="dom-repeat" items="[[eventData]]">
       <px-vis-event
         svg="[[layer.0]]"
-        x-axis-type="time"
+        x-axis-type="[[xAxisType]]"
         x-key="time"
         event-id="[[item.id]]"
         event-data="[[item]]"
@@ -221,7 +221,7 @@ Creates an interactive timeseries chart
       id="xAxis"
       svg="[[layer.0]]"
       axis="[[x]]"
-      axis-type="time"
+      axis-type="[[xAxisType]]"
       margin="[[_internalMargin]]"
       width="[[width]]"
       height="[[height]]"
@@ -238,8 +238,8 @@ Creates an interactive timeseries chart
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
-      left-axis-size="[[_leftAxisSize]]"
-      right-axis-size="[[_rightAxisSize]]"
+      left-axis-size="[[leftAxisSize]]"
+      right-axis-size="[[rightAxisSize]]"
       x="[[_axisX]]"
       y="[[y]]"
       domain-changed="[[_bothDomainsSet(_axisDomainChanged, domainChanged)]]"
@@ -283,7 +283,7 @@ Creates an interactive timeseries chart
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
-      x-axis-type="time"
+      x-axis-type="[[xAxisType]]"
       series-keys="[[_seriesKeys]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-data="[[chartData]]"
@@ -526,9 +526,9 @@ Creates an interactive timeseries chart
       '_toolbarConfigChanged(toolbarConfig.*)',
 
       '_heightChanged(height)',
-      '_calcAxes(completeSeriesConfig.*, _leftAxisSize, _rightAxisSize)',
-      '_calcMargins(margin.*, marginNav.*, _numRightAxes, _numLeftAxes)',
-      '_setXScale(width, _internalMargin)',
+      '_calcAxes(completeSeriesConfig.*, leftAxisSize, rightAxisSize)',
+      '_calcMargins(margin.*, marginNav.*, numRightAxes, numLeftAxes)',
+      '_setXScale(width, _internalMargin, xAxisType)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
       '_setDomainCaller(_chartDataHasChanged.*, x, y, dataExtents, seriesToAxes.*)',
       '_setDomainCaller(x, y, chartExtents, dataExtents)',
@@ -545,7 +545,7 @@ Creates an interactive timeseries chart
       this.set('numberOfLayers',4);
       this.set('_registerHeight', this.height);
 
-      if(this.xAxisType !== 'time' || 'timeLocal') { this.set('xAxisType', 'time'); }
+      if(this.xAxisType !== 'time' && this.xAxisType !== 'timeLocal') { this.set('xAxisType', 'time'); }
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
 
       this._calcMargins();
