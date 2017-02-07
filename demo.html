@@ -35,7 +35,7 @@
           show-time-zone="text">
         </px-rangepicker>
         <br/>
-        <!--<span>Append image at the bottom of the page</span>
+        <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
         <px-vis-timeseries
           id="timeSerie"
@@ -54,7 +54,9 @@
               "color": "blue",
               "icon": "fa-camera",
               "type": "fa",
-              "offset":[0,0]
+              "offset":[0,0],
+              "lineColor": "red",
+              "lineWeight": 5
             },
             "Fan start":{
               "color": "green",
@@ -70,10 +72,11 @@
             }
           }'
           navigator-config='{
-            "xAxisConfig": {
-               "tickFormat": "%b %d"
-            }
-          }'
+           "height": "500",
+           "xAxisConfig": {
+              "tickFormat": "%b %d"
+           }
+         }'
           x-axis-type="timeLocal"
           x-axis-config= '{
             "title": "Date"
@@ -163,7 +166,7 @@
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]">
-        </px-vis-timeseries>-->
+        </px-vis-timeseries>
 
         <!-- chart-extents='{
           "x": ["dynamic","dynamic"],
@@ -173,7 +176,7 @@
           "left_1":[0,"dynamic"],
           "right_1":[0,100]
         }' -->
-        <!--<iron-ajax
+        <iron-ajax
           id="fetch1"
           url="../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
           handle-as="json"
@@ -323,7 +326,7 @@
           y-axis-config='{
             "title": "Hz"
           }'>
-        </px-vis-timeseries>-->
+        </px-vis-timeseries>
         <iron-ajax
             url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
             handle-as="json"
@@ -363,7 +366,7 @@
               fetch2 = document.getElementById('fetch2'),
               converter = document.getElementById('converter'),
               aggregatedData = [];
-
+          //
           // var myChart = document.getElementById('myChart');
           // var sc = myChart.seriesConfig;
           // for(var i = 0; i < 40; i++){
@@ -396,24 +399,24 @@
             processData(evt.detail.response);
           }
 
-          // fetch1.addEventListener('response', handleResponse);
-          // fetch2.addEventListener('response', handleResponse);
-          // fetch3.addEventListener('response', handleResponse);
-          // fetch4.addEventListener('response', handleResponse);
+          fetch1.addEventListener('response', handleResponse);
+          fetch2.addEventListener('response', handleResponse);
+          fetch3.addEventListener('response', handleResponse);
+          fetch4.addEventListener('response', handleResponse);
 
-          //if the data has been fetched already manually kick the event handler
-          // if(fetch1.lastResponse) {
-          //   processData(fetch1.lastResponse);
-          // }
-          // if(fetch2.lastResponse) {
-          //   processData(fetch2.lastResponse);
-          // }
-          // if(fetch3.lastResponse) {
-          //   processData(fetch3.lastResponse);
-          // }
-          // if(fetch4.lastResponse) {
-          //   processData(fetch4.lastResponse);
-          // }
+          // if the data has been fetched already manually kick the event handler
+          if(fetch1.lastResponse) {
+            processData(fetch1.lastResponse);
+          }
+          if(fetch2.lastResponse) {
+            processData(fetch2.lastResponse);
+          }
+          if(fetch3.lastResponse) {
+            processData(fetch3.lastResponse);
+          }
+          if(fetch4.lastResponse) {
+            processData(fetch4.lastResponse);
+          }
 
           chart.svg.append('rect')
             .attr("y", 200)
