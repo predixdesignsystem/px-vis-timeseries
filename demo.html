@@ -74,10 +74,9 @@
                "tickFormat": "%b %d"
             }
           }'
+          x-axis-type="timeLocal"
           x-axis-config= '{
-            "title": "Date",
-            "tickFormat": "%B"
-
+            "title": "Date"
           }'
 
           y-axis-config= '{
@@ -266,7 +265,7 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
 
          <br />
         <br />
@@ -350,7 +349,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries> 
+          ></px-vis-timeseries>
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
