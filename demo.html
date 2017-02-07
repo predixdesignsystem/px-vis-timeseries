@@ -270,7 +270,7 @@
 
          <br />
         <br />
-        <h2>Example of a timeseries rendering 40 series to canvas</h2>
+        <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
           width="1000"
           height="500"
@@ -295,7 +295,7 @@
           }'>
           </px-vis-timeseries>
           <iron-ajax
-            url="../px-demo-data/demo-data/apm/timeseries10.json"
+            url="../px-demo-data/demo-data/apm/timeseries.json"
             handle-as="json"
             auto
             last-response="{{apmData}}"
@@ -386,7 +386,7 @@
               aggregatedData[1]["units"] = "Hz";
               aggregatedData[2]["axis"] = {"id": "axis3", "side": "left", "number": "2"};
               aggregatedData[2]["units"] = "BoF";
-              aggregatedData[3]["axis"] = {"id": "axis3", "side": "right", "number": "2"};
+              aggregatedData[3]["axis"] = {"id": "axis4", "side": "right", "number": "2"};
               aggregatedData[3]["units"] = "bof";
               converter.set('originalData', aggregatedData);
             }
@@ -416,13 +416,13 @@
             processData(fetch4.lastResponse);
           }
 
-          // chart.svg.append('rect')
-          //   .attr("y", 200)
-          //   .attr("x", 0)
-          //   .attr("height", 100)
-          //   .attr("width", 1000)
-          //   .attr('opacity',0.25)
-          //   .attr('fill', 'rgb(70,173,0)');
+          chart.svg.append('rect')
+            .attr("y", 200)
+            .attr("x", 0)
+            .attr("height", 100)
+            .attr("width", 1000)
+            .attr('opacity',0.25)
+            .attr('fill', 'rgb(70,173,0)');
 
           rangepicker.set('range', {
             "from":"2014-04-10T04:01:00.000Z",
