@@ -51,9 +51,9 @@
             width="{{props.width.value}}"
             height="{{props.height.value}}"
             prevent-resize="{{props.preventResize.value}}"
-            enable-tooltip="{{props.enableTooltip.value}}"
-            register-location="{{props.registerLocation.value}}"
+            show-tooltip="{{props.showTooltip.value}}"
             selection-type= "{{props.selectionType.value}}"
+            include-all-series
             chart-data="{{props.chartData.value}}">
         </px-vis-timeseries>
       </div>
@@ -214,7 +214,7 @@
           return [
             { configName: "Default",
               configReset: true,
-              width: 800,
+              width: 700,
               height: 400 }
           ]
         }
@@ -292,14 +292,14 @@
         defaultValue: true
       },
 
-      enableTooltip: {
+      showTooltip: {
         type: Boolean,
         defaultValue: true
       },
 
       preventResize: {
         type: Boolean,
-        defaultValue: true,
+        defaultValue: false,
         inputType: 'toggle'
       },
 

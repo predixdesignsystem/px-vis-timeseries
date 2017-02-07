@@ -69,7 +69,8 @@ Creates an interactive timeseries chart
               action-config='{{actionConfig}}'
               within-chart
               chart-margin="[[_internalMargin]]"
-              show-tooltip="{{_internalShowTooltip}}">
+              show-tooltip="{{_internalShowTooltip}}"
+              config='{"zoom": true, "pan": true, "tooltip": true}'>
             </px-vis-toolbar>
             <px-vis-svg-canvas
               id="svgCanvas"
@@ -107,22 +108,21 @@ Creates an interactive timeseries chart
         </div>
     </div>
 
-    <template id="tooltipTemplate" is="dom-if" if="[[showTooltip]]" restamp>
-      <px-vis-tooltip
-        id="tooltip"
-        hover-target=[[mouseRect]]
-        mouse-position="[[mousePosition]]"
-        width="250"
-        margin="[[_internalMargin]]"
-        chart-data="[[chartData]]"
-        tooltip-data="[[tooltipData]]"
-        complete-series-config="[[completeSeriesConfig]]"
-        x-axis-type="time"
-        y-axis-type="linear"
-        tooltip-style="light"
-        muted-series="[[mutedSeries]]">
-      </px-vis-tooltip>
-    </template>
+    <px-vis-tooltip
+      id="tooltip"
+      hover-target=[[mouseRect]]
+      mouse-position="[[mousePosition]]"
+      width="250"
+      margin="[[_internalMargin]]"
+      chart-data="[[chartData]]"
+      tooltip-data="[[tooltipData]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      x-axis-type="time"
+      y-axis-type="linear"
+      tooltip-style="light"
+      muted-series="[[mutedSeries]]"
+      hide="[[!_computedShowTooltip]]">
+    </px-vis-tooltip>
 
     <px-vis-clip-path
       svg="[[layer.1]]"
@@ -144,7 +144,7 @@ Creates an interactive timeseries chart
             complete-series-config="[[completeSeriesConfig]]"
             x="[[x]]"
             y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
-            domain-changed="[[domainChanged)]]"
+            domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
             no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
@@ -297,7 +297,7 @@ Creates an interactive timeseries chart
       tooltip-data="{{tooltipData}}"
       interaction-svg="{{interactionSvg}}"
       extents-data="{{extentsData}}"
-      action-config="{{actionConfig}}"
+      action-config="[[actionConfig]]"
       show-tooltip="{{_computedShowTooltip}}">
     </px-vis-interaction-space>
 
