@@ -15,10 +15,10 @@
 
 <!-- Imports for this componnent -->
 <link rel="import" href="../../px-colors-design/colors.html" />
-<link rel="import" href="../../px-vis/px-vis-behavior-common.html" />
+<!-- <link rel="import" href="../../px-vis/px-vis-behavior-common.html" />
 <link rel="import" href="../../px-vis/px-vis-behavior-d3.html" />
 <link rel="import" href="../../px-vis/px-vis-behavior-chart.html" />
-<link rel="import" href="../../px-vis/px-vis-behavior-datetime.html" />
+<link rel="import" href="../../px-vis/px-vis-behavior-datetime.html" /> -->
 <link rel="import" href="../px-vis-timeseries.html"/>
 
 <!-- Demo DOM module -->
@@ -236,7 +236,8 @@
             "svgLower",
             "addClipPath",
             "cloneSVGElem",
-            "generateRandomID"
+            "generateRandomID",
+            "yAxisType"
           ]
         }
       },
@@ -245,8 +246,7 @@
         value: function() {
           return [
             "dataExtents",
-            "layer",
-            "zoomStack"
+            "layer"
           ]
         }
       },
@@ -257,6 +257,7 @@
             "axes",
             "canvasContext",
             "clipPath",
+            "completeSeriesConfig",
             "domainChanged",
             "drawnTickValues",
             "extentsData",
@@ -267,7 +268,12 @@
             "seriesToAxes",
             "tooltipData",
             "x",
-            "y"
+            "y",
+            "numLeftAxes",
+            "numRightAxes",
+            "leftAxisSize",
+            "rightAxisSize",
+            "zoomStack"
           ]
         }
       },
