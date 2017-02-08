@@ -336,10 +336,11 @@
         <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
         <px-vis-timeseries
           id="chartCustom"
+          height="500"
+          width="800"
           prevent-resize
-          options = '{
-            "width": "1000",
-            "height": "500"
+          register-config='{
+            "width": 250
           }'
           include-all-series
           chart-data="[[chartData3]]"
