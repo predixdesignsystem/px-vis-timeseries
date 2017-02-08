@@ -63,7 +63,9 @@
       <px-demo-component-snippet
           element-properties="{{props}}"
           element-name="px-vis-timeseries"
-          links-includes="[[linksIncludes]]">
+          links-includes="[[linksIncludes]]"
+          scripts-includes="[[scriptsIncludes]]"
+          polygit-includes="[[polygitIncludes]]">
       </px-demo-component-snippet>
     </px-demo-interactive>
 
@@ -284,6 +286,27 @@
             "name": "xAxisType",
             "desc": "Sets the type of data for the x values\n\nValid entries are:\n\n* `time`: for time domains in UTC [default].\n\n* `timeLocal`: for local time domains."
           }]
+        }
+      },
+
+      scriptsIncludes: {
+        type: Array,
+        value: function() {
+          return ['https://cdn.rawgit.com/foretagsplatsen/numbro/1.7.1/numbro.js'];
+        }
+      },
+
+      linksIncludes: {
+        type: Array,
+        value: function() {
+          return ['px-vis/px-polygit-imports-vis.html', 'px-datetime-common/px-polygit-imports-datetime.html', 'numbro-element/numbro-element.html'];
+        }
+      },
+
+      polygitIncludes: {
+        type: Array,
+        value: function() {
+          return ['numbro*+MeTaNoV+*'];
         }
       }
     },
