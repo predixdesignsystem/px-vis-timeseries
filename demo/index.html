@@ -247,8 +247,14 @@
         type: Array,
         value: function() {
           return [
+            "clipPath",
+            "completeSeriesConfig",
             "dataExtents",
-            "layer"
+            "domainChanged",
+            "layer",
+            "pxSvgElem",
+            "pxSvgElemLower",
+            "seriesClipPath"
           ]
         }
       },
@@ -258,15 +264,9 @@
           return [
             "axes",
             "canvasContext",
-            "clipPath",
-            "completeSeriesConfig",
-            "domainChanged",
             "drawnTickValues",
             "extentsData",
             "mousePosition",
-            "pxSvgElem",
-            "pxSvgElemLower",
-            "seriesClipPath",
             "seriesToAxes",
             "tooltipData",
             "x",
@@ -322,7 +322,7 @@
 
       showTooltip: {
         type: Boolean,
-        defaultValue: true
+        defaultValue: false
       },
 
       preventResize: {
