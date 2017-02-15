@@ -45,7 +45,7 @@ Creates an interactive timeseries chart
 
     <div id="wrapper" class$="{{_chartWrapperClass}}" >
         <!--[chart + navigator] + register-->
-        <div class$="{{_registerWrapperClass}}">
+        <div class$="{{_registerWrapperClass}}" style="flex-shrink:0;">
           <px-vis-register
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
@@ -315,18 +315,6 @@ Creates an interactive timeseries chart
       clip-path="[[seriesClipPath]]"
       muted-series="[[mutedSeries]]">
     </px-vis-cursor>
-
-    <px-vis-zoom
-      id="zoom"
-      margin="[[_internalMargin]]"
-      width="[[width]]"
-      height="[[height]]"
-      extents-data="[[extentsData]]"
-      px-svg-elem=[[pxSvgElem]]
-      selected-domain="{{selectedDomain}}"
-      width="[[width]]"
-      height="[[height]]">
-    </px-vis-zoom>
   </template>
 </dom-module>
 
@@ -709,7 +697,7 @@ Creates an interactive timeseries chart
       },50);
     },
 
-    
+
 
     /**
      * gets a combined graphical snapshot of the chart and its navigator
