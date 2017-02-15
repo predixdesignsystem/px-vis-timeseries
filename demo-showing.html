@@ -1,0 +1,279 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>px-vis-timeseries Demo</title>
+        <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+        <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+        <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+
+        <link rel="import" href="../px-theme/px-theme-styles.html">
+        <!-- <link rel="import" href="../px-dark-theme/px-dark-theme-styles.html"> -->
+        <style include="px-theme-styles" is="custom-style"></style>
+
+        <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+        <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+
+    </head>
+
+    <body style="padding:30px; ">
+    <!-- <body style="padding:30px; background-color: rgb(27,42,51);"> -->
+      <template id="template" is="dom-bind">
+      <button id="btn">show/hide</button>
+      <div id="wrapper1" style="width:2000px;height:500px">
+      <div id="wrapper2" style="display:none;width:100%;height:100%">
+        <div id="wrapper3" style="width:100%;height:100%">
+        <px-vis-timeseries
+          id="timeSerie"
+          height="400"
+          threshold-data='[
+            { "for":"y0", "type":"max", "value":35.4784 },
+            { "for":"y0", "type":"min", "value":7.6531 },
+            { "for":"y0", "type":"mean", "value":15.330657585139331 },
+            { "for":"y1", "type":"mean", "value":75 },
+            { "for":"y1", "type":"quartile", "value":17 }
+          ]'
+          selection-type="xy"
+          show-tooltip
+          event-config= '{
+            "Recalibrate":{
+              "color": "blue",
+              "icon": "fa-camera",
+              "type": "fa",
+              "offset":[0,0],
+              "lineColor": "red",
+              "lineWeight": 5
+            },
+            "Fan start":{
+              "color": "green",
+              "icon": "\uf015",
+              "type": "unicode",
+              "offset":[1,0]
+            },
+            "Fan stop":{
+              "icon": "ge_logo.png",
+              "type": "image",
+              "offset":[0,-20],
+              "size":"20"
+            }
+          }'
+          navigator-config='{
+           "xAxisConfig": {
+              "tickFormat": "%b %d"
+           }
+         }'
+          x-axis-type="timeLocal"
+          x-axis-config= '{
+            "title": "Date"
+          }'
+
+          y-axis-config= '{
+            "title": "Single",
+            "titleTruncation": false,
+            "unit": "F",
+            "axis1": {
+              "title": "Temperature",
+              "titleTruncation": false,
+              "unit": "C"
+            }
+          }'
+          register-config='{
+              "height": 50,
+              "type": "vertical"}'
+          threshold-config='{
+            "max": {
+              "color": "red",
+              "dashPattern": "5,0",
+              "title": "MAX"
+            }
+          }'
+          dynamic-menu-config='[{
+              "name": "Delete",
+              "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
+              "eventName": "delete",
+              "icon": "fa-trash"
+            },
+            {
+              "name": "Bring To Front",
+              "action": "function(data) { this.set(\"serieToRedrawOnTop\", data.additionalDetail.name);}",
+              "eventName": "bring-to-front",
+              "icon": "fa-arrow-up"
+            }
+          ]'
+          display-threshold-title
+          toolbar-config='{"config": {
+            "advancedZoom": true,
+            "pan": true,
+            "tooltip": true,
+            "logHover": {
+              "buttonGroup": 2,
+              "tooltipLabel": "run action on click",
+              "icon": "fa-leaf",
+              "subConfig": {
+                "customClick": {
+                  "icon": "fa-coffee",
+                  "tooltipLabel": "logs some messages on chart click",
+                  "eventName": "my-custom-click",
+                  "actionConfig": {
+                    "mousedown": "function(mousePos) { debugger; console.log(JSON.stringify(this.tooltipData))}"
+                  }
+                },
+                "customClick2": {
+                  "icon": "fa-fire-extinguisher",
+                  "tooltipLabel": "logs some other messages on chart click",
+                  "actionConfig": {
+                  }
+                }
+              }
+            },
+            "logHover2": {
+              "buttonGroup": 2,
+              "tooltipLabel": "run action on click",
+              "icon": "fa-leaf",
+              "subConfig": {
+                "customClick": {
+                  "icon": "fa-coffee",
+                  "tooltipLabel": "logs some messages on chart click",
+                  "eventName": "my-custom-click",
+                  "actionConfig": {
+                  }
+                },
+                "customClick2": {
+                  "icon": "fa-fire-extinguisher",
+                  "tooltipLabel": "logs some other messages on chart click",
+                  "actionConfig": {
+                  }
+                }
+              }
+            }
+          }}'
+          series-config="[[seriesConfig]]"
+          chart-data="[[chartData]]"
+          event-data="[[eventData]]"
+          range="[[range]]">
+        </px-vis-timeseries>
+      </div></div></div>
+
+        <!-- chart-extents='{
+          "x": ["dynamic","dynamic"],
+          "y": [-10,100]
+        }' -->
+        <!-- chart-extents='{
+          "left_1":[0,"dynamic"],
+          "right_1":[0,100]
+        }' -->
+        <iron-ajax
+          id="fetch1"
+          url="../px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch2"
+          url="../px-demo-data/demo-data/aviation/hpt-acc-position-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch3"
+          url="../px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+        <iron-ajax
+          id="fetch4"
+          url="../px-demo-data/demo-data/aviation/fan-vibration-cruise2.json"
+          handle-as="json"
+          auto>
+        </iron-ajax>
+
+        <px-vis-data-converter
+          id="converter"
+          data-key = "series"
+          id-key = "name"
+          original-data = '[[originalData]]'
+          series-config="{{seriesConfig}}"
+          chart-data="{{chartData}}">
+        </px-vis-data-converter>
+        
+    </template>
+    <script>
+      window.addEventListener('WebComponentsReady', function() {
+        setTimeout(function() {
+          var chart = document.getElementById('chartCustom'),
+              rangepicker = document.getElementById('rangepicker'),
+              btnSnap = document.getElementById('btnSnap'),
+              timeSerie = document.getElementById('timeSerie'),
+              bigChart =  document.getElementById('bigChart'),
+              fetch1 = document.getElementById('fetch1'),
+              fetch2 = document.getElementById('fetch2'),
+              converter = document.getElementById('converter'),
+              aggregatedData = [],
+              wrapper1 = document.getElementById('wrapper2'),
+              btn = document.getElementById('btn');
+          //
+          // var myChart = document.getElementById('myChart');
+          // var sc = myChart.seriesConfig;
+          // for(var i = 0; i < 40; i++){
+          //   var n = 'series' + i
+          //   sc[n] = {
+          //     "name": "mySeries" + i,
+          //     "x": "x",
+          //     "y": "y",
+          //   }
+          // }
+          // myChart.seriesConfig = {};
+          // myChart.set('seriesConfig', sc);
+          var processData = function(data) {
+            aggregatedData.push(data);
+            if(aggregatedData.length === 4) {
+              aggregatedData[0]["axis"] = {"id": "axis1", "side": "left", "number": "1"};
+              aggregatedData[0]["units"] = "F";
+              aggregatedData[1]["axis"] = {"id": "axis2", "side": "right", "number": "1"};
+              aggregatedData[1]["units"] = "Hz";
+              aggregatedData[2]["axis"] = {"id": "axis3", "side": "left", "number": "2"};
+              aggregatedData[2]["units"] = "BoF";
+              aggregatedData[3]["axis"] = {"id": "axis4", "side": "right", "number": "2"};
+              aggregatedData[3]["units"] = "bof";
+              converter.set('originalData', aggregatedData);
+            }
+          };
+
+          //get both set of data for 1st chart
+          var handleResponse = function(evt) {
+            processData(evt.detail.response);
+          }
+
+          fetch1.addEventListener('response', handleResponse);
+          fetch2.addEventListener('response', handleResponse);
+          fetch3.addEventListener('response', handleResponse);
+          fetch4.addEventListener('response', handleResponse);
+
+          // if the data has been fetched already manually kick the event handler
+          if(fetch1.lastResponse) {
+            processData(fetch1.lastResponse);
+          }
+          if(fetch2.lastResponse) {
+            processData(fetch2.lastResponse);
+          }
+          if(fetch3.lastResponse) {
+            processData(fetch3.lastResponse);
+          }
+          if(fetch4.lastResponse) {
+            processData(fetch4.lastResponse);
+          }
+
+          btn.addEventListener('click', function() {
+            wrapper1.style['display'] = 'block';
+            timeSerie.notifyResize();
+          });
+
+      });
+    });
+    </script>
+    </body>
+</html>
