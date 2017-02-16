@@ -35,7 +35,7 @@ function runCustomTests() {
       };
     suiteSetup(function(done){
       configFile.set('options',options);
-      setTimeout(function(){ done(); },100);
+      setTimeout(function(){ done(); }, 500);
     });
 
     test('configFile fixture is created', function() {
@@ -59,7 +59,7 @@ function runCustomTests() {
       margin.set('xAxisLocation','top');
       margin.set('yAxisLocation','left');
       margin._calcMargins();
-      setTimeout(function(){ done(); },100);
+      setTimeout(function(){ done(); }, 1000);
     });
 
     test('margin fixture is created', function() {
@@ -87,7 +87,7 @@ function runCustomTests() {
       margin.set('xAxisLocation','bottom');
       margin.set('yAxisLocation','right');
       margin._calcMargins();
-      setTimeout(function(){ done(); },100);
+      setTimeout(function(){ done(); }, 500);
     });
 
     test('margin fixture is created', function() {
@@ -96,13 +96,13 @@ function runCustomTests() {
 
     test('margin calcMargin set the margin', function() {
       assert.equal(margin._internalMargin.top, 25);
-      assert.equal(margin._internalMargin.right, 40);
+      assert.equal(margin._internalMargin.right, 50);
       assert.equal(margin._internalMargin.bottom, 40);
       assert.equal(margin._internalMargin.left, 10);
     });
     test('margin calcMargin set the marginNav', function() {
       assert.equal(margin._internalMarginNav.top, 5);
-      assert.equal(margin._internalMarginNav.right, 40);
+      assert.equal(margin._internalMarginNav.right, 50);
       assert.equal(margin._internalMarginNav.bottom, 20);
       assert.equal(margin._internalMarginNav.left, 10);
     });
@@ -150,7 +150,7 @@ function runCustomTests() {
       IASChart.set('margin',m);
       IASChart.set('chartData',d);
 
-      setTimeout(function(){done()}, 500);
+      setTimeout(function(){done()}, 1000);
     });
 
     test('IASChart fixture is created', function() {
@@ -202,8 +202,8 @@ function runCustomTests() {
     });
 
     test('IASChart y', function() {
-      assert.deepEqual(IASChart.y.range(), [380,0]);
-      assert.deepEqual(IASChart.y.domain(), [0,20]);
+      assert.deepEqual(IASChart.y["defaultAxis"].range(), [380,0]);
+      assert.deepEqual(IASChart.y["defaultAxis"].domain(), [0,20]);
     });
 
     test('IASChart mutedSeries', function() {
@@ -214,7 +214,7 @@ function runCustomTests() {
       var ttD = {
         "mouse": null,
         "time": null,
-        "hidden": true, 
+        "hidden": true,
         "xArr": null,
         "yArr": null,
         "series": [{
@@ -234,7 +234,7 @@ function runCustomTests() {
     });
 
     test('IASChart selectedDomain', function() {
-      assert.deepEqual(IASChart.selectedDomain, {"x":IASChart.currentDomainX,"y":[]});
+      assert.deepEqual(IASChart.selectedDomain, {"x":[],"y":[]});
     });
 
     test('IASChart _seriesKeys', function() {
@@ -358,8 +358,8 @@ function runCustomTests() {
     });
 
     test('configChart y', function() {
-      assert.deepEqual(configChart.y.range(), [380,0]);
-      assert.deepEqual(configChart.y.domain(), [0,20]);
+      assert.deepEqual(configChart.y["defaultAxis"].range(), [380,0]);
+      assert.deepEqual(configChart.y["defaultAxis"].domain(), [0,20]);
     });
 
     test('configChart mutedSeries', function() {
@@ -389,7 +389,7 @@ function runCustomTests() {
     });
 
     test('configChart selectedDomain', function() {
-      assert.deepEqual(configChart.selectedDomain, {"x":configChart.currentDomainX,"y":[]});
+      assert.deepEqual(configChart.selectedDomain, {"x":[],"y":[]});
     });
 
     test('configChart _seriesKeys', function() {
