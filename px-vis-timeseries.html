@@ -36,7 +36,7 @@ Creates an interactive timeseries chart
 @demo demo.html
 -->
 
-<link rel="import" type="css" href="css/px-vis-timeseries-styles.html"/>
+<link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
 <dom-module id="px-vis-timeseries">
   <template>
@@ -210,7 +210,6 @@ Creates an interactive timeseries chart
       svg="[[layer.2]]"
       complete-series-config="[[completeSeriesConfig]]"
       threshold-data="[[thresholdData]]"
-      display-title="[[displayThresholdTitle]]"
       threshold-config="[[thresholdConfig]]"
       width="[[width]]"
       margin="[[_internalMargin]]"
@@ -372,7 +371,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.showTooltip,
       PxVisBehaviorD3.interpolationFunction,
       PxVisBehaviorChart.sizeVerticalRegister,
-      PxVisBehaviorChart.tooltipFollowMouseCalculation
+      PxVisBehaviorChart.tooltipFollowMouseCalculation,
+      PxVisBehaviorChart.thresholdConfig
     ],
 
     /**
@@ -483,10 +483,6 @@ Creates an interactive timeseries chart
         type: Boolean,
         value: false
       },
-      displayThresholdTitle: {
-        type: Boolean,
-        value: false
-      },
 
       _isReady: {
         type: Boolean,
@@ -539,7 +535,7 @@ Creates an interactive timeseries chart
       this._isReady = true;
     },
 
-    
+
     _getWrapperClass: function(_registerWrapperClass) {
       var classList = _registerWrapperClass + ' flex__item wrapper'
 
