@@ -219,7 +219,7 @@
         <br />
         <br />
         <h2>Example of a timeseries with mostly default data and using the new data format</h2>
-        <!-- <px-vis-timeseries
+         <px-vis-timeseries
           width = "1000"
           height = "500"
           include-all-series
@@ -234,7 +234,7 @@
           y-axis-config='{
             "title": "Widgets"
           }'>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries> 
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
           handle-as="json"
@@ -246,7 +246,7 @@
         <br />
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
-        <!-- <px-vis-timeseries
+         <px-vis-timeseries
           width = "1000"
           height = "500"
           include-all-series
@@ -268,7 +268,7 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries> 
 
          <br />
         <br />
@@ -310,7 +310,7 @@
          <br />
         <br />
         <h2>Example of a timeseries with a custom series configuration</h2>
-        <!-- <px-vis-timeseries
+         <px-vis-timeseries
           id="myChart"
           width = "1000"
           height = "500"
@@ -329,7 +329,7 @@
           y-axis-config='{
             "title": "Hz"
           }'>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries> 
         <iron-ajax
             url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
             handle-as="json"
@@ -340,7 +340,7 @@
         <br />
         <br />
         <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
-        <!-- <px-vis-timeseries
+         <px-vis-timeseries
           id="chartCustom"
           height="500"
           width="800"
@@ -356,7 +356,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries> -->
+          ></px-vis-timeseries> 
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -422,6 +422,11 @@
             processData(fetch4.lastResponse);
           }
 
+          rangepicker.set('range', {
+            "from":"2014-04-10T04:01:00.000Z",
+            "to":"2015-04-01T20:42:00.000Z"
+          });
+
           chart.svg.append('rect')
             .attr("y", 200)
             .attr("x", 0)
@@ -430,10 +435,7 @@
             .attr('opacity',0.25)
             .attr('fill', 'rgb(70,173,0)');
 
-          rangepicker.set('range', {
-            "from":"2014-04-10T04:01:00.000Z",
-            "to":"2015-04-01T20:42:00.000Z"
-          });
+          
 
         // timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
         //   console.log('test delete')
