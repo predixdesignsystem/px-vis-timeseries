@@ -45,10 +45,11 @@ Creates an interactive timeseries chart
 
     <div id="wrapper" class$="{{_chartWrapperClass}}" >
         <!--[chart + navigator] + register-->
-        <div class$="{{_registerWrapperClass}}" style="flex-shrink:0;">
+        <div class$="{{_registerWrapperClass}}">
           <px-vis-register
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
+            chart-width="[[width]]"
             height="[[_verticalRegisterHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
