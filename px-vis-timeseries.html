@@ -63,7 +63,7 @@ Creates an interactive timeseries chart
             y-axis-type="[[yAxisType]]">
           </px-vis-register>
           <!-- chart + navigator -->
-          <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex" on-mousemove="_calcMousePos">
+          <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex">
             <px-vis-toolbar
               id="toolbar"
               current-sub-config='[[toolbarSubConfig]]'
@@ -101,7 +101,7 @@ Creates an interactive timeseries chart
                 chart-domain-x="[[_returnXDomain(domainChanged)]]"
                 range="[[range]]"
                 disable-empty-render
-                prevent-resize="[[preventResize]]">
+                prevent-resize>
               </px-vis-chart-navigator>
             </template>
           </div>
@@ -371,7 +371,8 @@ Creates an interactive timeseries chart
       PxVisBehaviorChart.chartToolbarConfig,
       PxVisBehaviorChart.showTooltip,
       PxVisBehaviorD3.interpolationFunction,
-      PxVisBehaviorChart.sizeVerticalRegister
+      PxVisBehaviorChart.sizeVerticalRegister,
+      PxVisBehaviorChart.tooltipFollowMouseCalculation
     ],
 
     /**
@@ -464,9 +465,6 @@ Creates an interactive timeseries chart
         observer: '_disableNavigatorChanged'
       },
 
-      mousePosition: {
-        type: Array
-      },
       renderToCanvas: {
         type: Boolean,
         value: false
@@ -526,7 +524,9 @@ Creates an interactive timeseries chart
       'iron-resize': '_onIronResize',
       'px-vis-selected-domain-updated': '_setSelectedDomain'
     },
-
+    created: function() {
+      this._tooltipCalcHoverTargetId = 'drawingWrapper';
+    },
     ready:function() {
       this.set('numberOfLayers',4);
       this.set('_verticalRegisterDrawingCanvasId', 'svgCanvas');
@@ -539,9 +539,7 @@ Creates an interactive timeseries chart
       this._isReady = true;
     },
 
-    _calcMousePos: function(evt) {
-      this.set('mousePosition',[evt.pageX,evt.pageY]);
-    },
+    
     _getWrapperClass: function(_registerWrapperClass) {
       var classList = _registerWrapperClass + ' flex__item wrapper'
 
