@@ -101,6 +101,7 @@ Creates an interactive timeseries chart
                 chart-domain-x="[[_returnXDomain(domainChanged)]]"
                 range="[[range]]"
                 disable-empty-render
+                selected-domain="{{_navSelectedDomain}}"
                 prevent-resize>
               </px-vis-chart-navigator>
             </template>
@@ -495,6 +496,9 @@ Creates an interactive timeseries chart
       matchTicks: {
         type: Boolean,
         value: false
+      },
+      _navSelectedDomain: {
+        type: Object
       }
     },
 
@@ -513,12 +517,12 @@ Creates an interactive timeseries chart
       '_setDomainCaller(_chartDataHasChanged.*, x, y, dataExtents, seriesToAxes.*)',
       '_setDomainCaller(x, y, chartExtents, dataExtents)',
       '_updateDomain(selectedDomain)',
-      '_chartDataChanged(chartData.*)'
+      '_chartDataChanged(chartData.*)',
+      '_navSelectedDomainChanged(_navSelectedDomain)'
     ],
 
     listeners: {
-      'iron-resize': '_onIronResize',
-      'px-vis-selected-domain-updated': '_setSelectedDomain'
+      'iron-resize': '_onIronResize'
     },
     created: function() {
       this._tooltipCalcHoverTargetId = 'drawingWrapper';
@@ -534,7 +538,6 @@ Creates an interactive timeseries chart
       this._calcMargins();
       this._isReady = true;
     },
-
 
     _getWrapperClass: function(_registerWrapperClass) {
       var classList = _registerWrapperClass + ' flex__item wrapper'
@@ -715,9 +718,6 @@ Creates an interactive timeseries chart
         }
       }.bind(this), renderLegend);
     },
-    _setSelectedDomain: function(e) {
-      this.set('selectedDomain', e.detail.data);
-    },
 
     _disableNavigatorChanged: function() {
       if(!this._disableNavigator && this.navigatorConfig) {
@@ -759,6 +759,9 @@ Creates an interactive timeseries chart
       if(this.domainChanged !== null & this._axisDomainChanged !== null) {
         return !this.$.yAxes.domainChanged;
       }
+    },
+    _navSelectedDomainChanged: function() {
+      this.set('selectedDomain', this._navSelectedDomain);
     }
   });
 </script>
