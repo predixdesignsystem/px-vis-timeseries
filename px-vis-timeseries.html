@@ -627,13 +627,17 @@ Custom property | Description | Default
       'iron-resize': '_onIronResize'
     },
     created: function() {
+      //set which element is used to calculate mouse pos for tooltip
       this._tooltipCalcHoverTargetId = 'drawingWrapper';
     },
     ready:function() {
       this.set('numberOfLayers',4);
+
+      //set some elements so that the register knows how to calculate its height
       this.set('_verticalRegisterDrawingCanvasId', 'svgCanvas');
       this.set('_verticalRegisterHeightDeductions', ['toolbar', 'navigator']);
 
+      //always default to a time based X axis
       if(this.xAxisType !== 'time' && this.xAxisType !== 'timeLocal') { this.set('xAxisType', 'time'); }
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
 
