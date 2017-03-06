@@ -106,13 +106,13 @@
           }'
           dynamic-menu-config='[{
               "name": "Delete",
-              "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
+              "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set("seriesConfig", {}); this.set("seriesConfig", conf);}",
               "eventName": "delete",
               "icon": "fa-trash"
             },
             {
               "name": "Bring To Front",
-              "action": "function(data) { this.set(\"serieToRedrawOnTop\", data.additionalDetail.name);}",
+              "action": "function(data) { this.set("serieToRedrawOnTop", data.additionalDetail.name);}",
               "eventName": "bring-to-front",
               "icon": "fa-arrow-up"
             }

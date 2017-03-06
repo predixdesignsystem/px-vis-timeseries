@@ -777,27 +777,25 @@ Custom property | Description | Default
         return;
       }
       this.debounce('ironresize', function() {
-        // if(this.disableNavigator || this.$$('#navigator')) {
-          var wrapperRect = this.$.wrapper.getBoundingClientRect(),
-              navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
-              registerRect = this.$.register.getBoundingClientRect(),
-              toolbarRect = this.$.toolbar.getBoundingClientRect(),
-              widthDeduct = 0,
-              heightDeduct = 0;
+        var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+            navigatorHeight = this.disableNavigator ? 0 : this.$$('#navigator').height,
+            registerRect = this.$.register.getBoundingClientRect(),
+            toolbarRect = this.$.toolbar.getBoundingClientRect(),
+            widthDeduct = 0,
+            heightDeduct = 0;
 
-          if(this.$.register.type === 'horizontal') {
-            heightDeduct += registerRect.height;
-          } else {
-            widthDeduct += registerRect.width;
-          }
+        if(this.$.register.type === 'horizontal') {
+          heightDeduct += registerRect.height;
+        } else {
+          widthDeduct += registerRect.width;
+        }
 
-          heightDeduct += toolbarRect.height;
-          heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
+        heightDeduct += toolbarRect.height;
+        heightDeduct += navigatorHeight;
 
-          this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
-          this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-          this._computeVerticalRegisterHeight([navigatorRect.height, toolbarRect.height]);
-        // }
+        this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
+        this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
+        this._computeVerticalRegisterHeight([navigatorHeight, toolbarRect.height]);
       },50);
     },
 
