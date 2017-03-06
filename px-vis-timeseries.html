@@ -394,7 +394,7 @@ Custom property | Description | Default
       x="[[x]]"
       y="[[y]]"
       domain-changed="[[domainChanged]]"
-      selection-type="[[selectionType]]"
+      selection-type="{{selectionType}}"
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
       interaction-svg="{{interactionSvg}}"
@@ -475,7 +475,8 @@ Custom property | Description | Default
       PxVisBehaviorD3.interpolationFunction,
       PxVisBehaviorChart.sizeVerticalRegister,
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
-      PxVisBehaviorChart.thresholdConfig
+      PxVisBehaviorChart.thresholdConfig,
+      PxVisBehavior.selectionType
     ],
 
     /**
@@ -592,8 +593,10 @@ Custom property | Description | Default
         value: false
       },
       /**
-       * A boolean to specify if the axis ticks should align (which affects their individual range). Default (false) is for each have their own ranges and tick marks may not align
-       *
+       * A boolean to specify if the axis ticks should align (which affects 
+       * their individual range). Default (false) is for each have their own 
+       * ranges and tick marks may not align
+       * Only useful if using multiple axis
        */
       matchTicks: {
         type: Boolean,
