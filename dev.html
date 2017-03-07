@@ -39,6 +39,7 @@
         <button id="btnSnap">Go</button>
         <px-vis-timeseries
           id="timeSerie"
+          match-ticks
           height="500"
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
@@ -55,8 +56,8 @@
               "icon": "fa-camera",
               "type": "fa",
               "offset":[0,0],
-              "lineColor": "red",
-              "lineWeight": 0
+              "lineColor": "null",
+              "lineWeight": 5
             },
             "Fan start":{
               "color": "green",
@@ -89,7 +90,8 @@
             "axis1": {
               "title": "Temperature",
               "titleTruncation": false,
-              "unit": "C"
+              "unit": "C",
+              "tickValues": [0,10,20,30]
             }
           }'
           register-config='{
@@ -236,7 +238,7 @@
           y-axis-config='{
             "title": "Widgets"
           }'>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
           handle-as="json"
@@ -270,7 +272,7 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
 
          <br />
         <br />
@@ -331,7 +333,7 @@
           y-axis-config='{
             "title": "Hz"
           }'>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
         <iron-ajax
             url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
             handle-as="json"
@@ -358,7 +360,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries> 
+          ></px-vis-timeseries>
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -437,7 +439,7 @@
             .attr('opacity',0.25)
             .attr('fill', 'rgb(70,173,0)');
 
-          
+
 
         // timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
         //   console.log('test delete')
