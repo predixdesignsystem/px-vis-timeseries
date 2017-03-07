@@ -395,7 +395,7 @@ Custom property | Description | Default
       x="[[x]]"
       y="[[y]]"
       domain-changed="[[domainChanged]]"
-      selection-type="[[selectionType]]"
+      selection-type="{{selectionType}}"
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
       interaction-svg="{{interactionSvg}}"
@@ -476,7 +476,8 @@ Custom property | Description | Default
       PxVisBehaviorD3.interpolationFunction,
       PxVisBehaviorChart.sizeVerticalRegister,
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
-      PxVisBehaviorChart.thresholdConfig
+      PxVisBehaviorChart.thresholdConfig,
+      PxVisBehavior.selectionType
     ],
 
     /**
@@ -593,8 +594,10 @@ Custom property | Description | Default
         value: false
       },
       /**
-       * A boolean to specify if the axis ticks should align (which affects their individual range). Default (false) is for each have their own ranges and tick marks may not align
-       *
+       * A boolean to specify if the axis ticks should align (which affects 
+       * their individual range). Default (false) is for each have their own 
+       * ranges and tick marks may not align
+       * Only useful if using multiple axis
        */
       matchTicks: {
         type: Boolean,
@@ -778,27 +781,25 @@ Custom property | Description | Default
         return;
       }
       this.debounce('ironresize', function() {
-        // if(this.disableNavigator || this.$$('#navigator')) {
-          var wrapperRect = this.$.wrapper.getBoundingClientRect(),
-              navigatorRect = this.disableNavigator ? 0 : this.$$('#navigator').getBoundingClientRect(),
-              registerRect = this.$.register.getBoundingClientRect(),
-              toolbarRect = this.$.toolbar.getBoundingClientRect(),
-              widthDeduct = 0,
-              heightDeduct = 0;
+        var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+            navigatorHeight = this.disableNavigator ? 0 : this.$$('#navigator').height,
+            registerRect = this.$.register.getBoundingClientRect(),
+            toolbarRect = this.$.toolbar.getBoundingClientRect(),
+            widthDeduct = 0,
+            heightDeduct = 0;
 
-          if(this.$.register.type === 'horizontal') {
-            heightDeduct += registerRect.height;
-          } else {
-            widthDeduct += registerRect.width;
-          }
+        if(this.$.register.type === 'horizontal') {
+          heightDeduct += registerRect.height;
+        } else {
+          widthDeduct += registerRect.width;
+        }
 
-          heightDeduct += toolbarRect.height;
-          heightDeduct += this.disableNavigator ? 0 : navigatorRect.height;
+        heightDeduct += toolbarRect.height;
+        heightDeduct += navigatorHeight;
 
-          this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
-          this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-          this._computeVerticalRegisterHeight([navigatorRect.height, toolbarRect.height]);
-        // }
+        this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
+        this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
+        this._computeVerticalRegisterHeight([navigatorHeight, toolbarRect.height]);
       },50);
     },
 

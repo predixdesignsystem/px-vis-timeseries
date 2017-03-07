@@ -47,14 +47,35 @@
       <px-demo-component class="flex__item flex">
         <div style="width:100%;">
         <px-vis-timeseries
-            include-all-series
-            width="{{props.width.value}}"
-            height="{{props.height.value}}"
-            prevent-resize="{{props.preventResize.value}}"
-            show-tooltip="{{props.showTooltip.value}}"
-            selection-type= "{{props.selectionType.value}}"
-            include-all-series
-            chart-data="{{props.chartData.value}}">
+          id="chart"
+          prevent-resize
+          chart-data="{{props.chartData.value}}"
+          include-all-series="{{props.includeAllSeries.value}}"
+          width="{{props.width.value}}"
+          height="{{props.height.value}}"
+          chart-horizontal-alignment="{{props.chartHorizontalAlignment.value}}"
+          chart-vertical-alignment="{{props.chartVerticalAlignment.value}}"
+          margin='{{props.margin.value}}'
+          x-axis-config='{{props.xAxisConfig.value}}'
+          y-axis-config='{{props.yAxisConfig.value}}'
+          register-config='{{props.registerConfig.value}}'
+          tooltip-config='{{props.tooltipConfig.value}}'
+          show-tooltip='{{props.showTooltip.value}}'
+          hide-register='{{props.hideRegister.value}}'
+          hide-gridlines-x='{{props.hideGridlinesX.value}}'
+          hide-gridlines-y='{{props.hideGridlinesY.value}}'
+          series-config='{{props.seriesConfig.value}}'
+          dynamic-menu-config='{{props.dynamicMenuConfig.value}}'
+          show-tooltip="{{props.showTooltip.value}}"
+          event-config='{{props.eventConfig.value}}'
+          event-data="{{props.eventData.value}}"
+          threshold-config='{{props.thresholdConfig.value}}'
+          threshold-data="{{props.thresholdData.value}}"
+          display-threshold-title="{{props.displayThresholdTitle.value}}"
+          chart-extents='{{props.chartExtents.value}}'
+          toolbar-config="{{props.toolbarConfig.value}}"
+          match-ticks="{{props.matchTicks.value}}"
+          selection-type="{{props.selectionType.value}}">
         </px-vis-timeseries>
       </div>
       </px-demo-component>
@@ -216,8 +237,7 @@
           return [
             { configName: "Default",
               configReset: true,
-              width: 700,
-              height: 400 }
+              preventResize: true}
           ]
         }
       },
@@ -308,39 +328,94 @@
         value: function() {
           return ['numbro*+MeTaNoV+*'];
         }
-      }
+      },
+      appliedWidth: {
+        type: Number,
+        defaultValue: 700
+      },
+
+      appliedHeight: {
+        type: Number,
+        defaultValue: 500
+      },
     },
 
     /**
      * A reference for `this.props`. Read the documentation there.
      */
     demoProps: {
-      includeAllSeries: {
+      
+
+      preventResize: {
         type: Boolean,
-        defaultValue: true
+        defaultValue: true,
+        inputType: 'toggle'
+      },
+
+      //we need inputDisabled: false to be able to dynamically turn it on
+      width: {
+        type: Number,
+        defaultValue: 700,
+        inputDisabled: false,
+        inputType: 'text'
+      },
+
+      //we need inputDisabled: false to be able to dynamically turn it on
+      height: {
+        type: Number,
+        defaultValue: 450,
+        inputDisabled: false,
+        inputType: 'text'
+      },
+
+      chartHorizontalAlignment: {
+        type: String,
+        defaultValue: 'center',
+        inputType: 'dropdown',
+        inputChoices: ['left', 'center', 'right']
+      },
+
+      chartVerticalAlignment: {
+        type: String,
+        defaultValue: 'center',
+        inputType: 'dropdown',
+        inputChoices: ['top', 'center', 'bottom']
+      },
+
+      margin: {
+        type: Object,
+        defaultValue: { "top": 30, "bottom": 60, "left": 65, "right": 65 },
+        inputType: 'code:JSON'
       },
 
       showTooltip: {
-        type: Boolean,
-        defaultValue: false
-      },
-
-      preventResize: {
         type: Boolean,
         defaultValue: false,
         inputType: 'toggle'
       },
 
-      width: {
-        type: Number,
-        defaultValue: 0,
-        inputType: 'text'
+      tooltipConfig: {
+        type: Object,
+        defaultValue: {},
+        inputType: 'code:JSON'
       },
 
-      height: {
-        type: Number,
-        defaultValue: 0,
-        inputType: 'text'
+      hideRegister: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      registerConfig: {
+        type: Object,
+        defaultValue: { "type": "vertical", "width": 200},
+        inputType: 'code:JSON'
+      },
+
+      includeAllSeries: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
       },
 
       selectionType: {
@@ -350,70 +425,275 @@
         inputChoices: ['xy', 'xAxis', 'yAxis']
       },
 
-      registerLocation: {
-        type: String,
-        defaultValue: 'top',
-        inputType: 'dropdown',
-        inputChoices: ['none', 'top', 'side', 'both']
-      },
-
       chartData: {
         type: Array,
+        defaultValue: [{"x":1397102460000,"y0":11.4403,"y1":96.5,"y2":0.56,"y3":0.56},
+                      {"x":1397139660000,"y0":13.1913,"y1":96.5,"y2":0.4,"y3":0.4},
+                      {"x":1397177400000,"y0":12.8485,"y1":96.5,"y2":0.43,"y3":0.43},
+                      {"x":1397228040000,"y0":10.975,"y1":96.5,"y2":0.33,"y3":0.33},
+                      {"x":1397248260000,"y0":12.9377,"y1":96.5,"y2":0.47,"y3":0.47},
+                      {"x":1397291280000,"y0":13.3795,"y1":96.5,"y2":0.41,"y3":0.41},
+                      {"x":1397522940000,"y0":16.4446,"y1":96.5,"y2":0.32,"y3":0.32},
+                      {"x":1397542800000,"y0":12.2771,"y1":96.5,"y2":0.35,"y3":0.35},
+                      {"x":1397640960000,"y0":13.0709,"y1":96.5,"y2":0.34,"y3":0.34},
+                      {"x":1397663100000,"y1":88.8,"y2":0.28,"y3":0.28},
+                      {"x":1397700000000,"y0":12.6198,"y1":95.2,"y2":0.49,"y3":0.49},
+                      {"x":1397753040000,"y0":11.0486,"y1":96.5,"y2":0.35,"y3":0.35},
+                      {"x":1397772540000,"y0":14.6892,"y1":96.5,"y2":0.21,"y3":0.21},
+                      {"x":1397794860000,"y0":14.3738,"y1":96.5,"y2":0.42,"y3":0.42},
+                      {"x":1397813580000,"y0":10.4259,"y1":76.5,"y2":0.58,"y3":0.58},
+                      {"x":1397890680000,"y0":13.4261,"y1":96.5,"y2":0.37,"y3":0.37},
+                      {"x":1397932020000,"y0":13.0062,"y1":96.5,"y2":0.27,"y3":0.27},
+                      {"x":1397973480000,"y0":14.475,"y1":96.5,"y2":0.35,"y3":0.35},
+                      {"x":1398009240000,"y1":96.5,"y2":0.24,"y3":0.24},
+                      {"x":1398035760000,"y0":15.9555,"y1":96.5},
+                      {"x":1398075840000,"y0":14.535,"y1":16},
+                      {"x":1398102960000,"y0":12.3671,"y1":96.5},
+                      {"x":1398126240000,"y0":12.4245,"y1":96.5},
+                      {"x":1398195060000,"y0":12.0836,"y1":96.5,"y2":0.31,"y3":0.31},
+                      {"x":1398219120000,"y0":15.3137,"y1":96.5,"y2":0.34,"y3":0.34},
+                      {"x":1398239220000,"y0":13.7978,"y1":96.5,"y2":0.32,"y3":0.32},
+                      {"x":1398617940000,"y1":55.4,"y2":0.16,"y3":0.16},
+                      {"x":1398638520000,"y0":15.0664,"y1":85.7,"y2":0.41,"y3":0.41},
+                      {"x":1398691860000,"y0":13.504,"y1":96.5,"y2":0.31,"y3":0.31},
+                      {"x":1398714240000,"y0":13.7263,"y1":96.5,"y2":0.36,"y3":0.36},
+                      {"x":1398807540000,"y0":14.57,"y1":96.5,"y2":0.44,"y3":0.44},
+                      {"x":1398858180000,"y0":13.9641,"y1":96.5,"y2":0.25,"y3":0.25},
+                      {"x":1398879420000,"y0":12.5418,"y1":96.5,"y2":0.42,"y3":0.42},
+                      {"x":1398920880000,"y0":14.8822,"y1":96.5,"y2":0.22,"y3":0.22},
+                      {"x":1398956340000,"y0":15.2676,"y1":96.5,"y2":0.42,"y3":0.42},
+                      {"x":1398995280000,"y1":20.3,"y2":0.16,"y3":0.16}],
+        inputType: 'code:JSON'
+      },
+
+      seriesConfig: {
+        type: Object,
+        defaultValue: {"y0":
+        {"name":"y0","x":"x","y":"y0","yAxisUnit":"F","axis":{"id":"axis1","side":"left","number":"1"}},
+        "y1":{"name":"y1","x":"x","y":"y1","yAxisUnit":"Hz","axis":{"id":"axis2","side":"right","number":"1"}},
+        "y2":{"name":"y2","x":"x","y":"y2","yMin":0.11,"yMax":1.1,"yAxisUnit":"C","axis":{"id":"axis3","side":"left","number":"2"}},
+        "y3":{"name":"y3","x":"x","y":"y3","yAxisUnit":"F","axis":{"id":"axis4","side":"right","number":"2"}}},
+        inputType: 'code:JSON'
+      },
+
+      chartExtents: {
+        type: Object,
+        defaultValue: {
+          "x": ["dynamic","dynamic"],
+          "y": ["dynamic","dynamic"]
+        },
+        inputType: 'code:JSON'
+      },
+
+      eventData: {
+        type: Array,
+        defaultValue: [{"id":"123","time":1398714240000,"label":"Recalibrate"},
+            {"id":"456","time":1397640960000,"label":"Fan start"},
+            {"id":"789","time":1398126240000,"label":"Fan stop"},
+            {"id":"333","time":1398956340000,"label":"Default"}],
+        inputType: 'code:JSON'
+      },
+
+      eventConfig: {
+        type: Object,
+        defaultValue: {
+          "Recalibrate":{
+            "color": "blue",
+            "icon": "fa-camera",
+            "type": "fa",
+            "offset":[0,0],
+            "lineColor": "red",
+            "lineWeight": 0
+          },
+          "Fan start":{
+            "color": "green",
+            "icon": "\uf015",
+            "type": "unicode",
+            "offset":[1,0]
+          },
+          "Fan stop":{
+            "icon": "ge_logo.png",
+            "type": "image",
+            "offset":[0,-20],
+            "size":"20"
+          }
+        },
+        inputType: 'code:JSON'
+      },
+
+      thresholdData: {
+        type: Array,
         defaultValue: [
-          {"x": 1397177400000, "y0": 0.0,   "y1": 2.0},
-          {"x": 1397228040000, "y0": 0.897, "y1": 2.5},
-          {"x": 1397248260000, "y0": 1.0,   "y1": 3.5},
-          {"x": 1397291280000, "y0": 2.0,   "y1": 1.5},
-          {"x": 1397318100000, "y0": 1.5,   "y1": 0.5},
-          {"x": 1397342100000, "y0": 3.0,   "y1": 2.0},
-          {"x": 1397390820000, "y0": 0.897, "y1": 1.5}
+            { "for":"y0", "type":"max", "value":15.4784 },
+            { "for":"y0", "type":"min", "value":7.6531 },
+            { "for":"y0", "type":"mean", "value":15.330657585139331 },
+            { "for":"y1", "type":"mean", "value":75 },
+            { "for":"y1", "type":"quartile", "value":17 }
+          ],
+        inputType: 'code:JSON'
+      },
+
+      displayThresholdTitle: {
+        type: Boolean,
+        defaultValue: true,
+        inputType: 'toggle'
+      },
+
+      thresholdConfig: {
+        type: Object,
+        defaultValue: {
+          "max": {
+            "color": "red",
+            "dashPattern": "5,0",
+            "title": "MAX",
+            "showThresholdBox": true,
+            "displayTitle": true
+          }
+        },
+        inputType: 'code:JSON'
+      },
+
+      matchTicks: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle',
+        inputLabel: 'matchTicks [Currently not dynamic]'
+      },
+
+      xAxisConfig: {
+        type: Object,
+        defaultValue: {
+            "title": "Date"
+          },
+        inputType: 'code:JSON'
+      },
+
+      yAxisConfig: {
+        type: Object,
+        defaultValue: {
+            "title": "Single",
+            "titleTruncation": false,
+            "unit": "F",
+            "axis1": {
+              "title": "Temperature",
+              "titleTruncation": false,
+              "unit": "C"
+            }
+          },
+        inputType: 'code:JSON'
+      },
+
+      hideGridlinesX: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      hideGridlinesY: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      dynamicMenuConfig: {
+        type: Array,
+        defaultValue: [
+          {
+            'name': 'Delete',
+            'action': "function(data) {var conf = this.seriesConfig;delete conf[data.additionalDetail.name];this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);",
+            'eventName': 'delete',
+            'icon': 'fa-trash',
+          },
+          {
+            'name': 'Bring To Front',
+            'action': "function(data) {this.set(\"serieToRedrawOnTop\", data.additionalDetail.name);}",
+            'eventName': 'bring-to-front',
+            'icon': 'fa-arrow-up'
+          }
         ],
         inputType: 'code:JSON'
-      }
-      //
-      // seriesConfig: {
-      //   type: Object,
-      //   defaultValue: {
-      //     "seriesKey": {  //seriesKey is a unique identifier for the configuration
-      //       "type": "line",  //line or scatter
-      //       "markerSymbol": "diamond", //if using scatter different markerSymbol can be used. See "markerSymbol" in px-vis-scatter
-      //       "markerScale": "2", //if using scatter allows to scale the size of markers
-      //       "markerFillOpacity": "0.5", //if using scatter allows to specify the opacity of the inside of the marker
-      //       "markerStrokeOpacity": "1", //if using scatter allows to specify the opacity of the outside of the marker
-      //       "mutedOpacity": "0.3", //opacity value to use when muting a serie
-      //       "name": "My Series",  //human readable name
-      //       "x": "x",  //index or key name for independent variable
-      //       "y": "y",  //index or key name for dependent variable
-      //       "xAxisUnit": "Volt", //Unit to be used for the X axis. Can be ignored if x axis is time based
-      //       "yAxisUnit": "Oranges", //unit to be used for the Y axis.
-      //       "xMin": 0,  // minimum x value
-      //       "xMax": 100,  //maximum x value
-      //       "yMin": 5,  //minimum y value
-      //       "yMax": 50,  //maximum y value
-      //       "color": "rgb(0,0,0)", //color you want the chart
-      //       "axis": "axis1"  //axis the chart should be on
-      //     }
-      //   },
-      //   inputType: 'code:JSON'
-      // }
+      },
+
+      toolbarConfig: {
+        type: Array,
+        defaultValue:{"config": {
+            "advancedZoom": true,
+            "pan": true,
+            "tooltip": true,
+            "logHover": {
+              "buttonGroup": 2,
+              "tooltipLabel": "The submenu item of this menu will define custome mouse interaction",
+              "icon": "fa-leaf",
+              "subConfig": {
+                "customClick": {
+                  "icon": "fa-coffee",
+                  "buttonGroup": 3,
+                  "tooltipLabel": "define some custom mouse interactions on chart",
+                  "eventName": "my-custom-click",
+                  "actionConfig": {
+                    "mousedown": "function(mousePos) { console.log(\"custom click on chart. Context is the chart. Mouse pos is available: \" + JSON.stringify(mousePos))}",
+                    "mouseup": "function(mousePos) { console.log(\"custom action on mouse up the chart \" + JSON.stringify(mousePos));}",
+                    "mouseout": "function(mousePos) { console.log(\"custom action on mouse out the chart \" + JSON.stringify(mousePos));}",
+                    "mousemove": "function(mousePos) { console.log(\"custom action on hovering the chart \");}"
+                  }
+                },
+                "customClick2": {
+                  "buttonGroup": 3,
+                  "icon": "fa-fire-extinguisher",
+                  "tooltipLabel": "Remove all custom interactions",
+                  "actionConfig": {
+                    "mousedown": null,
+                    "mouseup": null,
+                    "mouseout": null,
+                    "mousemove": null
+                  }
+                }
+              }
+            }
+          }},
+        inputType: 'code:JSON'
+      },
+
+      navigatorConfig: {
+        type: Object,
+        defaultValue: {
+           "xAxisConfig": {
+              "tickFormat": "%b %d"
+           }
+         },
+        inputType: 'code:JSON'
+      },
+
     },
 
-    listeners: {
-      'px-demo-component-light-dom-loaded' : '_handleDemoLoaded'
-    },
+    observers: [
+      '_preventResizeChanged(props.preventResize.value)',
+      '_appliedWidthChanged(appliedWidth)',
+      '_appliedHeightChanged(appliedHeight)',
+      '_widthChanged(props.width.value)',
+      '_heightChanged(props.height.value)'
+    ],
 
-    /**
-     * When the chart is loaded, try to call `notifyResize()` on it to ensure
-     * that it resizes to the correct dimensions.
-     */
-    _handleDemoLoaded: function() {
-      var chart = this.$$('px-vis-timeseries');
-      if (chart && typeof chart.notifyResize === 'function') {
-        // Wait 1000ms to make sure the parent is sized and ready for the redraw
-        this.async(function(){
-          chart.notifyResize();
-        }, 1000);
+    _preventResizeChanged: function() {
+      this.set('props.width.inputDisabled', !this.props.preventResize.value);
+      this.set('props.height.inputDisabled', !this.props.preventResize.value);
+      this.$.chart.set('preventResize', this.props.preventResize.value);
+    },
+    _widthChanged: function() {
+      if(this.props.preventResize.value) {
+       this.set('appliedWidth', this.props.width.value);
       }
+    },
+    _heightChanged: function() {
+      if(this.props.preventResize.value) {
+       this.set('appliedHeight', this.props.height.value);
+      }
+    },
+    _appliedWidthChanged: function() {
+      this.set('props.width.value', this.appliedWidth);
+    },
+    _appliedHeightChanged: function() {
+      this.set('props.height.value', this.appliedHeight);
     }
   });
 </script>

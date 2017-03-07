@@ -49,6 +49,15 @@
             { "for":"y1", "type":"quartile", "value":17 }
           ]'
           selection-type="xy"
+          threshold-config='{
+            "max": {
+              "color": "red",
+              "dashPattern": "5,0",
+              "title": "MAX",
+              "showThresholdBox": true,
+              "displayTitle": true
+            }
+          }'
           show-tooltip
           event-config= '{
             "Recalibrate":{
@@ -73,7 +82,6 @@
             }
           }'
           navigator-config='{
-           "height": "500",
            "xAxisConfig": {
               "tickFormat": "%b %d"
            }
@@ -97,15 +105,6 @@
           register-config='{
               "height": 50,
               "type": "vertical"}'
-          threshold-config='{
-            "max": {
-              "color": "red",
-              "dashPattern": "5,0",
-              "title": "MAX",
-              "showThresholdBox": true,
-              "displayTitle": true
-            }
-          }'
           dynamic-menu-config='[{
               "name": "Delete",
               "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",

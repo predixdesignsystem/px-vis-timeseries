@@ -19,8 +19,9 @@ v1.0.0
 * added toolbar and advanced zooming
 * defaultSeriesConfig now updates \_defaultSeriesConfig so defaultSeriesConfig doesnt have to have all defaults
 * Multi-y axis
-* Moved showThresholdBox and displayTitle to thresholdConfig
-
+Post beta
+==========
+  * ensure chart navigator resizes properly
 
 v0.6.7
 ===================
