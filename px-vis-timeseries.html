@@ -200,7 +200,7 @@ Custom property | Description | Default
                 include-all-series="[[includeAllSeries]]"
                 chart-data="[[chartData]]"
                 nav-series-limit="[[navSeriesLimit]]"
-                chart-domain-x="[[_returnXDomain(domainChanged)]]"
+                chart-domain-x="[[_returnXDomain(domainChanged, disableDynamicUpdate)]]"
                 range="[[range]]"
                 disable-empty-render
                 selected-domain="{{_navSelectedDomain}}"
@@ -594,8 +594,8 @@ Custom property | Description | Default
         value: false
       },
       /**
-       * A boolean to specify if the axis ticks should align (which affects 
-       * their individual range). Default (false) is for each have their own 
+       * A boolean to specify if the axis ticks should align (which affects
+       * their individual range). Default (false) is for each have their own
        * ranges and tick marks may not align
        * Only useful if using multiple axis
        */
@@ -852,7 +852,7 @@ Custom property | Description | Default
     },
 
     _returnXDomain: function() {
-      if(this.domainChanged !== null) {
+      if(this.domainChanged !== null && !this.disableDynamicUpdate) {
         return this.x.domain();
       }
     },

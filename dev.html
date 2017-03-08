@@ -39,8 +39,8 @@
         <button id="btnSnap">Go</button>
         <px-vis-timeseries
           id="timeSerie"
-          match-ticks
           height="500"
+
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
@@ -209,8 +209,8 @@
           data-key = "series"
           id-key = "name"
           original-data = '[[originalData]]'
-          series-config="{{seriesConfig}}"
-          chart-data="{{chartData}}">
+          chart-data="{{chartData}}"
+          series-config="{{seriesConfig}}">
         </px-vis-data-converter>
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
@@ -286,7 +286,7 @@
           horizontal-line="none"
           render-to-canvas
           register-config='{
-            "type": "vertical"
+            "type": "horizontal"
           }'
           selection-type="xy"
           default-series-config='{
@@ -410,6 +410,28 @@
           fetch2.addEventListener('response', handleResponse);
           fetch3.addEventListener('response', handleResponse);
           fetch4.addEventListener('response', handleResponse);
+
+          var incrementData = function(evt) {
+            var fullData = evt.detail.data,
+                partialData = [fullData[0],fullData[1]],
+                counter = 2;
+
+            setInterval(function() {
+              partialData.push(fullData[counter]);
+              counter += 1;
+
+              console.log("adding data");
+              timeSerie.chartData = [];
+              timeSerie.set('chartData', partialData);
+
+              if(counter > fullData.length) {
+                console.log("full length");
+                clearInterval(this);
+              }
+            }, 500);
+          }
+
+          // converter.addEventListener('px-vis-chart-data', incrementData);
 
           // if the data has been fetched already manually kick the event handler
           if(fetch1.lastResponse) {
