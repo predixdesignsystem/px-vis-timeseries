@@ -40,6 +40,7 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
+
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
@@ -64,8 +65,8 @@
               "icon": "fa-camera",
               "type": "fa",
               "offset":[0,0],
-              "lineColor": "red",
-              "lineWeight": 0
+              "lineColor": "null",
+              "lineWeight": 5
             },
             "Fan start":{
               "color": "green",
@@ -97,7 +98,8 @@
             "axis1": {
               "title": "Temperature",
               "titleTruncation": false,
-              "unit": "C"
+              "unit": "C",
+              "tickValues": [0,10,20,30]
             }
           }'
           register-config='{
@@ -207,8 +209,8 @@
           data-key = "series"
           id-key = "name"
           original-data = '[[originalData]]'
-          series-config="{{seriesConfig}}"
-          chart-data="{{chartData}}">
+          chart-data="{{chartData}}"
+          series-config="{{seriesConfig}}">
         </px-vis-data-converter>
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruise-events.json"
@@ -235,7 +237,7 @@
           y-axis-config='{
             "title": "Widgets"
           }'>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
           handle-as="json"
@@ -269,7 +271,7 @@
             "title": "Units"
           }'
           disable-navigator>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
 
          <br />
         <br />
@@ -287,7 +289,7 @@
           horizontal-line="none"
           render-to-canvas
           register-config='{
-            "type": "vertical"
+            "type": "horizontal"
           }'
           selection-type="xy"
           default-series-config='{
@@ -333,7 +335,7 @@
           y-axis-config='{
             "title": "Hz"
           }'>
-        </px-vis-timeseries> 
+        </px-vis-timeseries>
         <iron-ajax
             url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
             handle-as="json"
@@ -360,7 +362,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries> 
+          ></px-vis-timeseries>
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -412,6 +414,28 @@
           fetch3.addEventListener('response', handleResponse);
           fetch4.addEventListener('response', handleResponse);
 
+          var incrementData = function(evt) {
+            var fullData = evt.detail.data,
+                partialData = [fullData[0],fullData[1]],
+                counter = 2;
+
+            setInterval(function() {
+              partialData.push(fullData[counter]);
+              counter += 1;
+
+              console.log("adding data");
+              timeSerie.chartData = [];
+              timeSerie.set('chartData', partialData);
+
+              if(counter > fullData.length) {
+                console.log("full length");
+                clearInterval(this);
+              }
+            }, 500);
+          }
+
+          // converter.addEventListener('px-vis-chart-data', incrementData);
+
           // if the data has been fetched already manually kick the event handler
           if(fetch1.lastResponse) {
             processData(fetch1.lastResponse);
@@ -439,7 +463,7 @@
             .attr('opacity',0.25)
             .attr('fill', 'rgb(70,173,0)');
 
-          
+
 
         // timeSerie.addEventListener('px-dynamic-menu-delete', function(evt) {
         //   console.log('test delete')
