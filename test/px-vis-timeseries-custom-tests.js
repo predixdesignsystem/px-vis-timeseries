@@ -398,7 +398,7 @@ function runCustomTests() {
     test('configChart selectedDomain', function() {
 
       //selectedDomain can be empty or have the actual X domain
-      if(IASChart.selectedDomain.x.length > 0) {
+      if(configChart.selectedDomain.x.length > 0) {
         assert.equal(JSON.stringify(configChart.selectedDomain), '{"x":["2014-04-10T04:01:00.000Z","2014-04-11T12:25:00.000Z"],"y":[]}');
       } else {
         assert.deepEqual(configChart.selectedDomain, {"x":[],"y":[]});
