@@ -44,8 +44,8 @@
       <px-demo-code-editor props="{{props}}"></px-demo-code-editor>
 
       <!-- Component ---------------------------------------------------------->
-      <px-demo-component class="flex__item flex">
-        <div style="width:100%;">
+      <px-demo-component class="flex__item flex" style="width:100%">
+        <div class="flex--column flex__item" style="width:100%;">
         <px-vis-timeseries
           id="chart"
           prevent-resize
@@ -235,9 +235,7 @@
         type: Array,
         value: function(){
           return [
-            { configName: "Default",
-              configReset: true,
-              preventResize: true}
+            { configName: "Default"}
           ]
         }
       },
@@ -600,7 +598,7 @@
         defaultValue: [
           {
             'name': 'Delete',
-            'action': "function(data) {var conf = this.seriesConfig;delete conf[data.additionalDetail.name];this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);",
+            'action': "function(data) {var conf = this.seriesConfig;delete conf[data.additionalDetail.name];this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
             'eventName': 'delete',
             'icon': 'fa-trash',
           },
@@ -622,7 +620,7 @@
             "tooltip": true,
             "logHover": {
               "buttonGroup": 2,
-              "tooltipLabel": "The submenu item of this menu will define custome mouse interaction",
+              "tooltipLabel": "The submenu item of this menu will define custom mouse interaction",
               "icon": "fa-leaf",
               "subConfig": {
                 "customClick": {
