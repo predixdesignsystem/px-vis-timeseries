@@ -526,12 +526,10 @@ Custom property | Description | Default
         value: { top: 5, right: 5, bottom: 5, left: 5},
       },
       _internalMargin: {
-        type: Object,
-        notify: true
+        type: Object
       },
       _internalMarginNav: {
-        type:Object,
-        notify: true
+        type:Object
       },
       /**
        * Configuration object for the chart. Key is the property name.
@@ -616,7 +614,8 @@ Custom property | Description | Default
       '_registerConfigChanged(registerConfig.*)',
       '_toolbarConfigChanged(toolbarConfig.*)',
 
-      '_calcAxes(completeSeriesConfig.*, leftAxisSize, rightAxisSize)',
+      '_calcAxes(completeSeriesConfig.*)',
+      '_calcAxes(leftAxisSize, rightAxisSize)',
       '_calcMargins(margin.*, marginNav.*, numRightAxes, numLeftAxes)',
       '_setXScale(width, _internalMargin, xAxisType)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
@@ -645,7 +644,6 @@ Custom property | Description | Default
       if(this.xAxisType !== 'time' && this.xAxisType !== 'timeLocal') { this.set('xAxisType', 'time'); }
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
 
-      this._calcMargins();
       this._isReady = true;
     },
 
@@ -705,6 +703,7 @@ Custom property | Description | Default
      */
     _calcMargins:function() {
       this.debounce('_calcMargin', function() {
+
         var margin,
             marginNav,
             topMargin = 25,
