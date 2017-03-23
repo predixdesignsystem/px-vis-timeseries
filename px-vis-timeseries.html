@@ -9,6 +9,7 @@
 <link rel="import" href="../px-vis/px-vis-line-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line-svg.html"/>
 <link rel="import" href="../px-vis/px-vis-scatter.html"/>
+<link rel="import" href="../px-vis/px-vis-scatter-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-event.html"/>
 <link rel="import" href="../px-vis/px-vis-axis.html"/>
 <link rel="import" href="../px-vis/px-vis-gridlines.html"/>
@@ -204,7 +205,10 @@ Custom property | Description | Default
                 range="[[range]]"
                 disable-empty-render
                 selected-domain="{{_navSelectedDomain}}"
-                prevent-resize>
+                prevent-resize
+                render-to-canvas="[[renderToCanvas]]"
+                clean-on-detached="[[cleanOnDetached]]"
+                debounce-resize-timing="[[debounceResizeTiming]]">
               </px-vis-chart-navigator>
             </template>
           </div>
@@ -236,9 +240,9 @@ Custom property | Description | Default
       series-clip-path="{{seriesClipPath}}">
     </px-vis-clip-path>
 
-    <template is="dom-repeat" items="[[_seriesKeys]]">
+    <template id="lineTemplate" is="dom-repeat" items="[[_seriesKeys]]">
       <template is="dom-if" if="[[_chartTypeLine(item,completeSeriesConfig)]]" restamp>
-        <template is="dom-if" if="[[renderToCanvas]]" restamp>
+        <template id="lineCanvasTemplate" is="dom-if" if="[[renderToCanvas]]" restamp>
           <px-vis-line-canvas
             id="lineCanvas"
             canvas-context="[[canvasContext]]"
@@ -251,15 +255,18 @@ Custom property | Description | Default
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
             no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
+            progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
+            progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
             width="[[width]]"
             height="[[height]]"
             margin="[[_internalMargin]]"
             clip-path
             interpolation-function="[[interpolationFunction]]"
-            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
+            clean-on-detached="[[cleanOnDetached]]">
           </px-vis-line-canvas>
         </template>
-        <template is="dom-if" if="[[!renderToCanvas]]">
+        <template id="lineSVG" is="dom-if" if="[[!renderToCanvas]]" restamp>
           <px-vis-line-svg
             id="lineSVG"
             svg="[[layer.1]]"
@@ -273,23 +280,49 @@ Custom property | Description | Default
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
             interpolation-function="[[interpolationFunction]]"
-            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
+            clean-on-detached="[[cleanOnDetached]]">
           </px-vis-line-svg>
         </template>
       </template>
       <template is="dom-if" if="[[_chartTypeScatter(item,completeSeriesConfig)]]" restamp>
-        <px-vis-scatter
-          svg="[[layer.1]]"
-          series-id="[[item]]"
-          chart-data="[[chartData]]"
-          complete-series-config="[[completeSeriesConfig]]"
-          x="[[x]]"
-          y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
-          domain-changed="[[domainChanged]]"
-          clip-path="[[seriesClipPath]]"
-          muted-series="[[mutedSeries]]"
-          serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
-        </px-vis-scatter>
+        <template is="dom-if" if="[[renderToCanvas]]" restamp>
+          <px-vis-scatter-canvas
+            canvas-context="[[canvasContext]]"
+            series-id="[[item]]"
+            chart-data="[[chartData]]"
+            complete-series-config="[[completeSeriesConfig]]"
+            width="[[width]]"
+            height="[[height]]"
+            margin="[[_internalMargin]]"
+            x="[[x]]"
+            y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
+            clip-path
+            no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
+            progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
+            progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
+            domain-changed="[[domainChanged]]"
+            clip-path
+            muted-series="[[mutedSeries]]"
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
+            clean-on-detached="[[cleanOnDetached]]">
+          </px-vis-scatter-canvas>
+        </template>
+        <template is="dom-if" if="[[!renderToCanvas]]" restamp>
+          <px-vis-scatter
+            svg="[[layer.1]]"
+            series-id="[[item]]"
+            chart-data="[[chartData]]"
+            complete-series-config="[[completeSeriesConfig]]"
+            x="[[x]]"
+            y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
+            domain-changed="[[domainChanged]]"
+            clip-path="[[seriesClipPath]]"
+            muted-series="[[mutedSeries]]"
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
+            clean-on-detached="[[cleanOnDetached]]">
+          </px-vis-scatter>
+        </template>
       </template>
     </template>
 
@@ -369,7 +402,8 @@ Custom property | Description | Default
         margin="[[_internalMargin]]"
         length="[[height]]"
         orientation="bottom"
-        domain-changed="[[domainChanged]]">
+        domain-changed="[[domainChanged]]"
+        clean-on-detached="[[cleanOnDetached]]">
       </px-vis-gridlines>
     </template>
     <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, axes, y, matchTicks)]]" restamp>
@@ -379,7 +413,8 @@ Custom property | Description | Default
         margin="[[_internalMargin]]"
         length="[[width]]"
         orientation="left"
-        domain-changed="[[domainChanged]]">
+        domain-changed="[[domainChanged]]"
+        clean-on-detached="[[cleanOnDetached]]">
       </px-vis-gridlines>
     </template>
 
@@ -443,7 +478,8 @@ Custom property | Description | Default
       PxVisBehavior.events,
       PxVisBehaviorD3.svg,
       PxVisBehaviorD3.svgLower,
-      PxVisBehaviorD3.canvas,
+      PxVisBehaviorD3.canvasContext,
+      PxVisBehaviorD3.renderToCanvas,
       PxVisBehaviorD3.axes,
       PxVisBehaviorD3.selectedTimeDomain,
       PxVisBehaviorD3.clipPath,
@@ -477,7 +513,8 @@ Custom property | Description | Default
       PxVisBehaviorChart.sizeVerticalRegister,
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
       PxVisBehaviorChart.thresholdConfig,
-      PxVisBehavior.selectionType
+      PxVisBehavior.selectionType,
+      PxVisBehavior.cleanOnDetached
     ],
 
     /**
@@ -567,11 +604,6 @@ Custom property | Description | Default
         value: false,
         observer: '_disableNavigatorChanged'
       },
-
-      renderToCanvas: {
-        type: Boolean,
-        value: false
-      },
       /**
        * Whether to hide the gridlines perpendicular to the X axis
        */
@@ -646,7 +678,6 @@ Custom property | Description | Default
 
       this._isReady = true;
     },
-
     _getWrapperClass: function(_registerWrapperClass) {
       var classList = _registerWrapperClass + ' flex__item wrapper'
 
@@ -704,69 +735,69 @@ Custom property | Description | Default
     _calcMargins:function() {
       this.debounce('_calcMargin', function() {
 
-        var margin,
-            marginNav,
-            topMargin = 25,
-            rightMargin = 10,
-            bottomMargin = 10,
-            leftMargin = 10;
+          var margin,
+              marginNav,
+              topMargin = 25,
+              rightMargin = 10,
+              bottomMargin = 10,
+              leftMargin = 10;
 
-        // if the dev didnt set the margin, then calc it
-        if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
-          if(this.xAxisLocation === 'bottom') {
-            bottomMargin = 40;
-          } else if(this.xAxisLocation === 'top') {
-            topMargin = 40;
+          // if the dev didnt set the margin, then calc it
+          if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
+            if(this.xAxisLocation === 'bottom') {
+              bottomMargin = 40;
+            } else if(this.xAxisLocation === 'top') {
+              topMargin = 40;
+            }
+
+            if(this.yAxisLocation === 'left') {
+              leftMargin = 50;
+            } else if(this.yAxisLocation === 'right') {
+              rightMargin = 50;
+            }
+
+            margin = {
+              'top': topMargin,
+              'right': rightMargin,
+              'bottom': bottomMargin,
+              'left': leftMargin
+            };
+
+            this._calcMultiMargins(margin, 50, 50);
+
+          } else { //is dev set, use it
+            margin = {
+              'top': Number(this.margin.top) || Number(this.margin.top) === 0 ? Number(this.margin.top) : topMargin,
+              'right': Number(this.margin.right) || Number(this.margin.right) === 0 ? Number(this.margin.right) : rightMargin,
+              'bottom': Number(this.margin.bottom) || Number(this.margin.bottom) === 0 ? Number(this.margin.bottom) : bottomMargin,
+              'left':  Number(this.margin.left) || Number(this.margin.left) === 0 ? Number(this.margin.left) : leftMargin
+            };
+
+            // FIXME
+            // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
+            this._calcMultiMargins(margin, margin.left, margin.right);
           }
 
-          if(this.yAxisLocation === 'left') {
-            leftMargin = 50;
-          } else if(this.yAxisLocation === 'right') {
-            rightMargin = 50;
+          //if marginNav not dev set
+          if(JSON.stringify(this.properties.marginNav.value) === JSON.stringify(this.marginNav)) {
+            //match side margins by default
+            marginNav = {
+              'top': 5,
+              'right': margin.right,
+              'bottom': 20,
+              'left': margin.left
+            };
+          } else {
+            marginNav = {
+              'top': Number(this.marginNav.top),
+              'right': Number(this.marginNav.right),
+              'bottom': Number(this.marginNav.bottom),
+              'left': Number(this.marginNav.left)
+            };
           }
 
-          margin = {
-            'top': topMargin,
-            'right': rightMargin,
-            'bottom': bottomMargin,
-            'left': leftMargin
-          };
-
-          this._calcMultiMargins(margin, 50, 50);
-
-        } else { //is dev set, use it
-          margin = {
-            'top': Number(this.margin.top) || Number(this.margin.top) === 0 ? Number(this.margin.top) : topMargin,
-            'right': Number(this.margin.right) || Number(this.margin.right) === 0 ? Number(this.margin.right) : rightMargin,
-            'bottom': Number(this.margin.bottom) || Number(this.margin.bottom) === 0 ? Number(this.margin.bottom) : bottomMargin,
-            'left':  Number(this.margin.left) || Number(this.margin.left) === 0 ? Number(this.margin.left) : leftMargin
-          };
-
-          // FIXME
-          // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
-          this._calcMultiMargins(margin, margin.left, margin.right);
-        }
-
-        //if marginNav not dev set
-        if(JSON.stringify(this.properties.marginNav.value) === JSON.stringify(this.marginNav)) {
-          //match side margins by default
-          marginNav = {
-            'top': 5,
-            'right': margin.right,
-            'bottom': 20,
-            'left': margin.left
-          };
-        } else {
-          marginNav = {
-            'top': Number(this.marginNav.top),
-            'right': Number(this.marginNav.right),
-            'bottom': Number(this.marginNav.bottom),
-            'left': Number(this.marginNav.left)
-          };
-        }
-
-        this.set('_internalMargin', margin);
-        this.set('_internalMarginNav', marginNav);
+          this.set('_internalMargin', margin);
+          this.set('_internalMarginNav', marginNav);
 
       }, 5);
     },
@@ -799,7 +830,7 @@ Custom property | Description | Default
         this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
         this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
         this._computeVerticalRegisterHeight([navigatorHeight, toolbarRect.height]);
-      },50);
+      }, this.debounceResizeTiming);
     },
 
 

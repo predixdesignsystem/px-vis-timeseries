@@ -75,7 +75,12 @@
           chart-extents='{{props.chartExtents.value}}'
           toolbar-config="{{props.toolbarConfig.value}}"
           match-ticks="{{props.matchTicks.value}}"
-          selection-type="{{props.selectionType.value}}">
+          selection-type="{{props.selectionType.value}}"
+          render-to-canvas="{{props.renderToCanvas.value}}"
+          progressive-rendering-points-per-frame="{{props.progressiveRenderingPointsPerFrame.value}}"
+          progressive-rendering-minimum-frames="{{props.progressiveRenderingMinFrames.value}}"
+          no-canvas-progressive-rendering="{{props.noCanvasProgressiveRendering.value}}"
+          debounce-resize-timing="{{props.debounceResizeTiming.value}}">
         </px-vis-timeseries>
       </div>
       </px-demo-component>
@@ -250,7 +255,6 @@
             "lineConfig",
             "numberOfLayers",
             "offset",
-            "renderToSvg",
             "seriesKey",
             "svg",
             "svgLower",
@@ -342,12 +346,18 @@
      * A reference for `this.props`. Read the documentation there.
      */
     demoProps: {
-      
+
 
       preventResize: {
         type: Boolean,
         defaultValue: true,
         inputType: 'toggle'
+      },
+
+      debounceResizeTiming: {
+        type: Number,
+        defaultValue: 250,
+        inputType: 'text'
       },
 
       //we need inputDisabled: false to be able to dynamically turn it on
@@ -363,6 +373,34 @@
         type: Number,
         defaultValue: 450,
         inputDisabled: false,
+        inputType: 'text'
+      },
+
+      renderToCanvas: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      //we need inputDisabled: false to be able to dynamically turn it on
+      noCanvasProgressiveRendering: {
+        type: Boolean,
+        defaultValue: false,
+        inputDisabled: true,
+        inputType: 'toggle'
+      },
+
+      progressiveRenderingPointsPerFrame: {
+        type: Number,
+        defaultValue: 16000,
+        inputDisabled: true,
+        inputType: 'text'
+      },
+
+      progressiveRenderingMinFrames: {
+        type: Number,
+        defaultValue: 1,
+        inputDisabled: true,
         inputType: 'text'
       },
 
@@ -669,7 +707,8 @@
       '_appliedWidthChanged(appliedWidth)',
       '_appliedHeightChanged(appliedHeight)',
       '_widthChanged(props.width.value)',
-      '_heightChanged(props.height.value)'
+      '_heightChanged(props.height.value)',
+      '_renderToCanvasChanged(props.renderToCanvas.value, props.noCanvasProgressiveRendering.value)'
     ],
 
     _preventResizeChanged: function() {
@@ -692,6 +731,12 @@
     },
     _appliedHeightChanged: function() {
       this.set('props.height.value', this.appliedHeight);
+    },
+    _renderToCanvasChanged: function() {
+      this.set('props.noCanvasProgressiveRendering.inputDisabled', !this.props.renderToCanvas.value);
+
+      this.set('props.progressiveRenderingPointsPerFrame.inputDisabled', !this.props.renderToCanvas.value || this.props.noCanvasProgressiveRendering.value);
+      this.set('props.progressiveRenderingMinFrames.inputDisabled', !this.props.renderToCanvas.value ||this.props.noCanvasProgressiveRendering.value);
     }
   });
 </script>
