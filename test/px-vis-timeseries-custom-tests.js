@@ -56,9 +56,34 @@ function runCustomTests() {
     var margin = document.getElementById('margin');
 
     suiteSetup(function(done){
+
+      var d = [{
+            "x": 1397102460000,
+            "y": 1,
+            "y1": 1
+          },{
+            "x": 1397131620000,
+            "y": 6,
+            "y1": 15
+          },{
+            "x": 1397160780000,
+            "y": 10,
+            "y1": 8
+          },{
+            "x": 1397189940000,
+            "y": 4,
+            "y1": 10
+          },{
+            "x": 1397219100000,
+            "y": 6,
+            "y1": 20
+          }
+        ];
+
       margin.set('xAxisLocation','top');
       margin.set('yAxisLocation','left');
-      margin._calcMargins();
+      margin.set('chartData', d);
+
       setTimeout(function(){ done(); }, 1000);
     });
 
@@ -84,8 +109,34 @@ function runCustomTests() {
     var margin = document.getElementById('margin');
 
     suiteSetup(function(done){
+
+      var d = [{
+            "x": 1397102460000,
+            "y": 1,
+            "y1": 1
+          },{
+            "x": 1397131620000,
+            "y": 6,
+            "y1": 15
+          },{
+            "x": 1397160780000,
+            "y": 10,
+            "y1": 8
+          },{
+            "x": 1397189940000,
+            "y": 4,
+            "y1": 10
+          },{
+            "x": 1397219100000,
+            "y": 6,
+            "y1": 20
+          }
+        ];
+
+      margin.set('chartData', d);
       margin.set('xAxisLocation','bottom');
       margin.set('yAxisLocation','right');
+
       margin._calcMargins();
       setTimeout(function(){ done(); }, 500);
     });
@@ -98,13 +149,13 @@ function runCustomTests() {
       assert.equal(margin._internalMargin.top, 25);
       assert.equal(margin._internalMargin.right, 50);
       assert.equal(margin._internalMargin.bottom, 40);
-      assert.equal(margin._internalMargin.left, 10);
+      assert.equal(margin._internalMargin.left, 50);
     });
     test('margin calcMargin set the marginNav', function() {
       assert.equal(margin._internalMarginNav.top, 5);
       assert.equal(margin._internalMarginNav.right, 50);
       assert.equal(margin._internalMarginNav.bottom, 20);
-      assert.equal(margin._internalMarginNav.left, 10);
+      assert.equal(margin._internalMarginNav.left, 50);
     });
   });
 
