@@ -1,3 +1,7 @@
+v1.1.1
+==================
+* removed cleanOnDetached
+
 v1.1.0
 ==================
 * upgraded to vis 1.1.0
