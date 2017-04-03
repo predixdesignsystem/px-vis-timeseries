@@ -434,6 +434,8 @@ Custom property | Description | Default
       selection-type="{{selectionType}}"
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
+      crosshair-data="{{crosshairData}}"
+      generating-crosshair-data="{{generatingCrosshairData}}"
       interaction-svg="{{interactionSvg}}"
       extents-data="{{extentsData}}"
       action-config="[[actionConfig]]"
@@ -455,6 +457,19 @@ Custom property | Description | Default
       clip-path="[[seriesClipPath]]"
       muted-series="[[mutedSeries]]">
     </px-vis-cursor>
+
+    <px-vis-point-highlight
+      id="highlighter"
+      svg="[[layer.3]]"
+      x="[[x]]"
+      y="[[y]]"
+      domain-changed="[[domainChanged]]"
+      time-data="[[_getXKey(completeSeriesConfig)]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      chart-data="[[chartData]]"
+      generating-crosshair-data="[[generatingCrosshairData]]"
+      crosshair-data="[[crosshairData]]">
+    </px-vis-point-highlight>
   </template>
 </dom-module>
 
@@ -515,7 +530,9 @@ Custom property | Description | Default
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
       PxVisBehaviorChart.thresholdConfig,
       PxVisBehavior.selectionType,
-      PxVisBehavior.cleanOnDetached
+      PxVisBehavior.cleanOnDetached,
+      PxVisBehaviorChart.highlighterConfigs,
+      PxVisBehavior.crosshairData
     ],
 
     /**
@@ -646,6 +663,7 @@ Custom property | Description | Default
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
       '_toolbarConfigChanged(toolbarConfig.*)',
+      '_highlighterConfigChanged(highlighterConfig.*)',
 
       '_calcAxes(completeSeriesConfig.*)',
       '_calcAxes(leftAxisSize, rightAxisSize)',
@@ -728,6 +746,10 @@ Custom property | Description | Default
     _toolbarConfigChanged: function(conf) {
       this._applyConfigToElement(this.toolbarConfig, this.$.toolbar);
     },
+    _highlighterConfigChanged: function(conf) {
+      this._applyConfigToElement(this.highlighterConfig, this.$.highlighter);
+    },
+
     /**
      * Overwrites default margins based on settings
      *
@@ -901,6 +923,11 @@ Custom property | Description | Default
     },
     _navSelectedDomainChanged: function() {
       this.set('selectedDomain', this._navSelectedDomain);
+    },
+
+    _getXKey: function() {
+      var k = this._seriesKeys[0];
+      return this.completeSeriesConfig[k]['x'];
     }
   });
 </script>
