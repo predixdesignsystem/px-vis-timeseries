@@ -22,7 +22,7 @@
 <link rel="import" href="../px-vis/px-vis-clip-path.html"/>
 <link rel="import" href="../px-vis/px-vis-toolbar.html"/>
 <link rel="import" href="../px-vis/px-vis-multi-axis.html"/>
-
+<link rel="import" href="../px-vis/px-vis-highlight-point.html"/>
 
 <!--
 Creates an interactive timeseries chart
@@ -393,7 +393,8 @@ Custom property | Description | Default
       allow-empty-title
       series-to-axes="[[seriesToAxes]]"
       muted-series=[[mutedSeries]]
-      match-ticks="[[matchTicks]]">
+      match-ticks="[[matchTicks]]"
+      action-config="[[_axisActionConfig]]">
     </px-vis-multi-axis>
 
     <template is="dom-if" if="[[!hideGridlinesX]]" restamp>
@@ -458,7 +459,7 @@ Custom property | Description | Default
       muted-series="[[mutedSeries]]">
     </px-vis-cursor>
 
-    <px-vis-point-highlight
+    <px-vis-highlight-point
       id="highlighter"
       svg="[[layer.3]]"
       x="[[x]]"
@@ -469,7 +470,7 @@ Custom property | Description | Default
       chart-data="[[chartData]]"
       generating-crosshair-data="[[generatingCrosshairData]]"
       crosshair-data="[[crosshairData]]">
-    </px-vis-point-highlight>
+    </px-vis-highlight-point>
   </template>
 </dom-module>
 
@@ -653,6 +654,12 @@ Custom property | Description | Default
       },
       _navSelectedDomain: {
         type: Object
+      },
+
+      _axisActionConfig: {
+        type: Object,
+        notify: true,
+        computed: '_computeAxisActionConfig(dimensions.*, _isAttached)'
       }
     },
 
@@ -928,6 +935,23 @@ Custom property | Description | Default
     _getXKey: function() {
       var k = this._seriesKeys[0];
       return this.completeSeriesConfig[k]['x'];
+    },
+    _computeAxisActionConfig: function() {
+      var conf;
+
+      conf = this.dimensions.length > 2 ? {
+          "mouseout": null,
+          "mousemove": null,
+          "mousedown": 'callAxisDrag',
+          "mouseup": 'callAxisDrag'
+        } : {
+          "mouseout": null,
+          "mousemove": null,
+          "mousedown": null,
+          "mouseup": null
+        };
+
+      return conf;
     }
   });
 </script>
