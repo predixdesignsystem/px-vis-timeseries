@@ -506,7 +506,8 @@ Custom property | Description | Default
       PxVisBehaviorChart.sizeVerticalRegister,
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
       PxVisBehaviorChart.thresholdConfig,
-      PxVisBehavior.selectionType
+      PxVisBehavior.selectionType,
+      PxVisBehaviorChart.webWorkerSynchonization
     ],
 
     /**
@@ -637,6 +638,7 @@ Custom property | Description | Default
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
       '_toolbarConfigChanged(toolbarConfig.*)',
+      '_seriesKeysChanged(_seriesKeys.*)',
 
       '_calcAxes(completeSeriesConfig.*)',
       '_calcAxes(leftAxisSize, rightAxisSize)',
@@ -892,6 +894,12 @@ Custom property | Description | Default
     },
     _navSelectedDomainChanged: function() {
       this.set('selectedDomain', this._navSelectedDomain);
+    },
+    _seriesKeysChanged: function() {
+      //make sure we clean the canvas so that ols series are removed
+      if(this.renderToCanvas && this.canvasContext) {
+        this.canvasContext.pxClearCanvas();
+      }
     }
   });
 </script>
