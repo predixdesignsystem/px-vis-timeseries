@@ -209,7 +209,6 @@ Custom property | Description | Default
                 selected-domain="{{_navSelectedDomain}}"
                 prevent-resize
                 render-to-canvas="[[renderToCanvas]]"
-                clean-on-detached="[[cleanOnDetached]]"
                 debounce-resize-timing="[[debounceResizeTiming]]">
               </px-vis-chart-navigator>
             </template>
@@ -264,8 +263,7 @@ Custom property | Description | Default
             margin="[[_internalMargin]]"
             clip-path
             interpolation-function="[[interpolationFunction]]"
-            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
-            clean-on-detached="[[cleanOnDetached]]">
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
         </template>
         <template id="lineSVG" is="dom-if" if="[[!renderToCanvas]]" restamp>
@@ -282,8 +280,7 @@ Custom property | Description | Default
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
             interpolation-function="[[interpolationFunction]]"
-            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
-            clean-on-detached="[[cleanOnDetached]]">
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-svg>
         </template>
       </template>
@@ -305,8 +302,7 @@ Custom property | Description | Default
             progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
             domain-changed="[[domainChanged]]"
             muted-series="[[mutedSeries]]"
-            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
-            clean-on-detached="[[cleanOnDetached]]">
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-scatter-canvas>
         </template>
         <template is="dom-if" if="[[!renderToCanvas]]" restamp>
@@ -320,8 +316,7 @@ Custom property | Description | Default
             domain-changed="[[domainChanged]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
-            serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
-            clean-on-detached="[[cleanOnDetached]]">
+            serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-scatter>
         </template>
       </template>
@@ -405,8 +400,7 @@ Custom property | Description | Default
         margin="[[_internalMargin]]"
         length="[[height]]"
         orientation="bottom"
-        domain-changed="[[domainChanged]]"
-        clean-on-detached="[[cleanOnDetached]]">
+        domain-changed="[[domainChanged]]">
       </px-vis-gridlines>
     </template>
     <template is="dom-if" if="[[_showHorizontalGrid(hideGridlinesY, axes, y, matchTicks)]]" restamp>
@@ -416,8 +410,7 @@ Custom property | Description | Default
         margin="[[_internalMargin]]"
         length="[[width]]"
         orientation="left"
-        domain-changed="[[domainChanged]]"
-        clean-on-detached="[[cleanOnDetached]]">
+        domain-changed="[[domainChanged]]">
       </px-vis-gridlines>
     </template>
 
@@ -545,7 +538,8 @@ Custom property | Description | Default
       PxVisBehavior.selectionType,
       PxVisBehavior.cleanOnDetached,
       PxVisBehaviorChart.highlighterConfigs,
-      PxVisBehavior.crosshairData
+      PxVisBehavior.crosshairData,
+      PxVisBehavior.selectionType
     ],
 
     /**
