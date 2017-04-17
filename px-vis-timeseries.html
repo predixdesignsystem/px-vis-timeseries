@@ -23,6 +23,7 @@
 <link rel="import" href="../px-vis/px-vis-toolbar.html"/>
 <link rel="import" href="../px-vis/px-vis-multi-axis.html"/>
 <link rel="import" href="../px-vis/px-vis-highlight-point.html"/>
+<link rel="import" href="../px-vis/px-vis-highlight-point-canvas.html"/>
 
 <!--
 Creates an interactive timeseries chart
@@ -183,6 +184,7 @@ Custom property | Description | Default
               height="[[height]]"
               margin="[[_internalMargin]]"
               canvas-context="{{canvasContext}}"
+              canvas-context-top="{{canvasContextTop}}"
               svg="{{svg}}"
               px-svg-elem="{{pxSvgElem}}"
               svg-lower="{{svgLower}}">
@@ -302,7 +304,6 @@ Custom property | Description | Default
             progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
             progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
             domain-changed="[[domainChanged]]"
-            clip-path
             muted-series="[[mutedSeries]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]"
             clean-on-detached="[[cleanOnDetached]]">
@@ -449,15 +450,26 @@ Custom property | Description | Default
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
-      vertical-line="[[verticalLine]]"
-      horizontal-line="[[horizontalLine]]"
-      circle-point="[[circlePoint]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-data="[[chartData]]"
       tooltip-data="[[tooltipData]]"
       clip-path="[[seriesClipPath]]"
       muted-series="[[mutedSeries]]">
     </px-vis-cursor>
+
+    <!-- <px-vis-highlight-point-canvas
+      id="highlighterCanvas"
+      canvas-context="[[canvasContextTop]]"
+      x="[[x]]"
+      y="[[y]]"
+      domain-changed="[[domainChanged]]"
+      time-data="[[_getXKey(completeSeriesConfig)]]"
+      complete-series-config="[[completeSeriesConfig]]"
+      series-keys="[[_seriesKeys]]"
+      chart-data="[[chartData]]"
+      generating-crosshair-data="[[generatingCrosshairData]]"
+      crosshair-data="[[crosshairData]]">
+    </px-vis-highlight-point-canvas> -->
 
     <px-vis-highlight-point
       id="highlighter"
@@ -755,6 +767,7 @@ Custom property | Description | Default
     },
     _highlighterConfigChanged: function(conf) {
       this._applyConfigToElement(this.highlighterConfig, this.$.highlighter);
+      this._applyConfigToElement(this.highlighterConfig, this.$.highlighterCanvas);
     },
 
     /**
