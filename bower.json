@@ -16,8 +16,7 @@
     "monogram-wdmk.png",
     "wct.conf.json",
     "test",
-    "OSS_Notice.pdf",
-    "*.png"
+    "OSS_Notice.pdf"
   ],
   "dependencies": {
       "polymer": "^1.7.1",
