@@ -451,32 +451,35 @@ Custom property | Description | Default
       muted-series="[[mutedSeries]]">
     </px-vis-cursor>
 
-    <!-- <px-vis-highlight-point-canvas
-      id="highlighterCanvas"
-      canvas-context="[[canvasContextTop]]"
-      x="[[x]]"
-      y="[[y]]"
-      domain-changed="[[domainChanged]]"
-      time-data="[[_getXKey(completeSeriesConfig)]]"
-      complete-series-config="[[completeSeriesConfig]]"
-      series-keys="[[_seriesKeys]]"
-      chart-data="[[chartData]]"
-      generating-crosshair-data="[[generatingCrosshairData]]"
-      crosshair-data="[[crosshairData]]">
-    </px-vis-highlight-point-canvas> -->
-
-    <px-vis-highlight-point
-      id="highlighter"
-      svg="[[layer.3]]"
-      x="[[x]]"
-      y="[[y]]"
-      domain-changed="[[domainChanged]]"
-      time-data="[[_getXKey(completeSeriesConfig)]]"
-      complete-series-config="[[completeSeriesConfig]]"
-      chart-data="[[chartData]]"
-      generating-crosshair-data="[[generatingCrosshairData]]"
-      crosshair-data="[[crosshairData]]">
-    </px-vis-highlight-point>
+    <template id="highlighterDomIf" is="dom-if" if="[[renderToCanvas]]" restamp>
+      <px-vis-highlight-point-canvas
+        id="highlighterCanvas"
+        canvas-context="[[canvasContextTop]]"
+        x="[[x]]"
+        y="[[y]]"
+        domain-changed="[[domainChanged]]"
+        time-data="[[_getXKey(completeSeriesConfig)]]"
+        complete-series-config="[[completeSeriesConfig]]"
+        series-keys="[[_seriesKeys]]"
+        chart-data="[[chartData]]"
+        generating-crosshair-data="[[generatingCrosshairData]]"
+        crosshair-data="[[crosshairData]]">
+      </px-vis-highlight-point-canvas>
+    </template>
+    <template is="dom-if" if="[[!renderToCanvas]]" restamp>
+      <px-vis-highlight-point
+        id="highlighter"
+        svg="[[layer.3]]"
+        x="[[x]]"
+        y="[[y]]"
+        domain-changed="[[domainChanged]]"
+        time-data="[[_getXKey(completeSeriesConfig)]]"
+        complete-series-config="[[completeSeriesConfig]]"
+        chart-data="[[chartData]]"
+        generating-crosshair-data="[[generatingCrosshairData]]"
+        crosshair-data="[[crosshairData]]">
+      </px-vis-highlight-point>
+    </template>
   </template>
 </dom-module>
 
@@ -537,7 +540,6 @@ Custom property | Description | Default
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
       PxVisBehaviorChart.thresholdConfig,
       PxVisBehavior.selectionType,
-      PxVisBehavior.cleanOnDetached,
       PxVisBehaviorChart.highlighterConfigs,
       PxVisBehavior.crosshairData,
       PxVisBehavior.selectionType,
@@ -696,6 +698,11 @@ Custom property | Description | Default
     listeners: {
       'iron-resize': '_onIronResize'
     },
+
+    detached: function() {
+      this.unlisten(this.$.highlighterDomIf, 'dom-change', '_highlighterConfigChanged');
+    },
+
     created: function() {
       //set which element is used to calculate mouse pos for tooltip
       this._tooltipCalcHoverTargetId = 'drawingWrapper';
@@ -712,6 +719,9 @@ Custom property | Description | Default
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
 
       this._isReady = true;
+
+      // only listen to one since it is a toggle
+      this.listen(this.$.highlighterDomIf, 'dom-change', '_highlighterConfigChanged');
     },
     _getWrapperClass: function(_registerWrapperClass) {
       var classList = _registerWrapperClass + ' flex__item wrapper'
@@ -763,8 +773,10 @@ Custom property | Description | Default
       this._applyConfigToElement(this.toolbarConfig, this.$.toolbar);
     },
     _highlighterConfigChanged: function(conf) {
-      this._applyConfigToElement(this.highlighterConfig, this.$.highlighter);
-      this._applyConfigToElement(this.highlighterConfig, this.$.highlighterCanvas);
+      var elem = this.renderToCanvas ? this.$$('#highlighterCanvas') : this.$$('#highlighter');
+      if(elem && this._doesObjHaveValues(this.highlighterConfig)) {
+        this._applyConfigToElement(this.highlighterConfig, elem);
+      }
     },
 
     /**
