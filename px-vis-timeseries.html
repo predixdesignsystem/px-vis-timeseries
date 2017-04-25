@@ -415,7 +415,7 @@ Custom property | Description | Default
     </template>
 
     <px-vis-interaction-space
-      svg="[[layer.3]]"
+      svg="[[layer.4]]"
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
@@ -454,7 +454,11 @@ Custom property | Description | Default
     <template id="highlighterDomIf" is="dom-if" if="[[renderToCanvas]]" restamp>
       <px-vis-highlight-point-canvas
         id="highlighterCanvas"
+        width="[[width]]"
+        height="[[height]]"
+        margin="[[_internalMargin]]"
         canvas-context="[[canvasContextTop]]"
+        layer-to-mask="[[canvasContext]]"
         x="[[x]]"
         y="[[y]]"
         domain-changed="[[domainChanged]]"
@@ -470,6 +474,7 @@ Custom property | Description | Default
       <px-vis-highlight-point
         id="highlighter"
         svg="[[layer.3]]"
+        layer-to-mask="[[layer.1]]"
         x="[[x]]"
         y="[[y]]"
         domain-changed="[[domainChanged]]"
@@ -477,7 +482,8 @@ Custom property | Description | Default
         complete-series-config="[[completeSeriesConfig]]"
         chart-data="[[chartData]]"
         generating-crosshair-data="[[generatingCrosshairData]]"
-        crosshair-data="[[crosshairData]]">
+        crosshair-data="[[crosshairData]]"
+        clip-path="[[seriesClipPath]]">
       </px-vis-highlight-point>
     </template>
   </template>
@@ -708,7 +714,7 @@ Custom property | Description | Default
       this._tooltipCalcHoverTargetId = 'drawingWrapper';
     },
     ready:function() {
-      this.set('numberOfLayers',4);
+      this.set('numberOfLayers',5);
 
       //set some elements so that the register knows how to calculate its height
       this.set('_verticalRegisterDrawingCanvasId', 'svgCanvas');
