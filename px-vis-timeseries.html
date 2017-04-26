@@ -415,6 +415,7 @@ Custom property | Description | Default
     </template>
 
     <px-vis-interaction-space
+      id="interactionSpace"
       svg="[[layer.4]]"
       width="[[width]]"
       height="[[height]]"
@@ -427,15 +428,13 @@ Custom property | Description | Default
       x="[[x]]"
       y="[[y]]"
       domain-changed="[[domainChanged]]"
-      selection-type="{{selectionType}}"
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
       crosshair-data="{{crosshairData}}"
       generating-crosshair-data="{{generatingCrosshairData}}"
       interaction-svg="{{interactionSvg}}"
       extents-data="{{extentsData}}"
-      action-config="[[actionConfig]]"
-      show-tooltip="{{_computedShowTooltip}}">
+      action-config="[[actionConfig]]">
     </px-vis-interaction-space>
 
     <px-vis-cursor
@@ -686,6 +685,7 @@ Custom property | Description | Default
       '_tooltipConfigChanged(tooltipConfig.*, showTooltip)',
       '_registerConfigChanged(registerConfig.*)',
       '_toolbarConfigChanged(toolbarConfig.*)',
+      '_interactionSpaceConfigChanged(interactionSpaceConfig.*)',
       '_highlighterConfigChanged(highlighterConfig.*)',
       '_seriesKeysChanged(_seriesKeys.*)',
 
@@ -777,6 +777,9 @@ Custom property | Description | Default
     },
     _toolbarConfigChanged: function(conf) {
       this._applyConfigToElement(this.toolbarConfig, this.$.toolbar);
+    },
+    _interactionSpaceConfigChanged: function(interactionSpaceConfig) {
+      this._applyConfigToElement(this.interactionSpaceConfig, this.$.interactionSpace)
     },
     _highlighterConfigChanged: function(conf) {
       var elem = this.renderToCanvas ? this.$$('#highlighterCanvas') : this.$$('#highlighter');
