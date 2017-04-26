@@ -156,6 +156,7 @@ Custom property | Description | Default
             chart-width="[[width]]"
             height="[[_verticalRegisterHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
+            inert="[[hideRegister]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
             tooltip-data="[[tooltipData]]"
@@ -192,6 +193,8 @@ Custom property | Description | Default
             <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
               <px-vis-chart-navigator
                 id="navigator"
+                prevent-ww-synchronization
+                chart-id="[[chartId]]"
                 class="inline--flex"
                 x-axis-type="[[xAxisType]]"
                 y-axis-type="linear"
@@ -202,6 +205,7 @@ Custom property | Description | Default
                 series-config="[[seriesConfig]]"
                 include-all-series="[[includeAllSeries]]"
                 chart-data="[[chartData]]"
+                chart-extents="[[_navChartExtents]]"
                 nav-series-limit="[[navSeriesLimit]]"
                 chart-domain-x="[[_returnXDomain(domainChanged, disableDynamicUpdate)]]"
                 range="[[range]]"
@@ -266,16 +270,16 @@ Custom property | Description | Default
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
         </template>
-        <template id="lineSVG" is="dom-if" if="[[!renderToCanvas]]" restamp>
+        <template id="lineSVGTemplate" is="dom-if" if="[[!renderToCanvas]]" restamp>
           <px-vis-line-svg
             id="lineSVG"
             svg="[[layer.1]]"
             series-id="[[item]]"
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
+            domain-changed="[[domainChanged]]"
             x="[[x]]"
             y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
-            domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
@@ -354,6 +358,7 @@ Custom property | Description | Default
     <px-vis-axis
       id="xAxis"
       svg="[[layer.0]]"
+      domain-changed="[[domainChanged]]"
       axis="[[x]]"
       axis-type="[[xAxisType]]"
       margin="[[_internalMargin]]"
@@ -363,7 +368,7 @@ Custom property | Description | Default
       label-position="after"
       complete-series-config="[[completeSeriesConfig]]"
       prevent-series-bar
-      domain-changed="[[domainChanged]]">
+      >
     </px-vis-axis>
 
     <px-vis-multi-axis
@@ -424,7 +429,7 @@ Custom property | Description | Default
       series-keys="[[_seriesKeys]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-data="[[chartData]]"
-      chart-id="[[_chartId]]"
+      chart-id="[[chartId]]"
       x="[[x]]"
       y="[[y]]"
       domain-changed="[[domainChanged]]"
@@ -670,11 +675,14 @@ Custom property | Description | Default
       _navSelectedDomain: {
         type: Object
       },
-
       _axisActionConfig: {
         type: Object,
         notify: true,
         computed: '_computeAxisActionConfig(dimensions.*, _isAttached)'
+      },
+      _navChartExtents: {
+        type: Object,
+        computed: '_computeNavChartExtents(chartExtents)'
       }
     },
 
@@ -698,7 +706,8 @@ Custom property | Description | Default
       '_setDomainCaller(x, y, chartExtents, dataExtents)',
       '_updateDomain(selectedDomain)',
       '_chartDataChanged(chartData.*)',
-      '_navSelectedDomainChanged(_navSelectedDomain)'
+      '_navSelectedDomainChanged(_navSelectedDomain)',
+      '_keepDataInSync(chartData.*, chartId)'
     ],
 
     listeners: {
@@ -987,8 +996,39 @@ Custom property | Description | Default
 
     _seriesKeysChanged: function() {
       //make sure we clean the canvas so that ols series are removed
-      if(this.renderToCanvas && this.canvasContext) {
+      if(this.renderToCanvas && this.canvasContext && this.canvasContext.pxClearCanvas) {
         this.canvasContext.pxClearCanvas();
+      }
+    },
+    _computeNavChartExtents: function() {
+      if(this.chartExtents.y) {
+        return {'y': this.chartExtents.y};
+      } else {
+
+        //find if we have axis extents defined
+        var keys = Object.keys(this.chartExtents),
+            min = Number.MAX_VALUE,
+            max = Number.MIN_VALUE,
+            current;
+
+        for(var i=0; i<keys.length; i++) {
+          if(keys[i] !== 'x') {
+
+            current = this.chartExtents[keys[i]];
+            if(current[0] !== 'dynamic' && current[0] < min) {
+              min = current[0];
+            }
+            if(current[1] !== 'dynamic' && current[1] > max) {
+              max = current[1];
+            }
+          }
+        }
+
+        if(min !== Number.MAX_VALUE && max !== Number.MIN_VALUE) {
+          return {'y': [min, max]};
+        } else {
+          return {'y': ['dynamic', 'dynamic']};
+        }
       }
     }
   });
