@@ -40,7 +40,10 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
-
+          chart-extents='{
+            "y0":[0,"dynamic"],
+            "y1":[0,100]
+          }'
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
             { "for":"y0", "type":"min", "value":7.6531 },
