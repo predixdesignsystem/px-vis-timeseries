@@ -471,7 +471,8 @@ Custom property | Description | Default
         series-keys="[[_seriesKeys]]"
         chart-data="[[chartData]]"
         generating-crosshair-data="[[generatingCrosshairData]]"
-        crosshair-data="[[crosshairData]]">
+        crosshair-data="[[crosshairData]]"
+        tooltip-data="{{tooltipData}}">
       </px-vis-highlight-point-canvas>
     </template>
     <template is="dom-if" if="[[!renderToCanvas]]" restamp>
@@ -487,6 +488,7 @@ Custom property | Description | Default
         chart-data="[[chartData]]"
         generating-crosshair-data="[[generatingCrosshairData]]"
         crosshair-data="[[crosshairData]]"
+        tooltip-data="{{tooltipData}}"
         clip-path="[[seriesClipPath]]">
       </px-vis-highlight-point>
     </template>
