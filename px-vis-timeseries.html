@@ -219,7 +219,7 @@ Custom property | Description | Default
           </div>
         </div>
     </div>
-
+<!--FIXME px-tooltip attaches on every mouse hover even if we do not have it enabled. True across charts-->
     <px-vis-tooltip
       id="tooltip"
       hover-target=[[mouseRect]]
@@ -436,6 +436,7 @@ Custom property | Description | Default
       mouse-rect="{{mouseRect}}"
       tooltip-data="{{tooltipData}}"
       crosshair-data="{{crosshairData}}"
+      default-empty-data="[[defautEmptyData]]"
       generating-crosshair-data="{{generatingCrosshairData}}"
       interaction-svg="{{interactionSvg}}"
       extents-data="{{extentsData}}"
@@ -472,6 +473,7 @@ Custom property | Description | Default
         chart-data="[[chartData]]"
         generating-crosshair-data="[[generatingCrosshairData]]"
         crosshair-data="[[crosshairData]]"
+        default-empty-data="{{defautEmptyData}}"
         tooltip-data="{{tooltipData}}">
       </px-vis-highlight-point-canvas>
     </template>
@@ -488,6 +490,7 @@ Custom property | Description | Default
         chart-data="[[chartData]]"
         generating-crosshair-data="[[generatingCrosshairData]]"
         crosshair-data="[[crosshairData]]"
+        default-empty-data="{{defautEmptyData}}"
         tooltip-data="{{tooltipData}}"
         clip-path="[[seriesClipPath]]">
       </px-vis-highlight-point>
