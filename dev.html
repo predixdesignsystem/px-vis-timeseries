@@ -107,7 +107,9 @@
           }'
           register-config='{
               "height": 50,
-              "type": "horizontal"}'
+              "type": "horizontal",
+              "timezone": "Asia/Dhaka",
+              "FirstDateTimeFormat": "HH:mm:ss z"}'
           dynamic-menu-config='[{
               "name": "Delete",
               "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
