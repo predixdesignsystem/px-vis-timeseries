@@ -810,69 +810,69 @@ Custom property | Description | Default
     _calcMargins:function() {
       this.debounce('_calcMargin', function() {
 
-          var margin,
-              marginNav,
-              topMargin = 25,
-              rightMargin = 10,
-              bottomMargin = 10,
-              leftMargin = 10;
+        var margin,
+            marginNav,
+            topMargin = 25,
+            rightMargin = 10,
+            bottomMargin = 10,
+            leftMargin = 10;
 
-          // if the dev didnt set the margin, then calc it
-          if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
-            if(this.xAxisLocation === 'bottom') {
-              bottomMargin = 40;
-            } else if(this.xAxisLocation === 'top') {
-              topMargin = 40;
-            }
-
-            if(this.yAxisLocation === 'left') {
-              leftMargin = 50;
-            } else if(this.yAxisLocation === 'right') {
-              rightMargin = 50;
-            }
-
-            margin = {
-              'top': topMargin,
-              'right': rightMargin,
-              'bottom': bottomMargin,
-              'left': leftMargin
-            };
-
-            this._calcMultiMargins(margin, 50, 50);
-
-          } else { //is dev set, use it
-            margin = {
-              'top': Number(this.margin.top) || Number(this.margin.top) === 0 ? Number(this.margin.top) : topMargin,
-              'right': Number(this.margin.right) || Number(this.margin.right) === 0 ? Number(this.margin.right) : rightMargin,
-              'bottom': Number(this.margin.bottom) || Number(this.margin.bottom) === 0 ? Number(this.margin.bottom) : bottomMargin,
-              'left':  Number(this.margin.left) || Number(this.margin.left) === 0 ? Number(this.margin.left) : leftMargin
-            };
-
-            // FIXME
-            // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
-            this._calcMultiMargins(margin, margin.left, margin.right);
+        // if the dev didnt set the margin, then calc it
+        if(JSON.stringify(this._defaultMargin) === JSON.stringify(this.margin)) {
+          if(this.xAxisLocation === 'bottom') {
+            bottomMargin = 40;
+          } else if(this.xAxisLocation === 'top') {
+            topMargin = 40;
           }
 
-          //if marginNav not dev set
-          if(JSON.stringify(this.properties.marginNav.value) === JSON.stringify(this.marginNav)) {
-            //match side margins by default
-            marginNav = {
-              'top': 5,
-              'right': margin.right,
-              'bottom': 20,
-              'left': margin.left
-            };
-          } else {
-            marginNav = {
-              'top': Number(this.marginNav.top),
-              'right': Number(this.marginNav.right),
-              'bottom': Number(this.marginNav.bottom),
-              'left': Number(this.marginNav.left)
-            };
+          if(this.yAxisLocation === 'left') {
+            leftMargin = 50;
+          } else if(this.yAxisLocation === 'right') {
+            rightMargin = 50;
           }
 
-          this.set('_internalMargin', margin);
-          this.set('_internalMarginNav', marginNav);
+          margin = {
+            'top': topMargin,
+            'right': rightMargin,
+            'bottom': bottomMargin,
+            'left': leftMargin
+          };
+
+          this._calcMultiMargins(margin, 50, 50);
+
+        } else { //is dev set, use it
+          margin = {
+            'top': Number(this.margin.top) || Number(this.margin.top) === 0 ? Number(this.margin.top) : topMargin,
+            'right': Number(this.margin.right) || Number(this.margin.right) === 0 ? Number(this.margin.right) : rightMargin,
+            'bottom': Number(this.margin.bottom) || Number(this.margin.bottom) === 0 ? Number(this.margin.bottom) : bottomMargin,
+            'left':  Number(this.margin.left) || Number(this.margin.left) === 0 ? Number(this.margin.left) : leftMargin
+          };
+
+          // FIXME
+          // assume the margin is the side for one axis. Might not be a good assumption. Rethink this
+          this._calcMultiMargins(margin, margin.left, margin.right);
+        }
+
+        //if marginNav not dev set
+        if(JSON.stringify(this.properties.marginNav.value) === JSON.stringify(this.marginNav)) {
+          //match side margins by default
+          marginNav = {
+            'top': 5,
+            'right': margin.right,
+            'bottom': 20,
+            'left': margin.left
+          };
+        } else {
+          marginNav = {
+            'top': Number(this.marginNav.top),
+            'right': Number(this.marginNav.right),
+            'bottom': Number(this.marginNav.bottom),
+            'left': Number(this.marginNav.left)
+          };
+        }
+
+        this.set('_internalMargin', margin);
+        this.set('_internalMarginNav', marginNav);
 
       }, 5);
     },
