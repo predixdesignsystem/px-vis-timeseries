@@ -213,6 +213,9 @@ Custom property | Description | Default
                 selected-domain="{{_navSelectedDomain}}"
                 prevent-resize
                 render-to-canvas="[[renderToCanvas]]"
+                no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
+                progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
+                progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
                 debounce-resize-timing="[[debounceResizeTiming]]">
               </px-vis-chart-navigator>
             </template>
@@ -338,7 +341,10 @@ Custom property | Description | Default
         x="[[x]]"
         event-config="[[eventConfig]]"
         domain-changed="[[domainChanged]]"
-        clip-path="[[clipPath]]">
+        clip-path="[[clipPath]]"
+        resources="[[resources]]"
+        language="[[language]]"
+        formats="[[formats]]">
       </px-vis-event>
     </template>
 
@@ -558,7 +564,8 @@ Custom property | Description | Default
       PxVisBehaviorChart.highlighterConfigs,
       PxVisBehavior.crosshairData,
       PxVisBehavior.selectionType,
-      PxVisBehaviorChart.webWorkerSynchonization
+      PxVisBehaviorChart.webWorkerSynchonization,
+      Polymer.AppLocalizeBehavior
     ],
 
     /**
@@ -688,6 +695,30 @@ Custom property | Description | Default
       _navChartExtents: {
         type: Object,
         computed: '_computeNavChartExtents(chartExtents)'
+      },
+      /**
+       * List of key/values to be included for translating this component
+       */
+      resources: {
+        type: Object,
+        value: function() {
+          return {};
+        }
+      },
+      /**
+      * set a default for localizing
+      */
+      language: {
+        type: String,
+        value: 'en'
+      },
+      /**
+      * Use the key for localization if value for  language is missing. Should
+      * always be true for  our components
+      */
+      useKeyIfMissing: {
+        type: Boolean,
+        value: true
       }
     },
 
@@ -712,7 +743,8 @@ Custom property | Description | Default
       '_updateDomain(selectedDomain)',
       '_chartDataChanged(chartData.*)',
       '_navSelectedDomainChanged(_navSelectedDomain)',
-      '_keepDataInSync(chartData.*, chartId)'
+      '_keepDataInSync(chartData.*, chartId)',
+      '_langChanged(language)'
     ],
 
     listeners: {
@@ -1035,6 +1067,11 @@ Custom property | Description | Default
           return {'y': ['dynamic', 'dynamic']};
         }
       }
+    },
+    _langChanged: function() {
+
+      //recreate X and Y in case d3 locale changed
+      this._recreateScales(this.width, this.height, this._internalMargin);
     }
   });
 </script>
