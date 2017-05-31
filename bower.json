@@ -25,7 +25,8 @@
       "px-datetime-common": "^0.7.0",
       "px-colors-design": "^0.3.1",
       "px-vis": "~1.1.0",
-      "iron-resizable-behavior": "^1.0.5"
+      "iron-resizable-behavior": "^1.0.5",
+      "app-localize-behavior": "^1.0.2"
   },
   "devDependencies": {
     "px-starter-kit-design": "^0.7.0",
