@@ -1,3 +1,7 @@
+v1.1.3
+==================
+* bumping datetime common version
+
 v1.1.2
 ==================
 * changed vis bower to ^
