@@ -1,3 +1,7 @@
+v1.1.2
+==================
+* changed vis bower to ^
+
 v1.1.1
 ==================
 * removed cleanOnDetached
