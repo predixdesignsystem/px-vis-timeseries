@@ -1,3 +1,7 @@
+v1.1.4
+==================
+* remove unused behaviors to remove warnings
+
 v1.1.3
 ==================
 * bumping datetime common version
