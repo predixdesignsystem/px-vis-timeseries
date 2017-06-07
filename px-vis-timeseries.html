@@ -1008,8 +1008,7 @@ Custom property | Description | Default
     },
 
     _getXKey: function() {
-      var k = this._seriesKeys[0];
-      return this.completeSeriesConfig[k]['x'];
+      return this.completeSeriesConfig[Object.keys(this.completeSeriesConfig)[0]]['x'];
     },
     _computeAxisActionConfig: function() {
       var conf;
