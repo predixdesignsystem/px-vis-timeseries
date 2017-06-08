@@ -365,7 +365,7 @@ function runCustomTests() {
       configChart.set('seriesConfig',config);
       configChart.set('chartData',d);
 
-      setTimeout(function(){done()}, 500);
+      setTimeout(function(){done()}, 1000);
     });
 
     test('configChart fixture is created', function() {
