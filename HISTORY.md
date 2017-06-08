@@ -1,3 +1,15 @@
+v1.1.4
+==================
+* remove unused behaviors to remove warnings
+
+v1.1.3
+==================
+* bumping datetime common version
+
+v1.1.2
+==================
+* changed vis bower to ^
+
 v1.1.1
 ==================
 * removed cleanOnDetached

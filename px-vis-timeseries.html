@@ -564,7 +564,6 @@ Custom property | Description | Default
       PxVisBehavior.selectionType,
       PxVisBehaviorChart.highlighterConfigs,
       PxVisBehavior.crosshairData,
-      PxVisBehavior.selectionType,
       PxVisBehaviorChart.webWorkerSynchronization,
       Polymer.AppLocalizeBehavior
     ],
@@ -741,7 +740,6 @@ Custom property | Description | Default
       '_updateDomain(selectedDomain)',
       '_chartDataChanged(chartData.*)',
       '_navSelectedDomainChanged(_navSelectedDomain)',
-      '_keepDataInSync(chartData.*, chartId)',
       '_langChanged(language)'
     ],
 
@@ -1068,7 +1066,7 @@ Custom property | Description | Default
     _langChanged: function() {
 
       //recreate X and Y in case d3 locale changed
-      this._recreateScales(this.width, this.height, this._internalMargin);
+      // this._recreateScales(this.width, this.height, this._internalMargin);
     }
   });
 </script>
