@@ -240,8 +240,11 @@ function runCustomTests() {
     test('IASChart canvasContext', function() {
       assert.deepEqual(IASChart.canvasContext._translation, [50,10]);
       assert.equal(IASChart.canvasContext._pxLinesRedraw, 0);
-      assert.equal(IASChart.canvasContext._pxLinesTotal, 0);
-      assert.deepEqual(IASChart.canvasContext._pxLinesSeries, {});
+      assert.deepEqual(IASChart.canvasContext._pxLinesSeries, []);
+      assert.isTrue(IASChart.canvasContext._pxLinesCleared);
+      assert.equal(IASChart.canvasContext._pxScatterRedraw, 0);
+      assert.deepEqual(IASChart.canvasContext._pxScatterSeries, []);
+      assert.isTrue(IASChart.canvasContext._pxScatterCleared);
       assert.equal(IASChart.canvasContext.canvas.width, 500);
       assert.equal(IASChart.canvasContext.canvas.height, 400);
     });
@@ -263,19 +266,17 @@ function runCustomTests() {
 
     test('IASChart tooltipData', function() {
       var ttD = {
-        "mouse": null,
-        "time": null,
-        "hidden": true,
-        "xArr": null,
-        "yArr": null,
-        "series": [{
-          "name": "y",
-          "value": null
-        },{
-          "name": "y1",
-          "value": null
-        }]
-      }
+        "time":null,
+        "timeSeriesKey":null,
+        "hidden":true,
+        "series":[
+          {"name":"y","value":null},
+          {"name":"y1","value":null}
+        ],
+        "mouse":null,
+        "xArr":null,
+        "yArr":null
+      };
 
       assert.deepEqual(IASChart.tooltipData, ttD);
     });
@@ -285,14 +286,14 @@ function runCustomTests() {
     });
 
     test('IASChart selectedDomain', function() {
-      
+
       //selectedDomain can be empty or have the actual X domain
       if(IASChart.selectedDomain.x.length > 0) {
         assert.equal(JSON.stringify(IASChart.selectedDomain), '{"x":["2014-04-10T04:01:00.000Z","2014-04-11T12:25:00.000Z"],"y":[]}');
       } else {
         assert.deepEqual(IASChart.selectedDomain, {"x":[],"y":[]});
       }
-      
+
     });
 
     test('IASChart _seriesKeys', function() {
@@ -403,8 +404,11 @@ function runCustomTests() {
     test('configChart canvasContext', function() {
       assert.deepEqual(configChart.canvasContext._translation, [50,10]);
       assert.equal(configChart.canvasContext._pxLinesRedraw, 0);
-      assert.equal(configChart.canvasContext._pxLinesTotal, 0);
-      assert.deepEqual(configChart.canvasContext._pxLinesSeries, {});
+      assert.deepEqual(configChart.canvasContext._pxLinesSeries, []);
+      assert.isTrue(configChart.canvasContext._pxLinesCleared);
+      assert.equal(configChart.canvasContext._pxScatterRedraw, 0);
+      assert.deepEqual(configChart.canvasContext._pxScatterSeries, []);
+      assert.isTrue(configChart.canvasContext._pxScatterCleared);
       assert.equal(configChart.canvasContext.canvas.width, 500);
       assert.equal(configChart.canvasContext.canvas.height, 400);
     });
@@ -428,6 +432,7 @@ function runCustomTests() {
       var ttD = {
         "mouse": null,
         "time": null,
+        "timeSeriesKey":null,
         "hidden": true,
         "xArr": null,
         "yArr": null,

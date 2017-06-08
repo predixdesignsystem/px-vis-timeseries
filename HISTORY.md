@@ -1,3 +1,9 @@
+v2.0.0
+==================
+* Update to vis 2.0.0
+* Includes highlight components for optional crosshair
+* Includes Web workers for scale calculations
+
 v1.1.4
 ==================
 * remove unused behaviors to remove warnings
