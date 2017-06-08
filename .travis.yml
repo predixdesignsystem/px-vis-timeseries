@@ -1,8 +1,8 @@
 sudo: false
 dist: trusty
-language: node_js
 os:
   - osx
+language: node_js
 node_js:
 - stable
 branches:
