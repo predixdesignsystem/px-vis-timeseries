@@ -1,10 +1,7 @@
 // This is the wrapper for custom tests, called upon web components ready state
 function runCustomTests() {
-  // Place any setup steps like variable declaration and initialization here
 
-  // This is the placeholder suite to place custom tests in
-  // Use testCase(options) for a more convenient setup of the test cases
-  suite('px-vis-timeseries configFile sets properties', function() {
+  suite('px-vis-timeseries configFile sets individual properties', function() {
     var configFile = document.getElementById('configFile');
     var options = {
         "width": "1000",
@@ -33,9 +30,10 @@ function runCustomTests() {
         "navSeriesLimit":0,
         "includeAllSeries": true
       };
+
     suiteSetup(function(done){
-      configFile.set('options',options);
-      setTimeout(function(){ done(); }, 500);
+      configFile.set('options', options);
+      done();
     });
 
     test('configFile fixture is created', function() {
@@ -80,11 +78,24 @@ function runCustomTests() {
           }
         ];
 
+      var  counter = 0;
+      var rendered = function() {
+        counter += 1;
+
+        if(counter === 4) {
+          margin.removeEventListener('px-vis-line-svg-rendering-ended', rendered);
+          done();
+        }
+      };
+
+      margin.addEventListener('px-vis-line-svg-rendering-ended', rendered);
+
+
       margin.set('xAxisLocation','top');
       margin.set('yAxisLocation','left');
+      margin.set('width', 500);
+      margin.set('height', 400);
       margin.set('chartData', d);
-
-      setTimeout(function(){ done(); }, 1000);
     });
 
     test('margin fixture is created', function() {
@@ -133,12 +144,24 @@ function runCustomTests() {
           }
         ];
 
+      var  counter = 0;
+      var rendered = function() {
+        counter += 1;
+
+        if(counter === 4) {
+          margin.removeEventListener('px-vis-line-svg-rendering-ended', rendered);
+          done();
+        }
+      };
+
+      margin.addEventListener('px-vis-line-svg-rendering-ended', rendered);
+
       margin.set('chartData', d);
       margin.set('xAxisLocation','bottom');
       margin.set('yAxisLocation','right');
 
       margin._calcMargins();
-      setTimeout(function(){ done(); }, 500);
+
     });
 
     test('margin fixture is created', function() {
@@ -196,12 +219,23 @@ function runCustomTests() {
           "right": 10
         }
 
+      var  counter = 0;
+      var rendered = function() {
+        counter += 1;
+
+        if(counter === 4) {
+          IASChart.removeEventListener('px-vis-line-svg-rendering-ended', rendered);
+          done();
+        }
+      };
+
+      IASChart.addEventListener('px-vis-line-svg-rendering-ended', rendered);
+
       IASChart.set('width',500);
       IASChart.set('height',400);
       IASChart.set('margin',m);
       IASChart.set('chartData',d);
 
-      setTimeout(function(){done()}, 1000);
     });
 
     test('IASChart fixture is created', function() {
@@ -359,13 +393,23 @@ function runCustomTests() {
           }
         }
 
+      var  counter = 0;
+      var rendered = function() {
+        counter += 1;
+
+        if(counter === 4) {
+          configChart.removeEventListener('px-vis-line-svg-rendering-ended', rendered);
+          done();
+        }
+      };
+
+      configChart.addEventListener('px-vis-line-svg-rendering-ended', rendered);
+
       configChart.set('width',500);
       configChart.set('height',400);
       configChart.set('margin',m);
       configChart.set('seriesConfig',config);
       configChart.set('chartData',d);
-
-      setTimeout(function(){done()}, 1000);
     });
 
     test('configChart fixture is created', function() {
