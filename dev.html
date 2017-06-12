@@ -37,7 +37,7 @@
         <br/>
         <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
-        <px-vis-timeseries
+        <!--<px-vis-timeseries
           id="timeSerie"
           height="500"
           chart-extents='{
@@ -174,7 +174,7 @@
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]">
-        </px-vis-timeseries>
+        </px-vis-timeseries>-->
 
         <!-- chart-extents='{
           "x": ["dynamic","dynamic"],
@@ -226,7 +226,7 @@
 
         <br />
         <br />
-        <h2>Example of a timeseries with mostly default data and using the new data format</h2>
+        <!--<h2>Example of a timeseries with mostly default data and using the new data format</h2>
          <px-vis-timeseries
           width = "1000"
           height = "500"
@@ -242,7 +242,7 @@
           y-axis-config='{
             "title": "Widgets"
           }'>
-        </px-vis-timeseries>
+        </px-vis-timeseries>-->
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
           handle-as="json"
@@ -280,7 +280,7 @@
 
          <br />
         <br />
-        <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
+        <!--<h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
           width="1000"
           height="500"
@@ -340,7 +340,7 @@
           y-axis-config='{
             "title": "Hz"
           }'>
-        </px-vis-timeseries>
+        </px-vis-timeseries>-->
         <iron-ajax
             url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
             handle-as="json"
@@ -350,7 +350,7 @@
 
         <br />
         <br />
-        <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
+        <!--<h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
          <div style="width: 800px; height:800px; background-color: salmon">
          <px-vis-timeseries
           id="chartCustom"
@@ -369,7 +369,7 @@
             "title": "Temperature"
           }'
           ></px-vis-timeseries>
-          </div>
+          </div>-->
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -462,13 +462,13 @@
             "to":"2015-04-01T20:42:00.000Z"
           });
 
-          chart.svg.append('rect')
-            .attr("y", 200)
-            .attr("x", 0)
-            .attr("height", 100)
-            .attr("width", 1000)
-            .attr('opacity',0.25)
-            .attr('fill', 'rgb(70,173,0)');
+          // chart.svg.append('rect')
+          //   .attr("y", 200)
+          //   .attr("x", 0)
+          //   .attr("height", 100)
+          //   .attr("width", 1000)
+          //   .attr('opacity',0.25)
+          //   .attr('fill', 'rgb(70,173,0)');
 
 
 
