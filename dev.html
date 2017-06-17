@@ -37,7 +37,7 @@
         <br/>
         <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
-        <!--<px-vis-timeseries
+        <px-vis-timeseries
           id="timeSerie"
           height="500"
           chart-extents='{
@@ -128,6 +128,7 @@
             "advancedZoom": true,
             "pan": true,
             "tooltip": true,
+            "stripe": true,
             "logHover": {
               "buttonGroup": 2,
               "tooltipLabel": "run action on click",
@@ -173,8 +174,18 @@
           series-config="[[seriesConfig]]"
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
-          range="[[range]]">
-        </px-vis-timeseries>-->
+          range="[[range]]"
+          stripe-config='{
+            "inclusion": {
+                "fillColor": "rgb(117,216,53)",
+                "fillOpacity": "0.5"
+            },
+            "exclusion": {
+                "fillColor": "rgb(255,92,92)",
+                "fillOpacity": "0.5"
+            }
+          }'>
+        </px-vis-timeseries>
 
         <!-- chart-extents='{
           "x": ["dynamic","dynamic"],

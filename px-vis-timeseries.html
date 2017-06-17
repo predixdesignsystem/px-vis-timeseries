@@ -24,6 +24,7 @@
 <link rel="import" href="../px-vis/px-vis-multi-axis.html"/>
 <link rel="import" href="../px-vis/px-vis-highlight-point.html"/>
 <link rel="import" href="../px-vis/px-vis-highlight-point-canvas.html"/>
+<link rel="import" href="../px-vis/px-vis-striping.html"/>
 
 <!--
 Creates an interactive timeseries chart
@@ -175,7 +176,6 @@ Custom property | Description | Default
               action-config='{{actionConfig}}'
               within-chart
               chart-margin="[[_internalMargin]]"
-              show-tooltip="{{_internalShowTooltip}}"
               config='{"zoom": true, "pan": true, "tooltip": true}'>
             </px-vis-toolbar>
             <px-vis-svg-canvas
@@ -502,6 +502,19 @@ Custom property | Description | Default
         clip-path="[[seriesClipPath]]">
       </px-vis-highlight-point>
     </template>
+
+    <px-vis-striping
+      id="starsAndStripes"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[_internalMargin]]"
+      canvas-context="[[canvasContextTop]]"
+      x="[[x]]"
+      domain-changed="[[domainChanged]]"
+      clip-path
+      stripe-config="[[stripeConfig]]"
+      stripe-data="[[stripeData]]">
+    </px-vis-striping>
   </template>
 </dom-module>
 
@@ -565,7 +578,8 @@ Custom property | Description | Default
       PxVisBehaviorChart.highlighterConfigs,
       PxVisBehavior.crosshairData,
       PxVisBehaviorChart.webWorkerSynchronization,
-      Polymer.AppLocalizeBehavior
+      Polymer.AppLocalizeBehavior,
+      PxVisBehavior.stripProperties
     ],
 
     /**
@@ -740,10 +754,12 @@ Custom property | Description | Default
       '_updateDomain(selectedDomain)',
       '_navSelectedDomainChanged(_navSelectedDomain)',
       '_langChanged(language)',
-      '_keepDataInSync(chartData.*, chartId)'
+      '_keepDataInSync(chartData.*, chartId)',
+      '_createStripe(extentsData)'
     ],
 
     listeners: {
+      'px-vis-interaction-space-mouse-coords': '_deleteStripe',
       'iron-resize': '_onIronResize'
     },
 
@@ -1067,6 +1083,117 @@ Custom property | Description | Default
 
       //recreate X and Y in case d3 locale changed
       // this._recreateScales(this.width, this.height, this._internalMargin);
-    }
+    },
+
+    _createStripe: function() {
+      if(this.extentsAction !== 'stripe') {
+        return;
+      }
+
+      if(!this.stripeType) {
+        console.warn("No stripe type specified. Aborting creation");
+        return;
+      }
+
+      if(typeof this.stripeData[this.stripeType] === 'undefined') {
+        this.stripeData[this.stripeType] = [];
+      }
+
+      this._addStripeToData();
+    },
+
+    _addStripeToData: function() {
+      var indexes = [],
+          exts = this._checkForOverlap(this.extentsData.eX, indexes);
+
+      if(exts) {
+        this._deleteRedundantStripes(indexes);
+        // TODO order set
+        this.push('stripeData.' + this.stripeType, exts);
+      }
+    },
+
+    _checkForOverlap: function(exts, indexes) {
+      var d = this.stripeData[this.stripeType],
+          tMin = exts[0],
+          tMax = exts[1];
+
+      for(var i=0; i<d.length; i++) {
+        // new box fits wholly inside old box
+        if(tMin > d[i][0] && tMax < d[i][1]) {
+          tMin = d[i][0];
+          tMax = d[i][1];
+
+          // assume we dont need to check anymore because everything else has already been checked for overlap
+          return false;
+
+        // if our new box fully encompasses an old box
+        } else if(tMin < d[i][0] && tMax > d[i][1]) {
+          indexes.push(i);
+
+        // our new box overlaps lower end of old box
+        } else if(tMin < d[i][0] && tMax > d[i][0] && tMax < d[i][1]) {
+          tMax = d[i][1];
+          indexes.push(i);
+
+        // our new box overlaps upper end of old box
+        } else if(tMin > d[i][0] && tMin < d[i][1] && tMax > d[i][1]) {
+          tMin = d[i][0];
+          indexes.push(i);
+        }
+      }
+
+      return [ tMin, tMax ];
+    },
+
+    _deleteRedundantStripes: function(indexes) {
+      for(var i = indexes.length - 1; i > -1; i--) {
+        this.stripeData[this.stripeType].splice(indexes[i], 1);
+      }
+    },
+
+    _deleteStripe: function(evt) {
+      if(this.extentsAction !== 'stripe') {
+        return;
+      }
+
+      if(!this.stripeData[this.stripeType] || this.stripeData[this.stripeType].length === 0) {
+        return;
+      }
+
+      var mousePos = evt.detail.mouse,
+          t = this.x.invert(mousePos[0]),
+          dataset = this.stripeData[this.stripeType];
+
+      for(var i=0; i <dataset.length; i++) {
+        if(dataset[i][0] <= t && dataset[i][1] >= t) {
+          this.splice('stripeData.' + this.stripeType, i, 1);
+        }
+      }
+    },
+
+    //  _hoverStripe: function(evt) {
+    //   if(this.extentsAction !== 'stripe') {
+    //     return;
+    //   }
+
+    //   if(!this.stripeData[this.stripeType] || this.stripeData[this.stripeType].length === 0) {
+    //     return;
+    //   }
+
+    //   var mousePos = evt.detail.mouse,
+    //       t = this.x.invert(mousePos[0]),
+    //       dataset = this.stripeData[this.stripeType];
+
+    //   for(var i=0; i <dataset.length; i++) {
+    //     if(dataset[i][0] <= t && dataset[i][1] >= t) {
+    //       this.layer.3
+    //         .append('rect')
+    //         .class('stripeHighlight')
+    //         .attr('x', this.())
+    //     }
+    //   }
+    // }
+
   });
 </script>
