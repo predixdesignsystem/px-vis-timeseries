@@ -759,7 +759,7 @@ Custom property | Description | Default
     ],
 
     listeners: {
-      'px-vis-interaction-space-mouse-coords': '_deleteStripe',
+      'px-vis-interaction-space-mouse-coords': '_hoverStripe',
       'iron-resize': '_onIronResize'
     },
 
@@ -1172,28 +1172,39 @@ Custom property | Description | Default
       }
     },
 
-    //  _hoverStripe: function(evt) {
-    //   if(this.extentsAction !== 'stripe') {
-    //     return;
-    //   }
+     _hoverStripe: function(evt) {
+      if(this.extentsAction !== 'stripe') {
+        return;
+      }
 
-    //   if(!this.stripeData[this.stripeType] || this.stripeData[this.stripeType].length === 0) {
-    //     return;
-    //   }
+      if(!this.stripeData[this.stripeType] || this.stripeData[this.stripeType].length === 0) {
+        return;
+      }
 
-    //   var mousePos = evt.detail.mouse,
-    //       t = this.x.invert(mousePos[0]),
-    //       dataset = this.stripeData[this.stripeType];
+      var mousePos = evt.detail.mouse,
+          t = this.x.invert(mousePos[0]),
+          dataset = this.stripeData[this.stripeType];
 
-    //   for(var i=0; i <dataset.length; i++) {
-    //     if(dataset[i][0] <= t && dataset[i][1] >= t) {
-    //       this.layer.3
-    //         .append('rect')
-    //         .class('stripeHighlight')
-    //         .attr('x', this.())
-    //     }
-    //   }
-    // }
+      this.layer[3].select('rect.stripeHighlight').remove();
+
+      for(var i=0; i <dataset.length; i++) {
+        if(dataset[i][0] <= t && dataset[i][1] >= t) {
+          var x0 = this.x(dataset[i][0]),
+              x1 = this.x(dataset[i][1]) - x0;
+
+          this.layer[3]
+            .append('rect')
+            .attr('class', 'stripeHighlight')
+            .attr('x', x0)
+            .attr('width', x1)
+            .attr('y', 0)
+            .attr('height', this.height-this._internalMargin.top-this._internalMargin.bottom)
+            .attr('stroke', 'rgb(255,0,0)')
+            .attr('stroke-width', 5)
+            .attr('fill', 'none')
+        }
+      }
+    }
 
   });
 </script>
