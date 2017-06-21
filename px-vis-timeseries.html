@@ -1324,6 +1324,9 @@ Custom property | Description | Default
 
       this._stripeController
         .on("click", this._deleteStripe.bind(this))
+        //turn off when you leave out the top of bottom
+        .on("mouseleave", this._hideStripeHover.bind(this))
+        //turn off when you leave out the sides
         .on("mousemove", function() {
           if(Px.d3.event.path[0].classList.contains('overlay')) {
             this._hideStripeHover();
