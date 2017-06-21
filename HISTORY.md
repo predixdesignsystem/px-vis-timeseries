@@ -1,3 +1,8 @@
+
+==================
+* Include striping component
+* Added code to handle striping
+
 v2.0.0
 ==================
 * Update to vis 2.0.0
