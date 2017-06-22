@@ -5,6 +5,7 @@
 <link rel="import" href="../px-vis/px-vis-behavior-chart.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-datetime.html" />
 <link rel="import" href="../px-vis/px-vis-behavior-scale.html" />
+<link rel="import" href="../px-vis/px-vis-behavior-renderer.html"/>
 <link rel="import" href="../px-vis/px-vis-svg-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-line-svg.html"/>
@@ -213,9 +214,6 @@ Custom property | Description | Default
                 selected-domain="{{_navSelectedDomain}}"
                 prevent-resize
                 render-to-canvas="[[renderToCanvas]]"
-                no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
-                progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
-                progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
                 debounce-resize-timing="[[debounceResizeTiming]]">
               </px-vis-chart-navigator>
             </template>
@@ -262,9 +260,6 @@ Custom property | Description | Default
             domain-changed="[[domainChanged]]"
             show-gaps="[[showGaps]]"
             muted-series="[[mutedSeries]]"
-            no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
-            progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
-            progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
             width="[[width]]"
             height="[[height]]"
             margin="[[_internalMargin]]"
@@ -304,9 +299,6 @@ Custom property | Description | Default
             x="[[x]]"
             y="[[_returnYScale(item, completeSeriesConfig, domainChanged)]]"
             clip-path
-            no-canvas-progressive-rendering="[[noCanvasProgressiveRendering]]"
-            progressive-rendering-points-per-frame="[[progressiveRenderingPointsPerFrame]]"
-            progressive-rendering-minimum-frames="[[progressiveRenderingMinimumFrames]]"
             domain-changed="[[domainChanged]]"
             muted-series="[[mutedSeries]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
@@ -548,7 +540,6 @@ Custom property | Description | Default
       PxVisBehaviorChart.saveImage,
       PxVisBehaviorD3.domainUpdate,
       PxVisBehaviorChart.subConfiguration,
-      PxVisBehavior.progressiveRendering,
       PxVisBehaviorChart.registerConfigs,
       PxVisBehaviorChart.axisConfigs,
       PxVisBehaviorChart.registerPositioning,
@@ -579,7 +570,11 @@ Custom property | Description | Default
       PxVisBehavior.crosshairData,
       PxVisBehaviorChart.webWorkerSynchronization,
       Polymer.AppLocalizeBehavior,
+<<<<<<< Updated upstream
       PxVisBehavior.stripProperties
+=======
+      PxVisBehaviorRenderer.base
+>>>>>>> Stashed changes
     ],
 
     /**
