@@ -25,6 +25,7 @@
 <link rel="import" href="../px-vis/px-vis-highlight-point.html"/>
 <link rel="import" href="../px-vis/px-vis-highlight-point-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-striping.html"/>
+<link rel="import" href="../px-vis/px-vis-markers.html"/>
 
 <!--
 Creates an interactive timeseries chart
@@ -329,6 +330,17 @@ Custom property | Description | Default
       </template>
     </template>
 
+    <px-vis-markers
+      canvas-context="[[canvasContext]]"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[_internalMargin]]"
+      x="[[x]]"
+      domain-changed="[[domainChanged]]"
+      marker-data="[[markerData]]"
+      marker-config="[[markerConfig]]">
+    </px-vis-markers>
+
     <template is="dom-repeat" items="[[eventData]]">
       <px-vis-event
         svg="[[layer.0]]"
@@ -579,7 +591,8 @@ Custom property | Description | Default
       PxVisBehavior.crosshairData,
       PxVisBehaviorChart.webWorkerSynchronization,
       Polymer.AppLocalizeBehavior,
-      PxVisBehavior.stripProperties
+      PxVisBehavior.stripProperties,
+      PxVisBehavior.markers
     ],
 
     /**
