@@ -158,17 +158,17 @@ Custom property | Description | Default
             chart-width="[[width]]"
             height="[[_verticalRegisterHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
-            inert="[[hideRegister]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
             tooltip-data="[[tooltipData]]"
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
-            muted-series={{mutedSeries}}
+            muted-series="{{mutedSeries}}"
             type="{{_registerType}}"
             x-axis-type="time"
             y-axis-type="[[yAxisType]]">
           </px-vis-register>
+          <!--inert="[[hideRegister]]"-->
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex">
             <px-vis-toolbar
@@ -1341,9 +1341,9 @@ Custom property | Description | Default
         .on("mouseleave", this._hideStripeHover.bind(this))
         //turn off when you leave out the sides
         .on("mousemove", function() {
-          if(Px.d3.event.path[0].classList.contains('overlay')) {
-            this._hideStripeHover();
-          }
+            if(Polymer.dom(Px.d3.event).path[0].classList.contains('overlay')) {
+              this._hideStripeHover();
+            }
         }.bind(this))
         .call(this._stripeBrush.move, [x0, x1]);
 
@@ -1431,6 +1431,7 @@ Custom property | Description | Default
           this._deleteStripe();
 
           // mock a extentsDataChange to pass data to the stripe creation fn
+          if(!this.extentsData) { this.extentsData = {}; }
           this.extentsData.eX = [this.x.invert(brushExt[0]), this.x.invert(brushExt[1])];
           this._createStripe();
         }

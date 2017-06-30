@@ -1,4 +1,4 @@
-
+v2.1.0
 ==================
 * Include striping component
 * Added code to handle striping
