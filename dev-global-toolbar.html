@@ -31,60 +31,8 @@
           action-config='{{actionConfig}}'
           horizontal-alignment='left'
           id="toolbar"
-          toolbar-config='{
-            "customzoom": {
-              "tooltipLabel": "zoom",
-              "icon": "fa-search",
-              "selectable": true,
-              "actionConfig": {
-                "mousedown": "startZooming",
-                "mouseup": "stopZooming",
-                "mouseout": "null",
-                "mousemove": "null"
-              },
-              "subConfig": {
-                "x": {
-                  "title": "X",
-                  "tooltipLabel": "Zoom on X axis only",
-                  "eventName": "my-custom-click",
-                  "selectable": true,
-                  "selected": true,
-                  "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
-                },
-                "y": {
-                  "title": "Y",
-                  "tooltipLabel": "Zoom on Y axis only",
-                  "selectable": true,
-                  "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
-                },
-                "xy": {
-                  "title": "XY",
-                  "tooltipLabel": "Zoom on X and Y axis",
-                  "selectable": true,
-                  "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
-                },
-                "zoomIn": {
-                  "icon": "fa-plus",
-                  "tooltipLabel": "zoom in",
-                  "eventName": "px-vis-toolbar-zoom-in"
-                },
-                "zoomOut": {
-                  "icon": "fa-minus",
-                  "tooltipLabel": "zoom out",
-                  "eventName": "px-vis-toolbar-zoom-out"
-                },
-                "undoZoom": {
-                  "icon": "fa-undo",
-                  "tooltipLabel": "undo zoom",
-                  "eventName": "px-vis-toolbar-undo-zoom"
-                },
-                "resetZoom": {
-                  "icon": "fa-expand",
-                  "tooltipLabel": "reset zoom to inital value",
-                  "eventName": "px-vis-toolbar-reset-zoom"
-                }
-              }
-            },
+          config='{
+            "zoom": true,
             "pan": true,
             "tooltip": true,
             "logHover": {
@@ -120,7 +68,7 @@
           height="500"
           selection-type="xAxis"
           show-tooltip
-          toolbar-config="{}"
+          toolbar-config='{"config" : {}}'
           toolbar-sub-config="[[toolbarSubConfig]]"
           action-config='[[actionConfig]]'
           series-config='{
@@ -134,6 +82,10 @@
               "y":"y1",
               "x": "x"
             }}'
+          chart-extents='{
+            "x": ["dynamic", "dynamic"],
+            "y": ["dynamic", "dynamic"]
+          }'
           default-series-config='{
             "type": "line",
             "yAxisUnit": "Hz"
@@ -187,7 +139,7 @@
           width = "1000"
           height = "500"
           include-all-series
-          toolbar-config="{}"
+          toolbar-config='{"config" : {}}'
           toolbar-sub-config="[[toolbarSubConfig]]"
           action-config='[[actionConfig]]'
           selection-type= "xy"
