@@ -1332,6 +1332,8 @@ Custom property | Description | Default
 
       this._stripeHighlight
         .attr('stroke', this.stripeConfig[this.stripeType]['fillColor'])
+        .on("click", this._deleteStripe.bind(this))
+        .attr('pointer-events', 'all')
         .style('visibility', null);
 
       this._stripeController.select("rect.overlay")
