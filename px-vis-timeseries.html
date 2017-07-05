@@ -187,6 +187,8 @@ Custom property | Description | Default
               margin="[[_internalMargin]]"
               canvas-context="{{canvasContext}}"
               canvas-context-top="{{canvasContextTop}}"
+              canvas-layers="{{canvasLayers}}"
+              canvas-layers-config="[[canvasLayersConfig]]"
               svg="{{svg}}"
               px-svg-elem="{{pxSvgElem}}"
               svg-lower="{{svgLower}}">
@@ -331,7 +333,8 @@ Custom property | Description | Default
     </template>
 
     <px-vis-markers
-      canvas-context="[[canvasContext]]"
+      canvas-context="[[canvasLayers.markers]]"
+      canvas-layers-config="{{canvasLayersConfig}}"
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
