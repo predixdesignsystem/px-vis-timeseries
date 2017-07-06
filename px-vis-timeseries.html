@@ -191,7 +191,8 @@ Custom property | Description | Default
               canvas-layers-config="[[canvasLayersConfig]]"
               svg="{{svg}}"
               px-svg-elem="{{pxSvgElem}}"
-              svg-lower="{{svgLower}}">
+              svg-lower="{{svgLower}}"
+              px-svg-elem-lower="{{pxSvgElemLower}}">
             </px-vis-svg-canvas>
             <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
               <px-vis-chart-navigator
@@ -1024,6 +1025,8 @@ Custom property | Description | Default
 
             callback({canvas: canvas, image: canvas.toDataURL("image/png")});
           }.bind(this));
+        } else {
+          callback({canvas: chartSnap.canvas, image: chartSnap.canvas.toDataURL("image/png")});
         }
       }.bind(this), renderLegend);
     },

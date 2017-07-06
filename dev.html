@@ -266,6 +266,7 @@
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
          <px-vis-timeseries
+         id="timeSerie"
           width = "1000"
           height = "500"
           margin='{
@@ -280,7 +281,8 @@
           }'
           show-tooltip
           prevent-resize
-          render-to-canvas
+
+          disable-navigator
           selection-type= "xy"
           chart-data="[[chartData2]]"
           marker-config='{
@@ -330,8 +332,7 @@
           }'
           y-axis-config='{
             "title": "Units"
-          }'
-          disable-navigator>
+          }'>
         </px-vis-timeseries>
 
          <br />
@@ -532,14 +533,14 @@
         //   console.log('test delete')
         // });
 
-        // btnSnap.addEventListener('click', function() {
-        //   timeSerie.getCombinedImage(function(result) {
-        //     var img = document.createElement('img');
-        //     img.src= result.image;
-        //     document.body.appendChild(img);
-        //  //   window.open().location = result.image;
-        //   }, true);
-        // });
+        btnSnap.addEventListener('click', function() {
+          timeSerie.getCombinedImage(function(result) {
+            var img = document.createElement('img');
+            img.src= result.image;
+            document.body.appendChild(img);
+         //   window.open().location = result.image;
+          }, true);
+        });
       });
     });
     </script>
