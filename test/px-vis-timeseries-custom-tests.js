@@ -291,7 +291,7 @@ function runCustomTests() {
 
     test('IASChart y', function() {
       assert.deepEqual(IASChart.y["defaultAxis"].range(), [380,0]);
-      assert.deepEqual(IASChart.y["defaultAxis"].domain(), [0,20]);
+      assert.deepEqual(IASChart.y["defaultAxis"].domain(), [1,20]);
     });
 
     test('IASChart mutedSeries', function() {
@@ -465,7 +465,7 @@ function runCustomTests() {
 
     test('configChart y', function() {
       assert.deepEqual(configChart.y["defaultAxis"].range(), [380,0]);
-      assert.deepEqual(configChart.y["defaultAxis"].domain(), [0,20]);
+      assert.deepEqual(configChart.y["defaultAxis"].domain(), [1,20]);
     });
 
     test('configChart mutedSeries', function() {

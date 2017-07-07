@@ -26,6 +26,7 @@
 <link rel="import" href="../px-vis/px-vis-highlight-point.html"/>
 <link rel="import" href="../px-vis/px-vis-highlight-point-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-striping.html"/>
+<link rel="import" href="../px-vis/px-vis-markers.html"/>
 
 <!--
 Creates an interactive timeseries chart
@@ -158,17 +159,17 @@ Custom property | Description | Default
             chart-width="[[width]]"
             height="[[_verticalRegisterHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
-            inert="[[hideRegister]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
             tooltip-data="[[tooltipData]]"
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
-            muted-series={{mutedSeries}}
+            muted-series="{{mutedSeries}}"
             type="{{_registerType}}"
             x-axis-type="time"
             y-axis-type="[[yAxisType]]">
           </px-vis-register>
+          <!--inert="[[hideRegister]]"-->
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex">
             <px-vis-toolbar
@@ -187,9 +188,12 @@ Custom property | Description | Default
               margin="[[_internalMargin]]"
               canvas-context="{{canvasContext}}"
               canvas-context-top="{{canvasContextTop}}"
+              canvas-layers="{{canvasLayers}}"
+              canvas-layers-config="[[canvasLayersConfig]]"
               svg="{{svg}}"
               px-svg-elem="{{pxSvgElem}}"
-              svg-lower="{{svgLower}}">
+              svg-lower="{{svgLower}}"
+              px-svg-elem-lower="{{pxSvgElemLower}}">
             </px-vis-svg-canvas>
             <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
               <px-vis-chart-navigator
@@ -321,6 +325,18 @@ Custom property | Description | Default
       </template>
     </template>
 
+    <px-vis-markers
+      canvas-context="[[canvasLayers.markers]]"
+      canvas-layers-config="{{canvasLayersConfig}}"
+      width="[[width]]"
+      height="[[height]]"
+      margin="[[_internalMargin]]"
+      x="[[x]]"
+      domain-changed="[[domainChanged]]"
+      marker-data="[[markerData]]"
+      marker-config="[[markerConfig]]">
+    </px-vis-markers>
+
     <template is="dom-repeat" items="[[eventData]]">
       <px-vis-event
         svg="[[layer.0]]"
@@ -439,7 +455,9 @@ Custom property | Description | Default
       generating-crosshair-data="{{generatingCrosshairData}}"
       interaction-svg="{{interactionSvg}}"
       extents-data="{{extentsData}}"
-      action-config="[[actionConfig]]">
+      action-config="[[actionConfig]]"
+      selection-type="[[selectionType]]"
+      extents-action="{{extentsAction}}">
     </px-vis-interaction-space>
 
     <px-vis-cursor
@@ -571,7 +589,8 @@ Custom property | Description | Default
       PxVisBehaviorChart.webWorkerSynchronization,
       Polymer.AppLocalizeBehavior,
       PxVisBehavior.stripProperties,
-      PxVisBehaviorRenderer.base
+      PxVisBehaviorRenderer.base,
+      PxVisBehavior.markers
     ],
 
     /**
@@ -998,6 +1017,8 @@ Custom property | Description | Default
 
             callback({canvas: canvas, image: canvas.toDataURL("image/png")});
           }.bind(this));
+        } else {
+          callback({canvas: chartSnap.canvas, image: chartSnap.canvas.toDataURL("image/png")});
         }
       }.bind(this), renderLegend);
     },
@@ -1309,6 +1330,8 @@ Custom property | Description | Default
 
       this._stripeHighlight
         .attr('stroke', this.stripeConfig[this.stripeType]['fillColor'])
+        .on("click", this._deleteStripe.bind(this))
+        .attr('pointer-events', 'all')
         .style('visibility', null);
 
       this._stripeController.select("rect.overlay")
@@ -1320,9 +1343,9 @@ Custom property | Description | Default
         .on("mouseleave", this._hideStripeHover.bind(this))
         //turn off when you leave out the sides
         .on("mousemove", function() {
-          if(Px.d3.event.path[0].classList.contains('overlay')) {
-            this._hideStripeHover();
-          }
+            if(Polymer.dom(Px.d3.event).path[0].classList.contains('overlay')) {
+              this._hideStripeHover();
+            }
         }.bind(this))
         .call(this._stripeBrush.move, [x0, x1]);
 
@@ -1410,6 +1433,7 @@ Custom property | Description | Default
           this._deleteStripe();
 
           // mock a extentsDataChange to pass data to the stripe creation fn
+          if(!this.extentsData) { this.extentsData = {}; }
           this.extentsData.eX = [this.x.invert(brushExt[0]), this.x.invert(brushExt[1])];
           this._createStripe();
         }

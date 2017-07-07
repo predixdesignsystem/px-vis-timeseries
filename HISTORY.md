@@ -1,7 +1,12 @@
+v2.1.1
+==================
+* Add ability to dynamically add canvases.
 
+v2.1.0
 ==================
 * Include striping component
 * Added code to handle striping
+* Include Marker component
 
 v2.0.0
 ==================

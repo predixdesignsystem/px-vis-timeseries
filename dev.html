@@ -37,7 +37,7 @@
         <br/>
         <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
-        <px-vis-timeseries
+        <!--<px-vis-timeseries
           id="timeSerie"
           height="500"
           chart-extents='{
@@ -185,7 +185,7 @@
                 "fillOpacity": "0.5"
             }
           }'>
-        </px-vis-timeseries>
+        </px-vis-timeseries>-->
 
         <!-- chart-extents='{
           "x": ["dynamic","dynamic"],
@@ -266,17 +266,64 @@
         <br />
         <h2>Example of a timeseries rendering to canvas</h2>
          <px-vis-timeseries
+         id="timeSerie"
           width = "1000"
           height = "500"
+          margin='{
+            "top": 50,
+            "bottom": 50,
+            "left": 50,
+            "right": 0
+            }'
           include-all-series
           tooltip-config='{
             "tooltipStyle": "dark"
           }'
           show-tooltip
           prevent-resize
-          render-to-canvas
+
+          disable-navigator
           selection-type= "xy"
           chart-data="[[chartData2]]"
+          marker-config='{
+            "Recalibrate": {
+              "color": "rgb(123,0,0)",
+              "fillOpacity": "0.5",
+              "markerSymbol": "x",
+              "markerSize": 64,
+              "location": "top",
+              "row": 1,
+              "priority": 10
+            },
+            "Default": {
+              "color": "rgb(0,255,0)",
+              "fillOpacity": "0.5",
+              "markerSymbol": "thick-bar",
+              "markerSize": 64,
+              "location": "top",
+              "row": 2,
+              "priority": 10
+            },
+            "Fan start": {
+              "color": "rgb(0,0,255)",
+              "fillOpacity": "0.5",
+              "markerSymbol": "thin-bar",
+              "markerSize": 64,
+              "location": "bottom",
+              "row": 1,
+              "priority": 10
+            },
+            "Fan stop": {
+              "color": "rgb(0,0,255)",
+              "fillOpacity": "0.5",
+              "markerSymbol": "bar",
+              "markerSize": 64,
+              "location": "bottom",
+              "row": 2,
+              "priority": 10
+            }
+          }'
+          marker-data="[[eventData]]"
           register-config='{
               "height": 50,
               "type": "horizontal"}'
@@ -285,8 +332,7 @@
           }'
           y-axis-config='{
             "title": "Units"
-          }'
-          disable-navigator>
+          }'>
         </px-vis-timeseries>
 
          <br />
@@ -487,14 +533,14 @@
         //   console.log('test delete')
         // });
 
-        // btnSnap.addEventListener('click', function() {
-        //   timeSerie.getCombinedImage(function(result) {
-        //     var img = document.createElement('img');
-        //     img.src= result.image;
-        //     document.body.appendChild(img);
-        //  //   window.open().location = result.image;
-        //   }, true);
-        // });
+        btnSnap.addEventListener('click', function() {
+          timeSerie.getCombinedImage(function(result) {
+            var img = document.createElement('img');
+            img.src= result.image;
+            document.body.appendChild(img);
+         //   window.open().location = result.image;
+          }, true);
+        });
       });
     });
     </script>
