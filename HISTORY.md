@@ -7,6 +7,7 @@ v2.1.0
 * Include striping component
 * Added code to handle striping
 * Include Marker component
+* Ensure selectionType is passed down to interactionSpace
 
 v2.0.0
 ==================

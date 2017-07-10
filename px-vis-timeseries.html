@@ -754,7 +754,6 @@ Custom property | Description
       '_toolbarConfigChanged(toolbarConfig.*)',
       '_interactionSpaceConfigChanged(interactionSpaceConfig.*)',
       '_highlighterConfigChanged(highlighterConfig.*)',
-      '_seriesKeysChanged(_seriesKeys.*)',
 
       '_calcAxes(completeSeriesConfig.*)',
       '_calcAxes(leftAxisSize, rightAxisSize)',
@@ -1037,7 +1036,7 @@ Custom property | Description
      *
      */
     _returnXDomain: function() {
-      if(this.domainChanged !== null && !this.disableDynamicUpdate) {
+      if(this.domainChanged !== null && !this.disableDynamicUpdate && this.x) {
         return this.x.domain();
       }
     },
@@ -1098,17 +1097,6 @@ Custom property | Description
         };
 
       return conf;
-    },
-
-    /**
-     *
-     *
-     */
-    _seriesKeysChanged: function() {
-      //make sure we clean the canvas so that ols series are removed
-      if(this.renderToCanvas && this.canvasContext && this.canvasContext.pxClearCanvas) {
-        this.canvasContext.pxClearCanvas();
-      }
     },
 
     /**
