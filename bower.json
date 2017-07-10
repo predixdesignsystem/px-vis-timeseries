@@ -21,13 +21,12 @@
   ],
   "dependencies": {
     "polymer": "^1.9.0",
-    "px-theme": "^3.0.0",
-    "px-colors-design": "^1.0.0",
     "px-vis": "^3.0.0",
     "iron-resizable-behavior": "^2.0.0",
     "app-localize-behavior": "^2.0.0"
   },
   "devDependencies": {
+    "px-theme": "^3.0.0",
     "px-defaults-design": "^2.0.0",
     "px-normalize-design": "^1.0.0",
     "px-box-sizing-design": "^1.0.0",
