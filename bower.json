@@ -30,6 +30,7 @@
     "px-defaults-design": "^2.0.0",
     "px-normalize-design": "^1.0.0",
     "px-box-sizing-design": "^1.0.0",
+    "px-helpers-design": "^1.0.0",
     "px-flexbox-design": "^1.0.0",
     "px-demo": "^2.0.0",
     "px-demo-data": "^0.0.20",
