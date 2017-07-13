@@ -13,6 +13,7 @@
         <!-- <link rel="import" href="../px-dark-theme/px-dark-theme-styles.html"> -->
         <style include="px-theme-styles" is="custom-style"></style>
 
+        <link rel="import" href="../promise-polyfill/promise-polyfill-lite.html">
         <link rel="import" href="px-vis-timeseries.html"/>
         <link rel="import" href="../iron-ajax/iron-ajax.html"/>
         <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
@@ -199,7 +200,7 @@
           series-config="{{seriesConfig}}"
           chart-data="{{chartData}}">
         </px-vis-data-converter>
-        
+
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {

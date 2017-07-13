@@ -766,7 +766,14 @@ Custom property | Description
       '_navSelectedDomainChanged(_navSelectedDomain)',
       '_langChanged(language)',
       '_keepDataInSync(chartData.*, chartId)',
-      '_createStripe(extentsData)'
+      '_createStripe(extentsData)',
+
+      //renderer
+      '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
+      '_renderHighlight(domainChanged, canvasContextTop, _highlightData.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
+      '_renderSeriesOnTop(serieToRedrawOnTop)',
+      '_renderMarkers(canvasLayers.markers, domainChanged, markerData, markerConfig, preventInitialDrawing)'
+
     ],
 
     listeners: {
