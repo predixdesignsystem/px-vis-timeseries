@@ -140,9 +140,10 @@ Custom property | Description
             muted-series="{{mutedSeries}}"
             type="{{_registerType}}"
             x-axis-type="time"
-            y-axis-type="[[yAxisType]]">
+            y-axis-type="[[yAxisType]]"
+            inert-register="[[hideRegister]]">
           </px-vis-register>
-          <!--inert="[[hideRegister]]"-->
+
           <!-- chart + navigator -->
           <div id="drawingWrapper" class="flex--col flex__item--no-grow inline--flex">
             <px-vis-toolbar
