@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": [
     "px-vis-timeseries.html"
   ],

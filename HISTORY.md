@@ -1,3 +1,7 @@
+v2.1.3
+==================
+* Fixes to markers margin, including a new marginMarkersAdjustment property allowing for more control over where the markers are drawn
+
 v2.1.2
 ==================
 * Ensure getImage gets all svg and canvas
