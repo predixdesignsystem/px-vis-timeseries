@@ -338,11 +338,11 @@ Custom property | Description | Default
       canvas-layers-config="{{canvasLayersConfig}}"
       width="[[width]]"
       height="[[height]]"
-      margin="[[_internalMargin]]"
       x="[[x]]"
       domain-changed="[[domainChanged]]"
       marker-data="[[markerData]]"
-      marker-config="[[markerConfig]]">
+      marker-config="[[markerConfig]]"
+      margin="[[_internalMarginMarkers]]">
     </px-vis-markers>
 
     <template is="dom-repeat" items="[[eventData]]">
@@ -643,14 +643,34 @@ Custom property | Description | Default
        * @private
        */
       marginNav: {
-        type:Object,
+        type: Object,
         value: { top: 5, right: 5, bottom: 5, left: 5},
+      },
+      /**
+       * Defines the adjusted margin for adding markers. By default the chart
+       * already calculates margins for the markers (taking into account
+       * axes and normal margin) but this can be used to manually adjust
+       * where the markers are drawn
+       * margin object:
+       * - top
+       * - bottom
+       * - left
+       * - right
+       * Not every property needs to be defined, only the one that have been
+       * defined will be used.
+       */
+      marginMarkersAdjustment: {
+        type: Object,
+        value: {},
       },
       _internalMargin: {
         type: Object
       },
       _internalMarginNav: {
-        type:Object
+        type: Object
+      },
+      _internalMarginMarkers: {
+        type: Object
       },
       /**
        * Configuration object for the chart. Key is the property name.
@@ -794,6 +814,7 @@ Custom property | Description | Default
       '_calcAxes(completeSeriesConfig.*)',
       '_calcAxes(leftAxisSize, rightAxisSize)',
       '_calcMargins(margin.*, marginNav.*, numRightAxes, numLeftAxes)',
+      '_calcMarkerMargins(_internalMargin, marginMarkersAdjustment)',
       '_setXScale(width, _internalMargin, xAxisType)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
       '_setDomainCaller(wwDataSyncCounter, x, y, dataExtents, seriesToAxes.*)',
@@ -964,8 +985,37 @@ Custom property | Description | Default
 
         this.set('_internalMargin', margin);
         this.set('_internalMarginNav', marginNav);
-
       }, 5);
+    },
+
+    _calcMarkerMargins: function() {
+
+      var newMarg;
+
+
+      //use our internal margins
+      newMarg = {
+        'top': this._internalMargin.top,
+        'left': this._internalMargin.left,
+        'right': this._internalMargin.right,
+        'bottom': this._internalMargin.bottom
+      }
+
+      //account for X axis
+      if(this.xAxisLocation === 'bottom') {
+        newMarg.bottom -= 40;
+      } else if(this.xAxisLocation === 'top') {
+        newMarg.top -= 40;
+      }
+
+      //adjust if something is dev set
+      newMarg.top += this.marginMarkersAdjustment.top  ? Number(this.marginMarkersAdjustment.top) : 0;
+      newMarg.bottom += this.marginMarkersAdjustment.bottom  ? Number(this.marginMarkersAdjustment.bottom) : 0;
+      newMarg.left += this.marginMarkersAdjustment.left  ? Number(this.marginMarkersAdjustment.left) : 0;
+      newMarg.right += this.marginMarkersAdjustment.right  ? Number(this.marginMarkersAdjustment.right) : 0;
+
+
+      this.set('_internalMarginMarkers', newMarg);
     },
 
     /**
