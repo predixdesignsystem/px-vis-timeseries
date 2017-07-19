@@ -1,3 +1,7 @@
+v2.1.2
+==================
+* Ensure getImage gets all svg and canvas
+
 v2.1.1
 ==================
 * Add ability to dynamically add canvases.
