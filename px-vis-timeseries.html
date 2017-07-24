@@ -173,6 +173,7 @@ Custom property | Description
               <px-vis-chart-navigator
                 id="navigator"
                 prevent-ww-synchronization
+                prevent-complete-series-config-calc
                 chart-id="[[chartId]]"
                 class="inline--flex"
                 x-axis-type="[[xAxisType]]"
@@ -180,9 +181,9 @@ Custom property | Description
                 width="[[width]]"
                 height="100"
                 margin="[[_internalMarginNav]]"
-                default-series-config="[[defaultSeriesConfig]]"
-                series-config="[[seriesConfig]]"
-                include-all-series="[[includeAllSeries]]"
+                complete-series-config="[[completeSeriesConfig]]"
+                _series-keys="[[_seriesKeys]]"
+                data-extents="[[dataExtents]]"
                 chart-data="[[chartData]]"
                 chart-extents="[[_navChartExtents]]"
                 nav-series-limit="[[navSeriesLimit]]"

@@ -66,16 +66,15 @@
           event-config= '{
             "Recalibrate":{
               "color": "blue",
-              "icon": "fa-camera",
-              "type": "fa",
+              "icon": "px-fea:deployments",
+              "type": "px",
               "offset":[0,0],
-              "lineColor": "null",
               "lineWeight": 5
             },
             "Fan start":{
               "color": "green",
-              "icon": "\uf015",
-              "type": "unicode",
+              "icon": "px-obj:truck",
+              "type": "px",
               "offset":[1,0]
             },
             "Fan stop":{
@@ -108,20 +107,20 @@
           }'
           register-config='{
               "height": 50,
-              "type": "horizontal",
+              "type": "vertical",
               "timezone": "Asia/Dhaka",
               "FirstDateTimeFormat": "HH:mm:ss z"}'
           dynamic-menu-config='[{
               "name": "Delete",
               "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
               "eventName": "delete",
-              "icon": "fa-trash"
+              "icon": "px-vis:trash-series"
             },
             {
               "name": "Bring To Front",
               "action": "function(data) { this.set(\"serieToRedrawOnTop\", data.additionalDetail.name);}",
               "eventName": "bring-to-front",
-              "icon": "fa-arrow-up"
+              "icon": "px-vis:bring-to-front"
             }
           ]'
           display-threshold-title
@@ -133,10 +132,10 @@
             "logHover": {
               "buttonGroup": 2,
               "tooltipLabel": "run action on click",
-              "icon": "fa-leaf",
+              "icon": "px-nav:hierarchy",
               "subConfig": {
                 "customClick": {
-                  "icon": "fa-coffee",
+                  "icon": "px-nav:tile-view",
                   "tooltipLabel": "logs some messages on chart click",
                   "eventName": "my-custom-click",
                   "actionConfig": {
@@ -144,7 +143,7 @@
                   }
                 },
                 "customClick2": {
-                  "icon": "fa-fire-extinguisher",
+                  "icon": "px-nav:grid-view",
                   "tooltipLabel": "logs some other messages on chart click",
                   "actionConfig": {
                   }
@@ -154,17 +153,17 @@
             "logHover2": {
               "buttonGroup": 2,
               "tooltipLabel": "run action on click",
-              "icon": "fa-leaf",
+              "icon": "px-nav:menu",
               "subConfig": {
                 "customClick": {
-                  "icon": "fa-coffee",
+                  "icon": "px-nav:list-view",
                   "tooltipLabel": "logs some messages on chart click",
                   "eventName": "my-custom-click",
                   "actionConfig": {
                   }
                 },
                 "customClick2": {
-                  "icon": "fa-fire-extinguisher",
+                  "icon": "px-nav:tree",
                   "tooltipLabel": "logs some other messages on chart click",
                   "actionConfig": {
                   }
@@ -176,7 +175,6 @@
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]"
-          hide-register
           stripe-config='{
             "inclusion": {
                 "fillColor": "rgb(117,216,53)",
@@ -239,7 +237,7 @@
 
         <br />
         <br />
-        <!--<h2>Example of a timeseries with mostly default data and using the new data format</h2>
+        <h2>Example of a timeseries with mostly default data and using the new data format</h2>
          <px-vis-timeseries
           width = "1000"
           height = "500"
@@ -255,7 +253,7 @@
           y-axis-config='{
             "title": "Widgets"
           }'>
-        </px-vis-timeseries>-->
+        </px-vis-timeseries>
         <iron-ajax
           url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
           handle-as="json"
@@ -339,23 +337,16 @@
 
          <br />
         <br />
-        <!--<h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
+        <h2>Example of a timeseries rendering ~645,000 datapoints to canvas</h2>
         <px-vis-timeseries
           width="1000"
           height="500"
           id="bigChart"
-          show-tooltip
           include-all-series
-          register-config='{
-            "type": "horizontal"
-            }'
-          vertical-line="none"
-          horizontal-line="none"
-          render-to-canvas
-          register-config='{
-            "type": "horizontal"
+          cursor-config='{
+            "horizontalLine":"none"
           }'
-          selection-type="xy"
+          render-to-canvas
           default-series-config='{
               "type": "line",
               "x": "TimeStamp",
@@ -399,7 +390,7 @@
           y-axis-config='{
             "title": "Hz"
           }'>
-        </px-vis-timeseries>-->
+        </px-vis-timeseries>
         <iron-ajax
             url="../px-demo-data/demo-data/aviation/delta-egt-cruiseXY.json"
             handle-as="json"
@@ -409,12 +400,11 @@
 
         <br />
         <br />
-        <!--<h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
-         <div style="width: 800px; height:800px; background-color: salmon">
+        <h2>Example of a timeseries with a additional d3 rectangle drawn on top</h2>
          <px-vis-timeseries
           id="chartCustom"
-          height="300"
-          width="400"
+          height="400"
+          width="1000"
           prevent-resize
           register-config='{
             "width": 250
@@ -428,7 +418,6 @@
             "title": "Temperature"
           }'
           ></px-vis-timeseries>
-          </div>-->
     </template>
     <script>
       window.addEventListener('WebComponentsReady', function() {
@@ -521,13 +510,13 @@
             "to":"2015-04-01T20:42:00.000Z"
           });
 
-          // chart.svg.append('rect')
-          //   .attr("y", 200)
-          //   .attr("x", 0)
-          //   .attr("height", 100)
-          //   .attr("width", 1000)
-          //   .attr('opacity',0.25)
-          //   .attr('fill', 'rgb(70,173,0)');
+          chart.svg.append('rect')
+            .attr("y", 200)
+            .attr("x", 0)
+            .attr("height", 100)
+            .attr("width", 1000)
+            .attr('opacity',0.25)
+            .attr('fill', 'rgb(70,173,0)');
 
 
 
