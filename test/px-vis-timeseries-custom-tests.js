@@ -10,7 +10,7 @@ function runCustomTests() {
         "eventConfig": {
           "Recalibrate":{
             "color": "blue",
-            "icon": "fa-camera",
+            "icon": "px-fea:deployments",
             "type": "fa",
             "offset":[0,0]
           },

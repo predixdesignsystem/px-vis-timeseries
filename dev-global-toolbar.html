@@ -38,11 +38,11 @@
             "tooltip": true,
             "logHover": {
               "tooltipLabel": "run action on click",
-              "icon": "fa-leaf",
+              "icon": "px-nav:notification",
               "onClick": "function(data) { console.log(\"click on leaf, context:\" + this.outerHTML); console.log(\"click on leaf, data:\" + JSON.stringify(data));}",
               "subConfig": {
                 "customClick": {
-                  "icon": "fa-coffee",
+                  "icon": "px-nav:expand",
                   "tooltipLabel": "logs some messages on chart click",
                   "eventName": "my-custom-click",
                   "actionConfig": {
@@ -52,7 +52,7 @@
                   }
                 },
                 "customClick2": {
-                  "icon": "fa-fire-extinguisher",
+                  "icon": "px-nav:collapse",
                   "tooltipLabel": "logs some other messages on chart click",
                   "actionConfig": {
                     "mousedown": "function() {console.log(\"custom mouse down 2 on chart\")}",

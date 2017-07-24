@@ -42,7 +42,7 @@
           event-config= '{
             "Recalibrate":{
               "color": "blue",
-              "icon": "fa-camera",
+              "icon": "px-fea:deployments",
               "type": "fa",
               "offset":[0,0]
             },
@@ -111,7 +111,7 @@
           toolbar-config='{
             "customZoom": {
               "tooltipLabel": "zoom",
-              "icon": "fa-search",
+              "icon": "px-vis:zoom-toolbar",
               "selectable": true,
               "actionConfig": {
                 "mousedown": "startZooming",
@@ -119,7 +119,7 @@
               },
               "subConfig": {
                 "x": {
-                  "title": "X",
+                  "icon": "px-vis:x-axis",
                   "tooltipLabel": "Zoom on X axis only",
                   "eventName": "my-custom-click",
                   "selectable": true,
@@ -127,34 +127,34 @@
                   "onClick": "function() { this.set(\"selectionType\", \"xAxis\");}"
                 },
                 "y": {
-                  "title": "Y",
+                  "icon": "px-vis:y-axis",
                   "tooltipLabel": "Zoom on Y axis only",
                   "selectable": true,
                   "onClick": "function() { this.set(\"selectionType\", \"yAxis\");}"
                 },
                 "xy": {
-                  "title": "XY",
+                  "icon": "px-vis:xy-axis",
                   "tooltipLabel": "Zoom on X and Y axis",
                   "selectable": true,
                   "onClick": "function() { this.set(\"selectionType\", \"xy\");}"
                 },
                 "zoomIn": {
-                  "icon": "fa-plus",
+                  "icon": "px-vis:zoom-in",
                   "tooltipLabel": "zoom in",
                   "eventName": "px-vis-toolbar-zoom-in"
                 },
                 "zoomOut": {
-                  "icon": "fa-minus",
+                  "icon": "px-vis:zoom-out",
                   "tooltipLabel": "zoom out",
                   "eventName": "px-vis-toolbar-zoom-out"
                 },
                 "undoZoom": {
-                  "icon": "fa-undo",
+                  "icon": "px-vis:zoom-out-one-level",
                   "tooltipLabel": "undo zoom",
                   "eventName": "px-vis-toolbar-undo-zoom"
                 },
                 "resetZoom": {
-                  "icon": "fa-expand",
+                  "icon": "px-vis:full-screen",
                   "tooltipLabel": "reset zoom to inital value",
                   "eventName": "px-vis-toolbar-reset-zoom"
                 }
@@ -164,11 +164,11 @@
             "tooltip": true,
             "logHover": {
               "tooltipLabel": "run action on click",
-              "icon": "fa-leaf",
+              "icon": "px-nav:notification",
               "onClick": "function(data) { console.log(\"click on leaf, context:\" + this.outerHTML); console.log(\"click on leaf, data:\" + JSON.stringify(data));}",
               "subConfig": {
                 "customClick": {
-                  "icon": "fa-coffee",
+                  "icon": "px-nav:expand",
                   "tooltipLabel": "logs some messages on chart click",
                   "eventName": "my-custom-click",
                   "actionConfig": {
@@ -178,7 +178,7 @@
                   }
                 },
                 "customClick2": {
-                  "icon": "fa-fire-extinguisher",
+                  "icon": "px-nav:collapse",
                   "tooltipLabel": "logs some other messages on chart click",
                   "actionConfig": {
                     "mousedown": "function() {console.log(\"custom mouse down 2 on chart\")}",
