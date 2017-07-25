@@ -225,7 +225,10 @@ function runCustomTests() {
 
         if(counter === 4) {
           IASChart.removeEventListener('px-vis-line-svg-rendering-ended', rendered);
-          done();
+          window.setTimeout(function() {
+            done();
+          }, 500);
+
         }
       };
 

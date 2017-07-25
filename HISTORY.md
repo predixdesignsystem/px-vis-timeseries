@@ -1,8 +1,12 @@
 v3.0.0
-==================
+=======
 * Design refresh
 * Update for new renderer
 * See px-vis release notes for breaking changes
+
+v2.1.3
+==================
+* Fixes to markers margin, including a new marginMarkersAdjustment property allowing for more control over where the markers are drawn
 
 v2.1.2
 ==================
