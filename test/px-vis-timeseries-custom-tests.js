@@ -185,9 +185,8 @@ function runCustomTests() {
 
   suite('px-vis-timeseries includeAllSeries setup works', function() {
     var IASChart = document.getElementById('IASChart');
-    var colors = baseColors.properties.colors.value;
-    var colorOrder = dataVisColors.properties.seriesColorOrder.value;
-    var colorSet = dataVisColors.properties.dataVisColors.value;
+
+    var colorSet = PxColorsBehavior.dataVisColors.properties.seriesColorList.value;
 
     suiteSetup(function(done){
       var d = [{
@@ -247,13 +246,13 @@ function runCustomTests() {
 
     test('IASChart completeSeriesConfig', function() {
       assert.isObject(IASChart.completeSeriesConfig.y);
-      assert.equal(IASChart.completeSeriesConfig.y.color, colorSet[colorOrder[0]]);
+      assert.equal(IASChart.completeSeriesConfig.y.color, colorSet[0]);
       assert.equal(IASChart.completeSeriesConfig.y.name, 'y');
       assert.deepEqual(IASChart.completeSeriesConfig.y.x, 'x');
       assert.deepEqual(IASChart.completeSeriesConfig.y.y, 'y');
 
       assert.isObject(IASChart.completeSeriesConfig.y1);
-      assert.equal(IASChart.completeSeriesConfig.y1.color, colorSet[colorOrder[1]]);
+      assert.equal(IASChart.completeSeriesConfig.y1.color, colorSet[1]);
       assert.equal(IASChart.completeSeriesConfig.y1.name, 'y1');
       assert.deepEqual(IASChart.completeSeriesConfig.y1.x, 'x');
       assert.deepEqual(IASChart.completeSeriesConfig.y1.y, 'y1');
@@ -276,12 +275,6 @@ function runCustomTests() {
 
     test('IASChart canvasContext', function() {
       assert.deepEqual(IASChart.canvasContext._translation, [50,10]);
-      assert.equal(IASChart.canvasContext._pxLinesRedraw, 0);
-      assert.deepEqual(IASChart.canvasContext._pxLinesSeries, []);
-      assert.isTrue(IASChart.canvasContext._pxLinesCleared);
-      assert.equal(IASChart.canvasContext._pxScatterRedraw, 0);
-      assert.deepEqual(IASChart.canvasContext._pxScatterSeries, []);
-      assert.isTrue(IASChart.canvasContext._pxScatterCleared);
       assert.equal(IASChart.canvasContext.canvas.width, 500);
       assert.equal(IASChart.canvasContext.canvas.height, 400);
     });
@@ -350,9 +343,8 @@ function runCustomTests() {
 
   suite('px-vis-timeseries config setup works', function() {
     var configChart = document.getElementById('configChart');
-    var colors = baseColors.properties.colors.value;
-    var colorOrder = dataVisColors.properties.seriesColorOrder.value;
-    var colorSet = dataVisColors.properties.dataVisColors.value;
+
+    var colorSet = PxColorsBehavior.dataVisColors.properties.seriesColorList.value;
 
     suiteSetup(function(done){
       var d = [{
@@ -421,13 +413,13 @@ function runCustomTests() {
 
     test('configChart completeSeriesConfig', function() {
       assert.isObject(configChart.completeSeriesConfig.config1);
-      assert.equal(configChart.completeSeriesConfig.config1.color, colorSet[colorOrder[0]]);
+      assert.equal(configChart.completeSeriesConfig.config1.color, colorSet[0]);
       assert.equal(configChart.completeSeriesConfig.config1.name, 'Series 1');
       assert.deepEqual(configChart.completeSeriesConfig.config1.x, 'x');
       assert.deepEqual(configChart.completeSeriesConfig.config1.y, 'y');
 
       assert.isObject(configChart.completeSeriesConfig.config2);
-      assert.equal(configChart.completeSeriesConfig.config2.color, colorSet[colorOrder[1]]);
+      assert.equal(configChart.completeSeriesConfig.config2.color, colorSet[1]);
       assert.equal(configChart.completeSeriesConfig.config2.name, 'Series 2');
       assert.deepEqual(configChart.completeSeriesConfig.config2.x, 'x');
       assert.deepEqual(configChart.completeSeriesConfig.config2.y, 'y1');
@@ -450,12 +442,6 @@ function runCustomTests() {
 
     test('configChart canvasContext', function() {
       assert.deepEqual(configChart.canvasContext._translation, [50,10]);
-      assert.equal(configChart.canvasContext._pxLinesRedraw, 0);
-      assert.deepEqual(configChart.canvasContext._pxLinesSeries, []);
-      assert.isTrue(configChart.canvasContext._pxLinesCleared);
-      assert.equal(configChart.canvasContext._pxScatterRedraw, 0);
-      assert.deepEqual(configChart.canvasContext._pxScatterSeries, []);
-      assert.isTrue(configChart.canvasContext._pxScatterCleared);
       assert.equal(configChart.canvasContext.canvas.width, 500);
       assert.equal(configChart.canvasContext.canvas.height, 400);
     });
