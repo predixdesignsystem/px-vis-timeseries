@@ -161,7 +161,6 @@ Custom property | Description
               height="[[height]]"
               margin="[[_internalMargin]]"
               canvas-context="{{canvasContext}}"
-              canvas-context-top="{{canvasContextTop}}"
               canvas-layers="{{canvasLayers}}"
               canvas-layers-config="[[canvasLayersConfig]]"
               svg="{{svg}}"
@@ -454,7 +453,8 @@ Custom property | Description
         width="[[width]]"
         height="[[height]]"
         margin="[[_internalMargin]]"
-        canvas-context="[[canvasContextTop]]"
+        canvas-context="[[canvasLayers.highlighter]]"
+        canvas-layers-config="{{canvasLayersConfig}}"
         layers-to-mask="[[canvasContext]]"
         x="[[x]]"
         y="[[y]]"
@@ -493,7 +493,8 @@ Custom property | Description
       width="[[width]]"
       height="[[height]]"
       margin="[[_internalMargin]]"
-      canvas-context="[[canvasContextTop]]"
+      canvas-context="[[canvasLayers.striping]]"
+      canvas-layers-config="{{canvasLayersConfig}}"
       x="[[x]]"
       domain-changed="[[domainChanged]]"
       clip-path
@@ -793,10 +794,9 @@ Custom property | Description
 
       //renderer
       '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
-      '_renderHighlight(domainChanged, canvasContextTop, _highlightData.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
+      '_renderHighlight(domainChanged, canvasLayers.highlighter, _highlightData.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
       '_renderSeriesOnTop(serieToRedrawOnTop)',
       '_renderMarkers(canvasLayers.markers, domainChanged, markerData, markerConfig, preventInitialDrawing)'
-
     ],
 
     listeners: {
