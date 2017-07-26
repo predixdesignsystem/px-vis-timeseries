@@ -16,8 +16,8 @@ function runCustomTests() {
           },
           "Fan start":{
             "color": "green",
-            "icon": "\uf015",
-            "type": "unicode",
+            "icon": "px-fea:bug",
+            "type": "px",
             "offset":[1,0]
           },
           "Fan stop":{
@@ -96,6 +96,7 @@ function runCustomTests() {
       margin.set('width', 500);
       margin.set('height', 400);
       margin.set('chartData', d);
+
     });
 
     test('margin fixture is created', function() {
@@ -185,8 +186,6 @@ function runCustomTests() {
 
   suite('px-vis-timeseries includeAllSeries setup works', function() {
     var IASChart = document.getElementById('IASChart');
-
-    var colorSet = PxColorsBehavior.dataVisColors.properties.seriesColorList.value;
 
     suiteSetup(function(done){
       var d = [{
@@ -343,8 +342,6 @@ function runCustomTests() {
 
   suite('px-vis-timeseries config setup works', function() {
     var configChart = document.getElementById('configChart');
-
-    var colorSet = PxColorsBehavior.dataVisColors.properties.seriesColorList.value;
 
     suiteSetup(function(done){
       var d = [{
