@@ -1,11 +1,40 @@
-Px-Vis-Timeseries
------------------------------------------------
+# px-vis-timeseries
 
 ## Overview
 
-Px-Vis-Timeseries is a Predix Experience ('Px') component
+`Px-vis-timeseries` is a Predix UI component that creates a timeseries chart.
 
 ## Getting Started
+
+First, install the component via bower on the command line:
+
+```
+bower install px-vis-timeseries --save
+```
+
+Second, import the component in your application with the following tag in your head:
+
+```
+<link rel="import" href="/bower_components/px-vis-timeseries/px-vis-timeseries.html"/>
+```
+
+Finally, use the component in your application:
+
+```
+See demo page for example usage.
+```
+
+<br />
+<hr />
+
+## Documentation
+
+Read the full API and view the demo [here](https://predixdev.github.io/px-vis-timeseries).
+
+The documentation in this repository is supplemental to the official Predix documentation, which is continuously updated and maintained by the Predix documentation team. Go to [http://predix.io](http://predix.io)  to see the official Predix documentation.
+
+
+## Local Development
 
 From the component's directory...
 
@@ -15,40 +44,23 @@ $ bower install
 $ gulp sass
 ```
 
-### API and examples
-
-From the component's directory
+From the component's directory, to start a local server run:
 
 ```
 $ gulp serve
 ```
 
-Starts a local server. Navigate to the root of that server (e.g. http://localhost:8080/) in a browser to open the API documentation page, with link to the "Demo" / working examples.
+Navigate to the root of that server (e.g. http://localhost:8080/) in a browser to open the API documentation page, with link to the "Demo" / working examples.
 
-### BrowserSync
 
-By default gulp serve is configured to enable BrowserSync and will be watching for modifications in your root directory as well as `/css`.
 
-### Options
 
-Does this component have runtime configuration options?  If so, they should be able to be passed as attributes on the element with examples shown below.
-
-### Function calls
-
-What is the public API of this component?
-
-### Extending styles
-
-Documented CSS extension points?
-
-### Extending behavior
-
-See Polymer composition patterns
-
-GE Coding Style Guide
----------------------
-
+### GE Coding Style Guide
 [GE JS Developer's Guide](https://github.com/GeneralElectric/javascript)
 
+<br />
+<hr />
 
-### Known Issues
+## Known Issues
+
+Please use [Github Issues](https://github.com/PredixDev/px-vis-timeseries/issues) to submit any bugs you might find.
