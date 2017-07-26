@@ -246,13 +246,13 @@ function runCustomTests() {
 
     test('IASChart completeSeriesConfig', function() {
       assert.isObject(IASChart.completeSeriesConfig.y);
-      assert.equal(IASChart.completeSeriesConfig.y.color, colorSet[0]);
+      assert.equal(IASChart.completeSeriesConfig.y.color, IASChart.seriesColorList[0]);
       assert.equal(IASChart.completeSeriesConfig.y.name, 'y');
       assert.deepEqual(IASChart.completeSeriesConfig.y.x, 'x');
       assert.deepEqual(IASChart.completeSeriesConfig.y.y, 'y');
 
       assert.isObject(IASChart.completeSeriesConfig.y1);
-      assert.equal(IASChart.completeSeriesConfig.y1.color, colorSet[1]);
+      assert.equal(IASChart.completeSeriesConfig.y1.color, IASChart.seriesColorList[1]);
       assert.equal(IASChart.completeSeriesConfig.y1.name, 'y1');
       assert.deepEqual(IASChart.completeSeriesConfig.y1.x, 'x');
       assert.deepEqual(IASChart.completeSeriesConfig.y1.y, 'y1');
@@ -413,13 +413,13 @@ function runCustomTests() {
 
     test('configChart completeSeriesConfig', function() {
       assert.isObject(configChart.completeSeriesConfig.config1);
-      assert.equal(configChart.completeSeriesConfig.config1.color, colorSet[0]);
+      assert.equal(configChart.completeSeriesConfig.config1.color, configChart.seriesColorList[0]);
       assert.equal(configChart.completeSeriesConfig.config1.name, 'Series 1');
       assert.deepEqual(configChart.completeSeriesConfig.config1.x, 'x');
       assert.deepEqual(configChart.completeSeriesConfig.config1.y, 'y');
 
       assert.isObject(configChart.completeSeriesConfig.config2);
-      assert.equal(configChart.completeSeriesConfig.config2.color, colorSet[1]);
+      assert.equal(configChart.completeSeriesConfig.config2.color, configChart.seriesColorList[1]);
       assert.equal(configChart.completeSeriesConfig.config2.name, 'Series 2');
       assert.deepEqual(configChart.completeSeriesConfig.config2.x, 'x');
       assert.deepEqual(configChart.completeSeriesConfig.config2.y, 'y1');
