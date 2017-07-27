@@ -1,3 +1,7 @@
+v3.0.1
+==================
+* improved demo
+
 v3.0.0
 =======
 * Design refresh
