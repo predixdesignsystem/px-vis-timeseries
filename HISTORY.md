@@ -1,3 +1,7 @@
+v3.0.1
+=======
+* Remove theme import from component
+
 v3.0.0
 =======
 * Design refresh
