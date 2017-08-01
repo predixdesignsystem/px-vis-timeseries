@@ -1,5 +1,10 @@
+v3.0.4
+==================
+* Removed helpers design and added vis sass partial
+* Add safari flex bug fix
+
 v3.0.3
-=======
+==================
 * Remove theme import from component
 
 v3.0.2
@@ -11,7 +16,7 @@ v3.0.1
 * improved demo
 
 v3.0.0
-=======
+==================
 * Design refresh
 * Update for new renderer
 * See px-vis release notes for breaking changes
