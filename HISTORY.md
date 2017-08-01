@@ -1,6 +1,14 @@
-v3.0.1
+v3.0.3
 =======
 * Remove theme import from component
+
+v3.0.2
+==================
+* remove unused import from demo
+
+v3.0.1
+==================
+* improved demo
 
 v3.0.0
 =======
