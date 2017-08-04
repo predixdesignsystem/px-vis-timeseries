@@ -1,3 +1,9 @@
+v3.0.5
+==================
+* Adding ability to pass strokeWidth down to lines from seriesConfig
+* Change CodePen to Glitch
+* Use updated demo snippet
+
 v3.0.4
 ==================
 * Removed helpers design and added vis sass partial

@@ -79,11 +79,10 @@
       <!-- END Component ------------------------------------------------------>
 
       <px-demo-component-snippet
-          element-properties="{{props}}"
-          element-name="px-vis-timeseries"
-          links-includes="[[linksIncludes]]"
-          scripts-includes="[[scriptsIncludes]]"
-          polygit-includes="[[polygitIncludes]]">
+        element-properties="{{props}}"
+        element-name="px-vis-timeseries"
+        codepen-link="https://glitch.com/edit/#!/px-vis-timeseries-demo"
+        suppress-property-values="[[suppressPropertyValues]]">
       </px-demo-component-snippet>
     </px-demo-interactive>
 
@@ -303,26 +302,11 @@
         }
       },
 
-      scriptsIncludes: {
+      suppressPropertyValues: {
         type: Array,
-        value: function() {
-          return ['https://cdn.rawgit.com/foretagsplatsen/numbro/1.7.1/numbro.js'];
-        }
+        value: function() { return ['chartData']; }
       },
 
-      linksIncludes: {
-        type: Array,
-        value: function() {
-          return ['px-vis/px-polygit-imports-vis.html', 'px-datetime-common/px-polygit-imports-datetime.html'];
-        }
-      },
-
-      polygitIncludes: {
-        type: Array,
-        value: function() {
-          return ['numbro*+MeTaNoV+*'];
-        }
-      },
       appliedWidth: {
         type: Number,
         defaultValue: 700
