@@ -1,3 +1,7 @@
+v3.1.1
+==================
+* Fix iframe url
+
 v3.1.0
 ==================
 * Adding ability to pass strokeWidth down to lines from seriesConfig
