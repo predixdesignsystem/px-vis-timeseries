@@ -1,3 +1,7 @@
+
+==================
+* adding PxVisBehaviorChart.extentsDataRouter
+
 v3.1.1
 ==================
 * Fix iframe url
