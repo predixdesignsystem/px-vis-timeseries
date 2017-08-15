@@ -571,7 +571,8 @@ Custom property | Description
       PxVisBehavior.stripProperties,
       PxVisBehaviorRenderer.base,
       PxVisBehavior.markers,
-      PxVisBehavior.updateStylesOverride
+      PxVisBehavior.updateStylesOverride,
+      PxVisBehaviorChart.extentsDataRouter
     ],
 
     /**
@@ -795,8 +796,6 @@ Custom property | Description
       '_navSelectedDomainChanged(_navSelectedDomain)',
       '_langChanged(language)',
       '_keepDataInSync(chartData.*, chartId)',
-      '_createStripe(extentsData)',
-
       //renderer
       '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
       '_renderHighlight(domainChanged, canvasLayers.highlighter, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
@@ -832,6 +831,9 @@ Custom property | Description
 
       // only listen to one since it is a toggle
       this.listen(this.$.highlighterDomIf, 'dom-change', '_highlighterConfigChanged');
+
+      //add in our striping option
+      this._extentsDataResolver['stripe'] = '_createStripe';
     },
     _getWrapperClass: function(_registerWrapperClass) {
       var classList = _registerWrapperClass + ' flex__item wrapper'
