@@ -3,6 +3,10 @@
 * adding PxVisBehaviorChart.extentsDataRouter
 * Removed renderToCanvas from renderer observers; rely on element registration to redraw
 
+v3.1.2
+==================
+* Fix doc format for static analyzer
+
 v3.1.1
 ==================
 * Fix iframe url

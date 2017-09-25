@@ -26,6 +26,7 @@
 <link rel="import" href="../px-vis/px-vis-highlight-point-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-striping.html"/>
 <link rel="import" href="../px-vis/px-vis-markers.html"/>
+<link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
 <!--
 Creates an interactive timeseries chart
@@ -118,8 +119,6 @@ Custom property | Description
 @homepage index.html
 @demo demo.html
 -->
-
-<link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
 <dom-module id="px-vis-timeseries">
   <template>
@@ -1326,8 +1325,20 @@ Custom property | Description
           dataset = this.stripeData[this.stripeType],
           found = false;
 
+      /*
+        TODO For vector search
+        this search works fine for timespans but will not work for single vectors
 
+        The problem is that it is impossible for a pixel coord to match a ms timestamp.
+        We'd have to do some kind of binary search through the stripe data for the timestamps
+        within some range of the cursor. Might want to cherry pick those single vectors at drawtime
+        into a separate object for easier searching.
+
+        Once you find it, then of course we need to figure out what kind of edits should be possible
+        and how to style it. Still use a fake brush?
+      */
       for(var i=0; i <dataset.length; i++) {
+        // checks if we are within the range of a stripe
         if(dataset[i][0] <= t && dataset[i][1] >= t) {
           this._hoverStripe(i);
 
