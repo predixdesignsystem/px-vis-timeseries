@@ -1,4 +1,7 @@
-// This is the wrapper for custom tests, called upon web components ready state
+document.addEventListener("WebComponentsReady", function() {
+  runCustomTests();
+});
+
 function runCustomTests() {
 
   suite('px-vis-timeseries configFile sets individual properties', function() {
@@ -383,6 +386,12 @@ function runCustomTests() {
             "x": "x",
             "y": "y1"
           }
+        },
+        toolbar = {
+          advancedZoom: true,
+          pan: true,
+          tooltip: true,
+          stripe: true
         }
 
       var  counter = 0;
