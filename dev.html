@@ -41,9 +41,10 @@
         <px-vis-timeseries
           id="timeSerie"
           height="500"
-          chart-extents='{
-            "y0":[0,"dynamic"],
-            "y1":[0,100]
+          hard-mute
+
+          default-series-config='{
+            "mutedOpacity": "0"
           }'
           threshold-data='[
             { "for":"y0", "type":"max", "value":35.4784 },
@@ -93,7 +94,6 @@
           x-axis-config= '{
             "title": "Date"
           }'
-
           y-axis-config= '{
             "title": "Single",
             "titleTruncation": false,
@@ -376,6 +376,7 @@
           width = "1000"
           height = "500"
           selection-type= "yAxis"
+          hard-mute
           series-config='{
             "y":{
               "type": "scatter",
