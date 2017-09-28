@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "polymer": "^1.9.0",
-    "px-vis": "^3.1.0",
+    "px-vis": "^4.0.0",
     "iron-resizable-behavior": "^2.0.0",
     "app-localize-behavior": "^2.0.0"
   },

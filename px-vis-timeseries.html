@@ -791,12 +791,13 @@ Custom property | Description
       '_calcMarkerMargins(_internalMargin, marginMarkersAdjustment)',
       '_setXScale(width, _internalMargin, xAxisType)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
-      '_setDomainCaller(wwDataSyncCounter, x, y, dataExtents, seriesToAxes.*, mutedSeries.*, hardMute)',
-      '_setDomainCaller(x, y, chartExtents, dataExtents, mutedSeries.*, hardMute)',
+      '_setDomainCaller(wwDataSyncCounter, x, y, dataExtents, seriesToAxes.*)',
+      '_setDomainCaller(x, y, chartExtents, dataExtents)',
       '_updateDomain(selectedDomain)',
       '_navSelectedDomainChanged(_navSelectedDomain)',
       '_langChanged(language)',
       '_keepDataInSync(chartData.*, chartId)',
+      '_mutedChanged(mutedSeries.*, hardMute)',
 
       //renderer
       '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
@@ -1109,6 +1110,11 @@ Custom property | Description
       }
     },
 
+    _mutedChanged: function() {
+      if(this.hardMute) {
+        this._setDomainCaller();
+      }
+    },
     /**
      *
      *
