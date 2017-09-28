@@ -1,7 +1,8 @@
-
+v3.1.3
 ==================
 * adding PxVisBehaviorChart.extentsDataRouter
 * Removed renderToCanvas from renderer observers; rely on element registration to redraw
+* use vis 4.0.0
 
 v3.1.2
 ==================
