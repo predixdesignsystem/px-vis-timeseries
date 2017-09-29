@@ -213,7 +213,6 @@ Custom property | Description
       y-axis-type="linear"
       tooltip-style="light"
       muted-series="[[mutedSeries]]"
-      hard-mute="[[hardMute]]"
       hide="[[!_computedShowTooltip]]">
     </px-vis-tooltip>
 
@@ -435,9 +434,7 @@ Custom property | Description
       extents-data="{{extentsData}}"
       action-config="[[actionConfig]]"
       selection-type="[[selectionType]]"
-      extents-action="{{extentsAction}}"
-      muted-series="[[mutedSeries]]"
-      hard-mute="[[hardMute]]">
+      extents-action="{{extentsAction}}">
     </px-vis-interaction-space>
 
     <px-vis-cursor
@@ -791,8 +788,8 @@ Custom property | Description
       '_calcMarkerMargins(_internalMargin, marginMarkersAdjustment)',
       '_setXScale(width, _internalMargin, xAxisType)',
       '_setMultiYScale(height, _internalMargin, axes.*)',
-      '_setDomainCaller(wwDataSyncCounter, x, y, dataExtents, seriesToAxes.*, mutedSeries.*, hardMute)',
-      '_setDomainCaller(x, y, chartExtents, dataExtents, mutedSeries.*, hardMute)',
+      '_setDomainCaller(wwDataSyncCounter, x, y, dataExtents, seriesToAxes.*)',
+      '_setDomainCaller(x, y, chartExtents, dataExtents)',
       '_updateDomain(selectedDomain)',
       '_navSelectedDomainChanged(_navSelectedDomain)',
       '_langChanged(language)',

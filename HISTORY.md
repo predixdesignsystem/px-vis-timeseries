@@ -1,3 +1,7 @@
+v3.1.4
+==================
+* Fix bad merge issue
+
 v3.1.3
 ==================
 * adding PxVisBehaviorChart.extentsDataRouter
