@@ -1,3 +1,7 @@
+v3.2.0
+==================
+* Added hard-mute
+
 v3.1.4
 ==================
 * Fix bad merge issue
