@@ -446,7 +446,8 @@ Custom property | Description
       chart-data="[[chartData]]"
       tooltip-data="[[tooltipData]]"
       clip-path="[[seriesClipPath]]"
-      muted-series="[[mutedSeries]]">
+      muted-series="[[mutedSeries]]"
+      hard-mute="[[hardMute]]">
     </px-vis-cursor>
 
     <template id="highlighterDomIf" is="dom-if" if="[[renderToCanvas]]" restamp>
@@ -468,7 +469,9 @@ Custom property | Description
         generating-crosshair-data="[[generatingCrosshairData]]"
         crosshair-data="[[crosshairData]]"
         default-empty-data="{{defaultEmptyData}}"
-        tooltip-data="{{tooltipData}}">
+        tooltip-data="{{tooltipData}}"
+        hard-mute="[[hardMute]]"
+        muted-series="[[mutedSeries]]">
       </px-vis-highlight-point-canvas>
     </template>
     <template is="dom-if" if="[[!renderToCanvas]]" restamp>
@@ -486,7 +489,9 @@ Custom property | Description
         crosshair-data="[[crosshairData]]"
         default-empty-data="{{defaultEmptyData}}"
         tooltip-data="{{tooltipData}}"
-        clip-path="[[seriesClipPath]]">
+        clip-path="[[seriesClipPath]]"
+        hard-mute="[[hardMute]]"
+        muted-series="[[mutedSeries]]">
       </px-vis-highlight-point>
     </template>
 
@@ -793,6 +798,7 @@ Custom property | Description
       '_navSelectedDomainChanged(_navSelectedDomain)',
       '_langChanged(language)',
       '_keepDataInSync(chartData.*, chartId)',
+      '_mutedChanged(mutedSeries.*, hardMute)',
 
       //renderer
       '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
@@ -1105,6 +1111,11 @@ Custom property | Description
       }
     },
 
+    _mutedChanged: function() {
+      if(this.hardMute === true) {
+        this._setDomainCaller();
+      }
+    },
     /**
      *
      *
