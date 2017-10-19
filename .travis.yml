@@ -14,7 +14,6 @@ addons:
     packages:
     - google-chrome-stable
 before_script:
-- yarn add web-component-tester@^6.0.0
 - yarn add bower
 - export PATH=$PWD/node_modules/.bin:$PATH
 - bower install

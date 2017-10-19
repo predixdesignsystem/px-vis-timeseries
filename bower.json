@@ -35,8 +35,7 @@
     "px-demo-data": "^0.0.20",
     "px-rangepicker": "^2.0.0",
     "iron-ajax": "^2.0.0",
-    "promise-polyfill": "polymerlabs/promise-polyfill#^2.0.1",
-    "web-component-tester": "^6.3.0"
+    "promise-polyfill": "polymerlabs/promise-polyfill#^2.0.1"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",
