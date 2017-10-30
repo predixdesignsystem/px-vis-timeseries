@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 dist: trusty
 language: node_js
 node_js:
@@ -14,13 +14,11 @@ addons:
     packages:
     - google-chrome-stable
 before_script:
-- yarn add web-component-tester@^6.0.0
-- yarn add bower
-- export PATH=$PWD/node_modules/.bin:$PATH
-- bower install
+- yarn add polymer-cli
+- polymer install
 script:
-- xvfb-run wct --skip-plugin sauce
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct --plugin sauce --skip-plugin
+- xvfb-run polymer test --skip-plugin sauce
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then polymer test --plugin sauce --skip-plugin
   local; fi
 after_success:
 - if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then openssl aes-256-cbc -k "$DEPLOYSECRET"
