@@ -212,7 +212,8 @@ Custom property | Description
       y-axis-type="linear"
       tooltip-style="light"
       muted-series="[[mutedSeries]]"
-      hide="[[!_computedShowTooltip]]">
+      hide="[[!_computedShowTooltip]]"
+      series-keys="[[_seriesKeys]]">
     </px-vis-tooltip>
 
     <px-vis-clip-path
@@ -450,7 +451,8 @@ Custom property | Description
       tooltip-data="[[tooltipData]]"
       clip-path="[[seriesClipPath]]"
       muted-series="[[mutedSeries]]"
-      hard-mute="[[hardMute]]">
+      hard-mute="[[hardMute]]"
+      series-keys="[[_seriesKeys]]">
     </px-vis-cursor>
 
     <template id="highlighterDomIf" is="dom-if" if="[[renderToCanvas]]" restamp>
@@ -474,7 +476,8 @@ Custom property | Description
         default-empty-data="{{defaultEmptyData}}"
         tooltip-data="{{tooltipData}}"
         hard-mute="[[hardMute]]"
-        muted-series="[[mutedSeries]]">
+        muted-series="[[mutedSeries]]"
+        series-keys="[[_seriesKeys]]">
       </px-vis-highlight-point-canvas>
     </template>
     <template is="dom-if" if="[[!renderToCanvas]]" restamp>
@@ -494,7 +497,8 @@ Custom property | Description
         tooltip-data="{{tooltipData}}"
         clip-path="[[seriesClipPath]]"
         hard-mute="[[hardMute]]"
-        muted-series="[[mutedSeries]]">
+        muted-series="[[mutedSeries]]"
+        series-keys="[[_seriesKeys]]">
       </px-vis-highlight-point>
     </template>
 
