@@ -1,3 +1,7 @@
+v3.2.4
+==================
+* Enable clipPath on canvas higlighters
+
 v3.2.3
 ==================
 * pass series keys to elements dealing with mutes series
