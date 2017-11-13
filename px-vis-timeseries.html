@@ -1166,7 +1166,13 @@ Custom property | Description
      *
      */
     _getXKey: function() {
-      return this.completeSeriesConfig[Object.keys(this.completeSeriesConfig)[0]]['x'];
+      var keys = Object.keys(this.completeSeriesConfig);
+
+      if(keys && keys.length) {
+        return this.completeSeriesConfig[keys[0]]['x'];
+      } else {
+        return '';
+      }
     },
 
     /**

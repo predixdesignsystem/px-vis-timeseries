@@ -1,3 +1,7 @@
+v3.2.5
+==================
+* Ensure passing empty seriesConfig doesn't throw error
+
 v3.2.4
 ==================
 * Enable clipPath on canvas higlighters
