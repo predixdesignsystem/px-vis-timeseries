@@ -42,7 +42,6 @@
           id="timeSerie"
           height="500"
           hard-mute
-
           default-series-config='{
             "mutedOpacity": "0"
           }'
@@ -90,20 +89,8 @@
               "tickFormat": "%b %d"
            }
          }'
-          x-axis-type="timeLocal"
           x-axis-config= '{
             "title": "Date"
-          }'
-          y-axis-config= '{
-            "title": "Single",
-            "titleTruncation": false,
-            "unit": "F",
-            "axis1": {
-              "title": "Temperature",
-              "titleTruncation": false,
-              "unit": "C",
-              "tickValues": [0,10,20,30]
-            }
           }'
           register-config='{
               "height": 50,
@@ -175,6 +162,9 @@
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
           range="[[range]]"
+          chart-extents='{
+            "axis1":[0,40]
+          }'
           stripe-config='{
             "inclusion": {
                 "fillColor": "rgb(117,216,53)",
@@ -381,7 +371,9 @@
             "y":{
               "type": "scatter",
               "name": "mySeries",
-              "color": "rgb(120,120,120)"
+              "color": "rgb(120,120,120)",
+              "yMin": -100,
+              "yMax": 100
             }
           }'
           chart-data="[[chartData3]]"
