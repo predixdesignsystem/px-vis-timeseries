@@ -532,6 +532,7 @@ Custom property | Description
     is: 'px-vis-timeseries',
 
     behaviors: [
+      PxVisBehavior.observerCheck,
       PxVisBehavior.baseSize,
       PxVisBehavior.margins,
       PxVisBehavior.dataset,
@@ -865,6 +866,10 @@ Custom property | Description
      * @method _setConfig
      */
     _setConfig: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(typeof(this.options) !== 'object') {
         console.error('Configuration options must be valid JSON');
         return;
@@ -877,6 +882,10 @@ Custom property | Description
       }
     },
     _navigatorConfigChanged: function(conf) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
 
       if(!this._isReady) {
         setTimeout(function() {
@@ -889,21 +898,45 @@ Custom property | Description
       }
     },
     _xAxisConfigChanged: function(conf) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this._applyConfigToElement(this.xAxisConfig, this.$.xAxis);
     },
     _tooltipConfigChanged: function(conf) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this._applyConfigToElement(this.tooltipConfig, this.$.tooltip);
     },
     _registerConfigChanged: function(conf) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this._applyConfigToElement(this.registerConfig, this.$.register);
     },
     _cursorConfigChanged: function(conf) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this._applyConfigToElement(this.cursorConfig, this.$.cursor);
     },
     _toolbarConfigChanged: function(conf) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this._applyConfigToElement(this.toolbarConfig, this.$.toolbar);
     },
     _interactionSpaceConfigChanged: function(interactionSpaceConfig) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this._applyConfigToElement(this.interactionSpaceConfig, this.$.interactionSpace)
     },
     _highlighterDomChanged: function() {
@@ -916,6 +949,10 @@ Custom property | Description
       this._highlighterConfigChanged();
     },
     _highlighterConfigChanged: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       var elem = this.renderToCanvas ? this.$$('#highlighterCanvas') : this.$$('#highlighter');
       if(elem && this._doesObjHaveValues(this.highlighterConfig)) {
         this._applyConfigToElement(this.highlighterConfig, elem);
@@ -928,6 +965,10 @@ Custom property | Description
      * @method _calcMargins
      */
     _calcMargins:function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this.debounce('_calcMargin', function() {
 
         var margin,
@@ -997,6 +1038,10 @@ Custom property | Description
     },
 
     _calcMarkerMargins: function() {
+      if(this.hasUndefinedArguments(arguments)) {
+        return;
+      }
+
 
       var newMarg;
 
@@ -1094,6 +1139,10 @@ Custom property | Description
      *
      */
     _disableNavigatorChanged: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(!this._disableNavigator && this.navigatorConfig) {
         //make sure dom if is rendered
         this.$.navTemplate.render();
@@ -1106,6 +1155,10 @@ Custom property | Description
      *
      */
     _showHorizontalGrid: function(hideGrid, axes, y, matchTicks) {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(hideGrid) {
         return false;
       }
@@ -1122,6 +1175,10 @@ Custom property | Description
      *
      */
     _returnGridAxis: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
         return this.y[this.axes[0]];
     },
 
@@ -1130,12 +1187,20 @@ Custom property | Description
      *
      */
     _returnXDomain: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(this.domainChanged !== null && !this.disableDynamicUpdate && this.x) {
         return this.x.domain();
       }
     },
 
     _mutedChanged: function() {
+      if(this.hasUndefinedArguments(arguments)) {
+        return;
+      }
+
       if(this.hardMute === true) {
         this._setDomainCaller();
       }
@@ -1145,6 +1210,10 @@ Custom property | Description
      *
      */
     _setDomainCaller: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(this._doesObjHaveValues(this.seriesToAxes)) {
         this._setDomain();
       }
@@ -1155,6 +1224,10 @@ Custom property | Description
      *
      */
     _bothDomainsSet: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(this.domainChanged !== null & this._axisDomainChanged !== null) {
         return !this.$.yAxes.domainChanged;
       }
@@ -1165,6 +1238,10 @@ Custom property | Description
      *
      */
     _navSelectedDomainChanged: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       this.set('selectedDomain', this._navSelectedDomain);
     },
 
@@ -1173,6 +1250,10 @@ Custom property | Description
      *
      */
     _getXKey: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       return this.completeSeriesConfig[Object.keys(this.completeSeriesConfig)[0]]['x'];
     },
 
@@ -1181,6 +1262,10 @@ Custom property | Description
      *
      */
     _computeAxisActionConfig: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       var conf;
 
       conf = this.dimensions.length > 2 ? {
@@ -1203,6 +1288,10 @@ Custom property | Description
      *
      */
     _computeNavChartExtents: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
       if(this.chartExtents.y) {
         return {'y': this.chartExtents.y};
       } else {
@@ -1239,6 +1328,10 @@ Custom property | Description
      *
      */
     _langChanged: function() {
+     if(this.hasUndefinedArguments(arguments)) {
+       return;
+     }
+
 
       //recreate X and Y in case d3 locale changed
       this._recreateScales(this.width, this.height, this._internalMargin);
