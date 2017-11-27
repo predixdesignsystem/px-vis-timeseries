@@ -1,3 +1,7 @@
+
+==================
+* Enabled single vector stripe search.
+
 v3.2.5
 ==================
 * Ensure passing empty seriesConfig doesn't throw error
