@@ -2,6 +2,8 @@ node_modules
 .DS_Store
 temp
 bower_components
+bower_components-1*
+bower-1*.json
 .idea
 reports
 css/noprefix

@@ -25,6 +25,7 @@
 
     <body style="padding:30px;">
 
+      <dom-bind>
       <template id="template" is="dom-bind">
         <h1>Add charts dynamically</h1>
         <p>This page aims at helping benchmarking dynamically adding charts as well as making sure we don't introduce performance breaking changes. Look in the console for timing results for each batch of charts you've added <button id="btnPerf" style="background-color: salmon" class="btn">Click me for performance tips!</button></p>
@@ -100,6 +101,7 @@
         </px-vis-data-converter>
         </div>
     </template>
+    </dom-bind>
     <script>
       window.addEventListener('WebComponentsReady', function() {
         setTimeout(function() {

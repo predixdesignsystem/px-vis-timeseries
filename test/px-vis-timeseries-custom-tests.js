@@ -4,55 +4,6 @@ document.addEventListener("WebComponentsReady", function() {
 
 function runCustomTests() {
 
-  suite('px-vis-timeseries configFile sets individual properties', function() {
-    var configFile = document.getElementById('configFile');
-    var options = {
-        "width": "1000",
-        "height": "500",
-        "registerLocation":"both",
-        "eventConfig": {
-          "Recalibrate":{
-            "color": "blue",
-            "icon": "px-fea:deployments",
-            "type": "fa",
-            "offset":[0,0]
-          },
-          "Fan start":{
-            "color": "green",
-            "icon": "px-fea:bug",
-            "type": "px",
-            "offset":[1,0]
-          },
-          "Fan stop":{
-            "icon": "ge_logo.png",
-            "type": "image",
-            "offset":[0,-20],
-            "size":"20"
-          }
-        },
-        "navSeriesLimit":0,
-        "includeAllSeries": true
-      };
-
-    suiteSetup(function(done){
-      configFile.set('options', options);
-      done();
-    });
-
-    test('configFile fixture is created', function() {
-      assert.isTrue(configFile !== null);
-    });
-
-    test('configFile setConfig set the options', function() {
-      assert.equal(configFile.width, options.width);
-      assert.equal(configFile.height, options.height);
-      assert.equal(configFile.registerLocation, options.registerLocation);
-      assert.deepEqual(configFile.eventConfig, options.eventConfig);
-      assert.deepEqual(configFile.navSeriesLimit, options.navSeriesLimit);
-      assert.equal(configFile.includeAllSeries, options.includeAllSeries);
-    });
-  });
-
   suite('px-vis-timeseries margin sets properties with top and left axis locations', function() {
     var margin = document.getElementById('margin');
 
@@ -333,13 +284,13 @@ function runCustomTests() {
     });
 
     test('IASChart seriesClipPath', function() {
-      var cp = document.getElementById(IASChart.seriesClipPath);
-      assert.equal(cp.tagName, "clipPath");
+      var cp =  IASChart.svg.node().getElementsByTagName('clipPath');
+      assert.equal(cp[1].id, IASChart.seriesClipPath);
     });
 
     test('IASChart clipPath', function() {
-      var cp = document.getElementById(IASChart.clipPath);
-      assert.equal(cp.tagName, "clipPath");
+      var cp =  IASChart.svg.node().getElementsByTagName('clipPath');
+      assert.equal(cp[0].id, IASChart.clipPath);
     });
   }); //suite
 
@@ -505,13 +456,13 @@ function runCustomTests() {
     });
 
     test('configChart seriesClipPath', function() {
-      var cp = document.getElementById(configChart.seriesClipPath);
-      assert.equal(cp.tagName, "clipPath");
+      var cp =  configChart.svg.node().getElementsByTagName('clipPath');
+      assert.equal(cp[1].id, configChart.seriesClipPath);
     });
 
     test('configChart clipPath', function() {
-      var cp = document.getElementById(configChart.clipPath);
-      assert.equal(cp.tagName, "clipPath");
+      var cp =  configChart.svg.node().getElementsByTagName('clipPath');
+      assert.equal(cp[0].id, configChart.clipPath);
     });
   }); //suite
 

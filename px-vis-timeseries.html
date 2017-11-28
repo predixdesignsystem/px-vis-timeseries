@@ -1076,6 +1076,9 @@ Custom property | Description
      *
      */
     _chartOrNavMargin: function(disableNavigator) {
+      if(this.disableNavigator === undefined || this._internalMargin === undefined || this._internalMarginNav === undefined) {
+        return;
+      }
       return disableNavigator ? this._internalMargin : this._internalMarginNav;
     },
 
