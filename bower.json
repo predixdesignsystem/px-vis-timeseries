@@ -38,7 +38,7 @@
     "web-component-tester": "^6.3.0"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.7.24",
+    "webcomponentsjs": "^1.0.0",
     "promise-polyfill": "^2.0.0"
   },
   "variants": {
