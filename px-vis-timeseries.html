@@ -437,7 +437,11 @@ Custom property | Description
       extents-data="{{extentsData}}"
       action-config="[[actionConfig]]"
       selection-type="[[selectionType]]"
-      extents-action="{{extentsAction}}">
+      extents-action="{{extentsAction}}"
+      use-quadtree
+      time-data="[[_getXKey(completeSeriesConfig)]]"
+      prevent-web-worker-synchronization="[[preventWebWorkerSynchronization]]"
+      ww-data-sync-counter="[[wwDataSyncCounter]]">
     </px-vis-interaction-space>
 
     <px-vis-cursor
