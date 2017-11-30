@@ -439,7 +439,11 @@ Custom property | Description
       selection-type="[[selectionType]]"
       extents-action="{{extentsAction}}"
       muted-series="[[mutedSeries]]"
-      hard-mute="[[hardMute]]">
+      hard-mute="[[hardMute]]"
+      use-quadtree
+      time-data="[[_getXKey(completeSeriesConfig)]]"
+      prevent-web-worker-synchronization="[[preventWebWorkerSynchronization]]"
+      ww-data-sync-counter="[[wwDataSyncCounter]]">
     </px-vis-interaction-space>
 
     <px-vis-cursor
