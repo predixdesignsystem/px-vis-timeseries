@@ -1,6 +1,7 @@
 
 ==================
 * Enabled single vector stripe search.
+* Fix hard mute
 
 v3.2.5
 ==================
