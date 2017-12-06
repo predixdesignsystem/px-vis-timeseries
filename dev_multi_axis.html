@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>px-vis-timeseries Demo</title>
+        <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+        <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+        <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+
+        <link rel="import" href="../px-theme/px-theme-styles.html">
+        <style include="px-theme-styles" is="custom-style"></style>
+
+        <link rel="import" href="../promise-polyfill/promise-polyfill-lite.html">
+        <link rel="import" href="px-vis-timeseries.html"/>
+        <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+        <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+        <link rel="import" href="../px-vis/px-vis-data-converter.html"/>
+        <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+
+    </head>
+
+    <body style="padding:30px">
+      <template id="template" is="dom-bind">
+        <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
+
+        <px-rangepicker
+          id="rangepicker"
+          range="{{range}}"
+          time-zone="UTC"
+          date-format="YYYY/MM/DD"
+          time-format="hh:mm:ss A"
+          show-buttons="true"
+          show-time-zone="text">
+        </px-rangepicker>
+        <br/>
+        <span>Append image at the bottom of the page</span>
+        <button id="btnSnap">Go</button>
+        <px-vis-timeseries
+          id="timeSerie"
+          height="500"
+          render-to-canvas
+          include-all-series
+          chart-data="[[apmData]]"
+          default-series-config='{
+            "type": "line",
+            "x": "TimeStamp",
+            "xMin": "dynamic",
+            "xMax": "dynamic",
+            "yMin": "dynamic",
+            "yMax": "dynamic"
+          }'
+          disable-navigator
+          chart-extents='{
+            "x": [1465416480000, 1466626080000],
+            "y": [-5, 5]
+          }'>
+        </px-vis-timeseries>
+        <iron-ajax
+        url="../px-demo-data/demo-data/apm/timeseries.json"
+        handle-as="json"
+        auto
+        last-response="{{apmData}}"
+        >
+      </iron-ajax>
+
+    </template>
+    <script>
+      window.addEventListener('WebComponentsReady', function() {
+        setTimeout(function() {
+          var chart = document.getElementById('chartCustom'),
+              rangepicker = document.getElementById('rangepicker'),
+              btnSnap = document.getElementById('btnSnap'),
+              timeSerie = document.getElementById('timeSerie'),
+              fetch1 = document.getElementById('fetch1'),
+              fetch2 = document.getElementById('fetch2'),
+              converter = document.getElementById('converter'),
+              aggregatedData = [],
+              bool = true,
+              singleConfig = {"TTXD1_13":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_13","y":"TTXD1_13","color":"rgb(90,191,248)"},"TTXD1_12":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_12","y":"TTXD1_12","color":"rgb(226,141,23)"},"TTXD1_11":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_11","y":"TTXD1_11","color":"rgb(123,188,0)"},"TTXD1_10":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_10","y":"TTXD1_10","color":"rgb(166,119,239)"},"TTXD1_17":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_17","y":"TTXD1_17","color":"rgb(255,160,118)"},"TTXD1_16":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_16","y":"TTXD1_16","color":"rgb(97,132,255)"},"TTXD1_15":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_15","y":"TTXD1_15","color":"rgb(219,106,188)"},"TTXD1_14":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_14","y":"TTXD1_14","color":"rgb(77,151,139)"},"TTXD1_19":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_19","y":"TTXD1_19","color":"rgb(222,67,119)"},"TTXD1_18":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_18","y":"TTXD1_18","color":"rgb(101,149,64)"},"TTXD1_26":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_26","y":"TTXD1_26","color":"rgb(224,84,85)"},"TTXD1_9":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_9","y":"TTXD1_9","color":"rgb(72,130,168)"},"TTXD1_8":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_8","y":"TTXD1_8","color":"rgb(211,200,0)"},"TTXD1_7":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_7","y":"TTXD1_7","color":"rgb(122,122,122)"},"TTXD1_6":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_6","y":"TTXD1_6","color":"rgb(178,145,46)"},"TTXD1_5":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_5","y":"TTXD1_5","color":"rgb(130,210,251)"},"TTXD1_4":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_4","y":"TTXD1_4","color":"rgb(236,175,104)"},"TTXD1_3":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_3","y":"TTXD1_3","color":"rgb(146,206,64)"},"TTXD1_2":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_2","y":"TTXD1_2","color":"rgb(191,158,244)"},"TTXD1_1":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_1","y":"TTXD1_1","color":"rgb(242,191,159)"},"DWATT":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"DWATT","y":"DWATT","color":"rgb(149,167,255)"},"DLN_MODE":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"DLN_MODE","y":"DLN_MODE","color":"rgb(227,147,210)"},"TTXD1_27":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_27","y":"TTXD1_27","color":"rgb(120,186,175)"},"TTXD1_24":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_24","y":"TTXD1_24","color":"rgb(223,102,155)"},"TTXD1_25":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_25","y":"TTXD1_25","color":"rgb(142,180,124)"},"TTXD1_22":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_22","y":"TTXD1_22","color":"rgb(229,129,137)"},"TTXD1_23":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_23","y":"TTXD1_23","color":"rgb(125,167,195)"},"TTXD1_20":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_20","y":"TTXD1_20","color":"rgb(225,215,94)"},"TTXD1_21":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_21","y":"TTXD1_21","color":"rgb(163,163,163)"},"TTXD1_28":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_28","y":"TTXD1_28","color":"rgb(202,178,114)"},"TTXD1_29":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_29","y":"TTXD1_29","color":"rgb(166,223,252)"},"UnitNumber":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"UnitNumber","y":"UnitNumber","color":"rgb(242,200,154)"},"TTXD1_31":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_31","y":"TTXD1_31","color":"rgb(174,220,128)"},"TTXD1_30":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_30","y":"TTXD1_30","color":"rgb(210,187,249)"}},
+              multiConfig = {"TTXD1_13":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_13","y":"TTXD1_13","color":"rgb(90,191,248)"},"TTXD1_12":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_12","y":"TTXD1_12","color":"rgb(226,141,23)"},"TTXD1_11":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_11","y":"TTXD1_11","color":"rgb(123,188,0)"},"TTXD1_10":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_10","y":"TTXD1_10","color":"rgb(166,119,239)"},"TTXD1_17":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_17","y":"TTXD1_17","color":"rgb(255,160,118)"},"TTXD1_16":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_16","y":"TTXD1_16","color":"rgb(97,132,255)"},"TTXD1_15":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_15","y":"TTXD1_15","color":"rgb(219,106,188)"},"TTXD1_14":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_14","y":"TTXD1_14","color":"rgb(77,151,139)"},"TTXD1_19":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_19","y":"TTXD1_19","color":"rgb(222,67,119)"},"TTXD1_18":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_18","y":"TTXD1_18","color":"rgb(101,149,64)"},"TTXD1_26":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_26","y":"TTXD1_26","color":"rgb(224,84,85)"},"TTXD1_9":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_9","y":"TTXD1_9","color":"rgb(72,130,168)"},"TTXD1_8":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_8","y":"TTXD1_8","color":"rgb(211,200,0)"},"TTXD1_7":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_7","y":"TTXD1_7","color":"rgb(122,122,122)"},"TTXD1_6":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_6","y":"TTXD1_6","color":"rgb(178,145,46)"},"TTXD1_5":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_5","y":"TTXD1_5","color":"rgb(130,210,251)"},"TTXD1_4":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_4","y":"TTXD1_4","color":"rgb(236,175,104)"},"TTXD1_3":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_3","y":"TTXD1_3","color":"rgb(146,206,64)"},"TTXD1_2":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_2","y":"TTXD1_2","color":"rgb(191,158,244)"},"TTXD1_1":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_1","y":"TTXD1_1","color":"rgb(242,191,159)"},"DWATT":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"DWATT","y":"DWATT","color":"rgb(149,167,255)"},"DLN_MODE":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"DLN_MODE","y":"DLN_MODE","color":"rgb(227,147,210)"},"TTXD1_27":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_27","y":"TTXD1_27","color":"rgb(120,186,175)"},"TTXD1_24":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_24","y":"TTXD1_24","color":"rgb(223,102,155)"},"TTXD1_25":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_25","y":"TTXD1_25","color":"rgb(142,180,124)"},"TTXD1_22":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_22","y":"TTXD1_22","color":"rgb(229,129,137)"},"TTXD1_23":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_23","y":"TTXD1_23","color":"rgb(125,167,195)"},"TTXD1_20":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_20","y":"TTXD1_20","color":"rgb(225,215,94)"},"TTXD1_21":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis","side":"left","number":1},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_21","y":"TTXD1_21","color":"rgb(163,163,163)"},"TTXD1_28":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis6","side":"right","number":6},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_28","y":"TTXD1_28","color":"rgb(202,178,114)"},"TTXD1_29":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis5","side":"right","number":5},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_29","y":"TTXD1_29","color":"rgb(166,223,252)"},"UnitNumber":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis4","side":"right","number":4},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"UnitNumber","y":"UnitNumber","color":"rgb(242,200,154)"},"TTXD1_31":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis3","side":"left","number":3},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_31","y":"TTXD1_31","color":"rgb(174,220,128)"},"TTXD1_30":{"type":"line","x":"TimeStamp","axis":{"id":"defaultAxis2","side":"left","number":2},"xMin":"dynamic","xMax":"dynamic","yMin":"dynamic","yMax":"dynamic","name":"TTXD1_30","y":"TTXD1_30","color":"rgb(210,187,249)"}};
+
+
+
+
+        btnSnap.addEventListener('click', function() {
+         bool = !bool;
+
+          timeSerie.set('includeAllSeries', false);
+         if(bool) {
+          timeSerie.set('seriesConfig', singleConfig);
+         } else {
+          timeSerie.set('seriesConfig', multiConfig);
+         }
+        });
+      });
+    });
+    </script>
+    </body>
+</html>

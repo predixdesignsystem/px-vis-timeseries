@@ -1,3 +1,24 @@
+
+==================
+* Enabled single vector stripe search.
+* Fix hard mute
+
+v3.2.5
+==================
+* Ensure passing empty seriesConfig doesn't throw error
+
+v3.2.4
+==================
+* Enable clipPath on canvas higlighters
+
+v3.2.3
+==================
+* pass series keys to elements dealing with mutes series
+
+v3.2.2
+==================
+* add device flags
+
 v3.2.1
 ==================
 * Ensure highlighter svg always gets its config
