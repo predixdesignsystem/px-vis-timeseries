@@ -956,9 +956,6 @@ Custom property | Description
       this._highlighterConfigChanged();
     },
     _highlighterConfigChanged: function() {
-     if(this.hasUndefinedArguments(arguments)) {
-       return;
-     }
 
       var elem = this.renderToCanvas ? this.$$('#highlighterCanvas') : this.$$('#highlighter');
       if(elem && this._doesObjHaveValues(this.highlighterConfig)) {
