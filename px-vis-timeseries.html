@@ -26,6 +26,7 @@
 <link rel="import" href="../px-vis/px-vis-highlight-point-canvas.html"/>
 <link rel="import" href="../px-vis/px-vis-striping.html"/>
 <link rel="import" href="../px-vis/px-vis-markers.html"/>
+<link rel="import" href="../px-vis/px-vis-annotations.html"/>
 <link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
 <!--
@@ -167,6 +168,17 @@ Custom property | Description
               px-svg-elem="{{pxSvgElem}}"
               svg-lower="{{svgLower}}"
               px-svg-elem-lower="{{pxSvgElemLower}}">
+                <px-vis-annotations
+                  slot="4"
+                  svg="[[svg]]"
+                  x="[[x]]"
+                  y="[[y]]"
+                  margin="[[_internalMargin]]"
+                  domain-changed="[[domainChanged]]"
+                  complete-series-config="[[completeSeriesConfig]]"
+                  annotation-data="[[annotationData]]"
+                  show-strong-icon="[[showStrongIcon]]">
+                </px-vis-annotations>
             </px-vis-svg-canvas>
             <template id="navTemplate" is="dom-if" if="[[!disableNavigator]]">
               <px-vis-chart-navigator
@@ -588,7 +600,8 @@ Custom property | Description
       PxVisBehavior.stripProperties,
       PxVisBehaviorRenderer.base,
       PxVisBehavior.markers,
-      PxVisBehavior.updateStylesOverride
+      PxVisBehavior.updateStylesOverride,
+      PxVisBehavior.annotationData
     ],
 
     /**
