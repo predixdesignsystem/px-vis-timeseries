@@ -1,5 +1,6 @@
-
+3.3.0
 ==================
+* Polymer 1.x/2.x hybrid element support
 * Enabled single vector stripe search.
 * Fix hard mute
 
