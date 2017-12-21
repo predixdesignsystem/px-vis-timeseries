@@ -473,7 +473,7 @@ Custom property | Description
       series-keys="[[_seriesKeys]]">
     </px-vis-cursor>
 
-    <template id="highlighterDomIf" is="dom-if" if="[[renderToCanvas]]" restamp>
+    <template id="highlighterDomIf" is="dom-if" if="[[renderToCanvas]]" restamp on-dom-change="_highlighterConfigChanged">
       <px-vis-highlight-point-canvas
         id="highlighterCanvas"
         width="[[width]]"
@@ -499,7 +499,7 @@ Custom property | Description
         series-keys="[[_seriesKeys]]">
       </px-vis-highlight-point-canvas>
     </template>
-    <template is="dom-if" if="[[!renderToCanvas]]" restamp>
+    <template is="dom-if" if="[[!renderToCanvas]]" restamp on-dom-change="_highlighterConfigChanged">
       <px-vis-highlight-point
         id="highlighter"
         svg="[[layer.3]]"
@@ -840,10 +840,6 @@ Custom property | Description
       'iron-resize': '_onIronResize'
     },
 
-    detached: function() {
-      this.unlisten(this.$.highlighterDomIf, 'dom-change', '_highlighterDomChanged');
-    },
-
     created: function() {
       //set which element is used to calculate mouse pos for tooltip
       this._tooltipCalcHoverTargetId = 'drawingWrapper';
@@ -860,9 +856,6 @@ Custom property | Description
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
 
       this._isReady = true;
-
-      // only listen to one since it is a toggle
-      this.listen(this.$.highlighterDomIf, 'dom-change', '_highlighterDomChanged');
 
       //add in our striping option
       this._extentsDataRoutes['stripe'] = '_createStripe';
@@ -897,7 +890,6 @@ Custom property | Description
      if(this.hasUndefinedArguments(arguments)) {
        return;
      }
-
 
       if(!this._isReady) {
         setTimeout(function() {
@@ -951,18 +943,10 @@ Custom property | Description
 
       this._applyConfigToElement(this.interactionSpaceConfig, this.$.interactionSpace)
     },
-    _highlighterDomChanged: function() {
-      var elem = this.renderToCanvas ? this.$$('#highlighterCanvas') : this.$$('#highlighter');
-
-      if(!elem) {
-        //force render of the dom if so we can grab the highlighter and apply config
-        this.$.highlighterDomIf.render();
-      }
-      this._highlighterConfigChanged();
-    },
     _highlighterConfigChanged: function() {
 
       var elem = this.renderToCanvas ? this.$$('#highlighterCanvas') : this.$$('#highlighter');
+
       if(elem && this._doesObjHaveValues(this.highlighterConfig)) {
         this._applyConfigToElement(this.highlighterConfig, elem);
       }
