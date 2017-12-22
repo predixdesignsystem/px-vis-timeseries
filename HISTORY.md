@@ -3,7 +3,11 @@ v3.4.0
 * Added annotation strong class
 * Added quadtree search options
 
-v3.3.0
+3.3.1
+==================
+* fix demo code editor
+
+3.3.0
 ==================
 * Polymer 1.x/2.x hybrid element support
 * Enabled single vector stripe search.

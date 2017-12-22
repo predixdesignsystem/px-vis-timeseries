@@ -19,7 +19,9 @@
 <!-- Demo DOM module -->
 <dom-module id="px-vis-timeseries-demo">
   <template>
-    <style include="px-demo-styles" is="custom-style"></style>
+    <custom-style>
+      <style include="px-demo-styles" is="custom-style"></style>
+    </custom-style>
 
     <!-- Header -->
     <px-demo-header
@@ -37,7 +39,7 @@
       <px-demo-props slot="px-demo-props" props="{{props}}" config="[[chosenConfig]]"></px-demo-props>
 
       <!-- Code Editor -->
-      <px-demo-code-editor props="{{props}}"></px-demo-code-editor>
+      <px-demo-code-editor slot="px-demo-code-editor" props="{{props}}"></px-demo-code-editor>
 
       <!-- Component ---------------------------------------------------------->
       <px-demo-component slot="px-demo-component" class="flex__item flex" style="width:100%">
@@ -290,7 +292,6 @@
             "numRightAxes",
             "leftAxisSize",
             "rightAxisSize",
-            "svg",
             "zoomStack"
           ]
         }
