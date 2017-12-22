@@ -1,6 +1,6 @@
 {
   "name": "px-vis-timeseries",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "main": [
     "px-vis-timeseries.html"
   ],
@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "polymer": "#1.9 - 2",
-    "px-vis": "^4.0.0",
+    "px-vis": "^4.6.0",
     "iron-resizable-behavior": "^2.0.0",
     "app-localize-behavior": "^2.0.0"
   },
