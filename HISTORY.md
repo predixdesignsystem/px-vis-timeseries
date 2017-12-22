@@ -2,9 +2,6 @@ v3.4.0
 ==================
 * Added annotation strong class
 * Added quadtree search options
-
-3.3.1
-==================
 * fix demo code editor
 
 3.3.0
