@@ -135,14 +135,17 @@ Custom property | Description
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
-            tooltip-data="[[tooltipData]]"
+            tooltip-data="[[_registerTooltipData]]"
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             muted-series="{{mutedSeries}}"
             type="{{_registerType}}"
             x-axis-type="time"
             y-axis-type="[[yAxisType]]"
-            inert-register="[[hideRegister]]">
+            inert-register="[[hideRegister]]"
+            current-page="[[_registerCurrentPage]]"
+            total-pages="[[_registerTotalPages]]"
+            display-page-arrows="[[_registerDisplayPageArrows]]">
           </px-vis-register>
 
           <!-- chart + navigator -->
@@ -603,7 +606,8 @@ Custom property | Description
       PxVisBehavior.markers,
       PxVisBehavior.updateStylesOverride,
       PxVisBehavior.annotationData,
-      PxVisBehaviorChart.cursorConfig
+      PxVisBehaviorChart.cursorConfig,
+      PxVisBehaviorChart.registerPagnation
     ],
 
     /**
@@ -828,6 +832,7 @@ Custom property | Description
       '_langChanged(language)',
       '_keepDataInSync(chartData.*, chartId)',
       '_mutedChanged(mutedSeries.*, hardMute)',
+      '_tooltipDataUpdated(tooltipData.*)',
 
       //renderer
       '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
