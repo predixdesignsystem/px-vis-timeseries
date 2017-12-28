@@ -1,3 +1,7 @@
+v3.4.1
+==================
+* Added cursorConfig behavior
+
 v3.4.0
 ==================
 * Added annotation strong class

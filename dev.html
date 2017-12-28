@@ -98,7 +98,8 @@
               "height": 50,
               "type": "vertical",
               "timezone": "Asia/Dhaka",
-              "FirstDateTimeFormat": "HH:mm:ss z"}'
+              "FirstDateTimeFormat": "HH:mm:ss z"
+          }'
           dynamic-menu-config='[{
               "name": "Delete",
               "action": "function(data) { var conf = this.seriesConfig;  delete conf[data.additionalDetail.name]; this.set(\"seriesConfig\", {}); this.set(\"seriesConfig\", conf);}",
@@ -348,6 +349,13 @@
               "yMax": "dynamic"
             }'
           chart-data="[[apmData]]"
+          register-config='{
+            "sortConfig": {
+              "default": "true",
+              "nameIgnoreCase": "true",
+              "muted": "true"
+            }
+          }'
           chart-extents='{
             "y": [-25, 25]
           }'>
