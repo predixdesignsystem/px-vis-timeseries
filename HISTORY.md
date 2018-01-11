@@ -1,3 +1,7 @@
+v3.4.2
+==================
+* Fixed #72 - editing stripe data converts timestamps to date obj
+
 v3.4.1
 ==================
 * Added cursorConfig behavior

@@ -1597,7 +1597,7 @@ Custom property | Description
 
           // mock a extentsDataChange to pass data to the stripe creation fn
           if(!this.extentsData) { this.extentsData = {}; }
-          this.extentsData.eX = [this.x.invert(brushExt[0]), this.x.invert(brushExt[1])];
+          this.extentsData.eX = [this.x.invert(brushExt[0].getTime()), this.x.invert(brushExt[1].getTime())];
           this._createStripe();
         }
       }, 10);
