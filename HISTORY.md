@@ -1,3 +1,7 @@
+v3.4.3
+==================
+* Added logBase prop to interaction space
+
 v3.4.2
 ==================
 * Fixed #72 - editing stripe data converts timestamps to date obj
