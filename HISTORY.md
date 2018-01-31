@@ -1,3 +1,7 @@
+v3.4.2
+==================
+* Added logBase prop to interaction space
+
 v3.4.1
 ==================
 * Added cursorConfig behavior
