@@ -1,3 +1,7 @@
+v3.4.4
+==================
+* Fix demo for IE
+
 v3.4.3
 ==================
 * Added logBase prop to interaction space
