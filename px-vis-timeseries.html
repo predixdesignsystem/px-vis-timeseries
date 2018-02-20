@@ -202,7 +202,6 @@ Custom property | Description
                 chart-extents="[[_navChartExtents]]"
                 nav-series-limit="[[navSeriesLimit]]"
                 chart-domain-x="[[_returnXDomain(domainChanged, disableDynamicUpdate)]]"
-                range="[[range]]"
                 disable-empty-render
                 selected-domain="{{_navSelectedDomain}}"
                 prevent-resize
@@ -757,7 +756,9 @@ Custom property | Description
       },
       _navChartExtents: {
         type: Object,
-        computed: '_computeNavChartExtents(chartExtents)'
+        value: function() {
+          return undefined;
+        }
       },
       /**
        * List of key/values to be included for translating this component
@@ -844,7 +845,8 @@ Custom property | Description
 
     listeners: {
       'px-vis-interaction-space-mouse-coords': '_stripeCoords',
-      'iron-resize': '_onIronResize'
+      'iron-resize': '_onIronResize',
+      'px-vis-extents-applied': '_computeNavChartExtents'
     },
 
     created: function() {
@@ -1296,39 +1298,10 @@ Custom property | Description
      *
      *
      */
-    _computeNavChartExtents: function() {
-     if(this.hasUndefinedArguments(arguments)) {
-       return;
-     }
-
-      if(this.chartExtents.y) {
-        return {'y': this.chartExtents.y};
-      } else {
-
-        //find if we have axis extents defined
-        var keys = Object.keys(this.chartExtents),
-            min = Number.MAX_VALUE,
-            max = Number.MIN_VALUE,
-            current;
-
-        for(var i=0; i<keys.length; i++) {
-          if(keys[i] !== 'x') {
-
-            current = this.chartExtents[keys[i]];
-            if(current[0] !== 'dynamic' && current[0] < min) {
-              min = current[0];
-            }
-            if(current[1] !== 'dynamic' && current[1] > max) {
-              max = current[1];
-            }
-          }
-        }
-
-        if(min !== Number.MAX_VALUE && max !== Number.MIN_VALUE) {
-          return {'y': [min, max]};
-        } else {
-          return {'y': ['dynamic', 'dynamic']};
-        }
+    _computeNavChartExtents: function(e) {
+      if(Polymer.dom(e).rootTarget === this) {
+        this.set('_navChartExtents', e.detail);
+        this.set('_navSelectedDomain', e.detail);
       }
     },
 

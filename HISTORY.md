@@ -1,3 +1,8 @@
+v4.0.0
+==================
+* BREAKING CHANGE
+  * `range` property has been removed. use `chartExtents.x` to control the timespan
+
 v3.4.2
 ==================
 * Added logBase prop to interaction space

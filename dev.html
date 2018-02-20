@@ -164,7 +164,6 @@
           series-config="[[seriesConfig]]"
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
-          range="[[range]]"
           chart-extents='{
             "axis1":[0,40]
           }'
@@ -509,10 +508,14 @@
             processData(fetch4.lastResponse);
           }
 
-          rangepicker.set('range', {
-            "from":"2014-04-10T04:01:00.000Z",
-            "to":"2015-04-01T20:42:00.000Z"
+          rangepicker.addEventListener('px-datetime-range-submitted', function(e) {
+            timeSerie.set('chartExtents', {
+              x: [e.detail.fromMoment.valueOf(), e.detail.toMoment.valueOf()]
+            });
           });
+
+          rangepicker.set('fromMoment', Px.moment("2014-04-10T04:01:00.000Z"));
+          rangepicker.set('toMoment', Px.moment("2015-04-01T20:42:00.000Z"));
 
           chart.svg.append('rect')
             .attr("y", 200)
