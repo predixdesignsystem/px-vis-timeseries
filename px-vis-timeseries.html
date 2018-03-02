@@ -1194,7 +1194,7 @@ Custom property | Description
        return;
      }
 
-      if(this.domainChanged !== null && !this.disableDynamicUpdate && this.x) {
+      if(this.domainChanged && !this.disableDynamicUpdate && this.x) {
         return this.x.domain();
       }
     },
@@ -1231,8 +1231,8 @@ Custom property | Description
        return;
      }
 
-      if(this.domainChanged !== null & this._axisDomainChanged !== null) {
-        return !this.$.yAxes.domainChanged;
+      if(this.domainChanged && this._axisDomainChanged) {
+        return this.$.yAxes.domainChanged + 1;
       }
     },
 
