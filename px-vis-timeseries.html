@@ -131,7 +131,6 @@ Custom property | Description
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
             chart-width="[[width]]"
-            height="[[_registerHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
             units="[[units]]"
@@ -591,7 +590,6 @@ Custom property | Description
       PxVisBehaviorChart.chartToolbarConfig,
       PxVisBehaviorChart.showTooltip,
       PxVisBehaviorD3.interpolationFunction,
-      PxVisBehaviorChart.sizeVerticalRegister,
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
       PxVisBehaviorChart.thresholdConfig,
       PxVisBehavior.selectionType,
@@ -854,10 +852,6 @@ Custom property | Description
     ready:function() {
       this.set('numberOfLayers',5);
 
-      //set some elements so that the register knows how to calculate its height
-      this.set('_verticalRegisterDrawingCanvasId', 'svgCanvas');
-      this.set('_verticalRegisterHeightDeductions', ['toolbar', 'navigator']);
-
       //always default to a time based X axis
       if(this.xAxisType !== 'time' && this.xAxisType !== 'timeLocal') { this.set('xAxisType', 'time'); }
       if(!this.yAxisType) { this.set('yAxisType', 'linear'); }
@@ -1109,7 +1103,6 @@ Custom property | Description
 
         this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
         this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-        this._computeVerticalRegisterHeight([navigatorHeight, toolbarRect.height]);
       }, this.debounceResizeTiming);
     },
 
