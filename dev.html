@@ -28,7 +28,7 @@
       <template id="template" is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
 
-        <px-rangepicker
+        <!-- <px-rangepicker
           id="rangepicker"
           range="{{range}}"
           time-zone="UTC"
@@ -36,11 +36,11 @@
           time-format="hh:mm:ss A"
           show-buttons="true"
           show-time-zone="text">
-        </px-rangepicker>
+        </px-rangepicker> -->
         <br/>
         <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
-        <px-vis-timeseries
+        <!-- <px-vis-timeseries
           id="timeSerie"
           height="500"
           hard-mute
@@ -157,7 +157,7 @@
                 "fillOpacity": "0.5"
             }
           }'>
-        </px-vis-timeseries>
+        </px-vis-timeseries> -->
 
         <!-- chart-extents='{
           "x": ["dynamic","dynamic"],
@@ -209,7 +209,7 @@
 
         <br />
         <br />
-        <h2>Example of a timeseries with mostly default data and using the new data format</h2>
+        <!-- <h2>Example of a timeseries with mostly default data and using the new data format</h2>
          <px-vis-timeseries
           width = "1000"
           height = "500"
@@ -305,7 +305,7 @@
           y-axis-config='{
             "title": "Units"
           }'>
-        </px-vis-timeseries>
+        </px-vis-timeseries> -->
 
          <br />
         <br />
@@ -330,9 +330,19 @@
           chart-data="[[apmData]]"
           register-config='{
             "sortConfig": {
-              "default": "true",
-              "nameIgnoreCase": "true",
-              "muted": "true"
+              "default": {
+                "name": "default",
+                "sortFunction": "default",
+                "selected": "true"
+              },
+              "combined": {
+                "name": "Combined",
+                "sortFunction": ["nameIgnoreCase", "muted"]
+              },
+              "muted": {
+                "name": "Muted",
+                "sortFunction": "muted"
+              }
             }
           }'
           chart-extents='{
@@ -349,7 +359,7 @@
 
          <br />
         <br />
-        <h2>Example of a timeseries with a custom series configuration</h2>
+        <!-- <h2>Example of a timeseries with a custom series configuration</h2>
          <px-vis-timeseries
           id="myChart"
           width = "1000"
@@ -399,7 +409,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries>
+          ></px-vis-timeseries> -->
     </template>
     </dom-bind>
     <script>
@@ -488,22 +498,22 @@
             processData(fetch4.lastResponse);
           }
 
-          rangepicker.addEventListener('px-datetime-range-submitted', function(e) {
-            timeSerie.set('chartExtents', {
-              x: [e.detail.fromMoment.valueOf(), e.detail.toMoment.valueOf()]
-            });
-          });
+          // rangepicker.addEventListener('px-datetime-range-submitted', function(e) {
+          //   timeSerie.set('chartExtents', {
+          //     x: [e.detail.fromMoment.valueOf(), e.detail.toMoment.valueOf()]
+          //   });
+          // });
 
-          rangepicker.set('fromMoment', Px.moment("2014-04-10T04:01:00.000Z"));
-          rangepicker.set('toMoment', Px.moment("2015-04-01T20:42:00.000Z"));
+          // rangepicker.set('fromMoment', Px.moment("2014-04-10T04:01:00.000Z"));
+          // rangepicker.set('toMoment', Px.moment("2015-04-01T20:42:00.000Z"));
 
-          chart.svg.append('rect')
-            .attr("y", 200)
-            .attr("x", 0)
-            .attr("height", 100)
-            .attr("width", 1000)
-            .attr('opacity',0.25)
-            .attr('fill', 'rgb(70,173,0)');
+          // chart.svg.append('rect')
+          //   .attr("y", 200)
+          //   .attr("x", 0)
+          //   .attr("height", 100)
+          //   .attr("width", 1000)
+          //   .attr('opacity',0.25)
+          //   .attr('fill', 'rgb(70,173,0)');
 
 
 
