@@ -40,7 +40,7 @@
         <br/>
         <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
-        <!-- <px-vis-timeseries
+        <px-vis-timeseries
           id="timeSerie"
           height="500"
           hard-mute
@@ -75,7 +75,6 @@
             "title": "Date"
           }'
           register-config='{
-              "height": 50,
               "type": "vertical",
               "timezone": "Asia/Dhaka",
               "FirstDateTimeFormat": "HH:mm:ss z"
@@ -157,7 +156,7 @@
                 "fillOpacity": "0.5"
             }
           }'>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries>
 
         <!-- chart-extents='{
           "x": ["dynamic","dynamic"],
@@ -209,7 +208,7 @@
 
         <br />
         <br />
-        <!-- <h2>Example of a timeseries with mostly default data and using the new data format</h2>
+        <h2>Example of a timeseries with mostly default data and using the new data format</h2>
          <px-vis-timeseries
           width = "1000"
           height = "500"
@@ -217,13 +216,55 @@
           selection-type= "xy"
           chart-data="[[chartData2]]"
           register-config='{
-              "height": 50,
-              "type": "vertical"}'
+            "type": "vertical"
+          }'
           x-axis-config='{
             "title": "Date"
           }'
           y-axis-config='{
             "title": "Widgets"
+          }'
+          reference-data='[{
+            "x":1397102460000,
+            "y":10
+          },{
+            "x":1400184306000,
+            "y":14
+          },{
+            "x":1403266152000,
+            "y":16
+          },{
+            "x":1406347998000,
+            "y":17
+          },{
+            "x":1409429844000,
+            "y":19
+          },{
+            "x":1412511690000,
+            "y":22
+          },{
+            "x":1415593536000,
+            "y":25
+          },{
+            "x":1418675382000,
+            "y":26
+          },{
+            "x":1421757228000,
+            "y":27
+          },{
+            "x":1424839074000,
+            "y":29
+          },{
+            "x":1427920920000,
+            "y":32
+          },{
+            "x":1427920920000,
+            "y":34
+          }]'
+          reference-config='{
+            "myCurve": {
+              "name": "boffidy bof bof bof"
+            }
           }'>
         </px-vis-timeseries>
         <iron-ajax
@@ -297,15 +338,15 @@
           }'
           marker-data="[[eventData]]"
           register-config='{
-              "height": 50,
-              "type": "horizontal"}'
+            "type": "horizontal"
+          }'
           x-axis-config='{
             "title": "Date"
           }'
           y-axis-config='{
             "title": "Units"
           }'>
-        </px-vis-timeseries> -->
+        </px-vis-timeseries>
 
          <br />
         <br />
@@ -359,7 +400,7 @@
 
          <br />
         <br />
-        <!-- <h2>Example of a timeseries with a custom series configuration</h2>
+        <h2>Example of a timeseries with a custom series configuration</h2>
          <px-vis-timeseries
           id="myChart"
           width = "1000"
@@ -409,7 +450,7 @@
           y-axis-config='{
             "title": "Temperature"
           }'
-          ></px-vis-timeseries> -->
+          ></px-vis-timeseries>
     </template>
     </dom-bind>
     <script>

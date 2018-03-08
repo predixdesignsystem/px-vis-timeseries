@@ -1,5 +1,6 @@
 v4.0.0
 ==================
+* Added refence curve component
 * BREAKING CHANGE
   * `range` property has been removed. use `chartExtents.x` to control the timespan
 

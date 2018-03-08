@@ -27,6 +27,8 @@
 <link rel="import" href="../px-vis/px-vis-striping.html"/>
 <link rel="import" href="../px-vis/px-vis-markers.html"/>
 <link rel="import" href="../px-vis/px-vis-annotations.html"/>
+<link rel="import" href="../px-vis/px-vis-reference-curve.html"/>
+
 <link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
 <!--
@@ -534,6 +536,20 @@ Custom property | Description
       stripe-config="[[stripeConfig]]"
       stripe-data="[[stripeData]]">
     </px-vis-striping>
+
+    <template id="ref" is="dom-if" if="[[_showRef(referenceData.*)]]" restamp>
+      <px-vis-reference-curve
+        id="referenceCurve"
+        chart-id="[[chartId]]"
+        svg="[[layer.2]]"
+        x="[[x]]"
+        y="[[y]]"
+        domain-changed="[[domainChanged]]"
+        reference-config="[[referenceConfig]]"
+        reference-data="[[referenceData]]"
+        clip-path="[[seriesClipPath]]">
+      </px-vis-reference-curve>
+    </template>
   </template>
 </dom-module>
 
@@ -603,7 +619,8 @@ Custom property | Description
       PxVisBehavior.updateStylesOverride,
       PxVisBehavior.annotationData,
       PxVisBehaviorChart.cursorConfig,
-      PxVisBehaviorChart.registerPagnation
+      PxVisBehaviorChart.registerPagnation,
+      PxVisBehavior.referenceCurveProps
     ],
 
     /**
@@ -1077,33 +1094,28 @@ Custom property | Description
     },
 
     /**
-     *
-     *
-     */
-    _onIronResize: function() {
-      if(this.preventResize) {
-        return;
+    *
+    *
+    */
+    _resizeCalculations: function() {
+      var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+          navigatorHeight = this.disableNavigator ? 0 : this.$$('#navigator').height,
+          registerRect = this.$.register.getBoundingClientRect(),
+          toolbarRect = this.$.toolbar.getBoundingClientRect(),
+          widthDeduct = 0,
+          heightDeduct = 0;
+
+      if(this.$.register.type === 'horizontal') {
+        heightDeduct += registerRect.height;
+      } else {
+        widthDeduct += registerRect.width;
       }
-      this.debounce('ironresize', function() {
-        var wrapperRect = this.$.wrapper.getBoundingClientRect(),
-            navigatorHeight = this.disableNavigator ? 0 : this.$$('#navigator').height,
-            registerRect = this.$.register.getBoundingClientRect(),
-            toolbarRect = this.$.toolbar.getBoundingClientRect(),
-            widthDeduct = 0,
-            heightDeduct = 0;
 
-        if(this.$.register.type === 'horizontal') {
-          heightDeduct += registerRect.height;
-        } else {
-          widthDeduct += registerRect.width;
-        }
+      heightDeduct += toolbarRect.height;
+      heightDeduct += navigatorHeight;
 
-        heightDeduct += toolbarRect.height;
-        heightDeduct += navigatorHeight;
-
-        this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
-        this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-      }, this.debounceResizeTiming);
+      this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
+      this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
     },
 
     /**
@@ -1591,6 +1603,10 @@ Custom property | Description
           this._createStripe();
         }
       }, 10);
+    },
+
+    _showRef() {
+      return this.referenceData && this.referenceData.length ? true : false;
     }
   });
 </script>
