@@ -28,6 +28,8 @@
 <link rel="import" href="../px-vis/px-vis-markers.html"/>
 <link rel="import" href="../px-vis/px-vis-annotations.html"/>
 <link rel="import" href="../px-vis/px-vis-reference-curve.html"/>
+<link rel="import" href="../px-vis/px-vis-central-tooltip-content.html"/>
+<link rel="import" href="../px-tooltip/px-tooltip.html"/>
 
 <link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
@@ -331,24 +333,20 @@ Custom property | Description
       formats="[[formats]]">
     </px-vis-markers>
 
-    <template is="dom-repeat" items="[[eventData]]">
-      <px-vis-event
-        svg="[[layer.0]]"
-        x-axis-type="[[xAxisType]]"
-        x-key="time"
-        event-id="[[item.id]]"
-        event-data="[[item]]"
-        height="[[height]]"
-        margin="[[_internalMargin]]"
-        x="[[x]]"
-        event-config="[[eventConfig]]"
-        domain-changed="[[domainChanged]]"
-        clip-path="[[clipPath]]"
-        resources="[[resources]]"
-        language="[[language]]"
-        formats="[[formats]]">
-      </px-vis-event>
-    </template>
+    <px-vis-event
+      svg="[[layer.0]]"
+      x-axis-type="[[xAxisType]]"
+      event-data="[[eventData]]"
+      height="[[height]]"
+      margin="[[_internalMargin]]"
+      x="[[x]]"
+      event-config="[[eventConfig]]"
+      domain-changed="[[domainChanged]]"
+      clip-path="[[clipPath]]"
+      resources="[[resources]]"
+      language="[[language]]"
+      formats="[[formats]]">
+    </px-vis-event>
 
     <px-vis-threshold
       svg="[[layer.2]]"
@@ -551,9 +549,24 @@ Custom property | Description
         clip-path="[[seriesClipPath]]">
       </px-vis-reference-curve>
     </template>
+
+    <px-tooltip
+      id="centralTooltip"
+      smart-orientation
+      ignore-target-events
+      orientation="[[tooltipOrientation]]">
+      <px-vis-central-tooltip-content
+        resources="[[resources]]"
+        use-key-if-missing="[[useKeyIfMissing]]"
+        language="[[language]]"
+        first-date-time-format="[[firstDateTimeFormat]]"
+        second-date-time-format="[[secondDateTimeFormat]]"
+        separator="[[separator]]"
+        timezone="[[timezone]]">
+      </px-vis-central-tooltip-content>
+    </px-tooltip>
   </template>
 </dom-module>
-
 <script>
 
   Polymer({
@@ -622,7 +635,8 @@ Custom property | Description
       PxVisBehaviorChart.cursorConfig,
       PxVisBehaviorChart.registerPagnation,
       PxVisBehaviorChart.sizeVerticalRegister,
-      PxVisBehavior.referenceCurveProps
+      PxVisBehavior.referenceCurveProps,
+      PxVisBehaviorChart.centralTooltip
     ],
 
     /**

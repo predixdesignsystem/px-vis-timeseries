@@ -143,17 +143,38 @@
           series-config="[[seriesConfig]]"
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
+          event-config= '{
+            "Recalibrate":{
+              "color": "blue",
+              "icon": "px-fea:deployments",
+              "type": "px",
+              "offset":[0,0],
+              "lineWeight": 5
+            },
+            "Fan start":{
+              "color": "green",
+              "icon": "px-obj:truck",
+              "type": "px",
+              "offset":[1,0]
+            },
+            "Fan stop":{
+              "icon": "ge_logo.png",
+              "type": "image",
+              "offset":[0,-20],
+              "size":"20"
+            }
+          }'
           chart-extents='{
             "axis1":[0,40]
           }'
           stripe-config='{
             "inclusion": {
                 "fillColor": "rgb(117,216,53)",
-                "fillOpacity": "0.5"
+                "markerFillOpacity": "0.5"
             },
             "exclusion": {
                 "fillColor": "rgb(255,92,92)",
-                "fillOpacity": "0.5"
+                "markerFillOpacity": "0.5"
             }
           }'>
         </px-vis-timeseries>
@@ -212,7 +233,11 @@
          <px-vis-timeseries
           width = "1000"
           height = "500"
-          include-all-series
+          series-config='{
+            "y":{
+              "name": "supder duper very long name"
+            }
+          }'
           selection-type= "xy"
           chart-data="[[chartData2]]"
           register-config='{
@@ -288,7 +313,11 @@
             "left": 50,
             "right": 0
             }'
-          include-all-series
+            series-config='{
+              "y":{
+                "name": "supder duper very long name"
+              }
+            }'
           tooltip-config='{
             "tooltipStyle": "dark"
           }'
@@ -303,7 +332,7 @@
           marker-config='{
             "Recalibrate": {
               "color": "rgb(123,0,0)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "x",
               "markerSize": 64,
               "location": "top",
@@ -312,7 +341,7 @@
             },
             "Default": {
               "color": "rgb(0,255,0)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "thick-bar",
               "markerSize": 64,
               "location": "top",
@@ -321,7 +350,7 @@
             },
             "Fan start": {
               "color": "rgb(0,0,255)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "thin-bar",
               "markerSize": 64,
               "location": "bottom",
@@ -330,7 +359,7 @@
             },
             "Fan stop": {
               "color": "rgb(0,0,255)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "bar",
               "markerSize": 64,
               "location": "bottom",
@@ -346,7 +375,9 @@
             "title": "Date"
           }'
           y-axis-config='{
-            "title": "Units"
+            "title": "Units units so many units",
+            "titleTruncation": true,
+            "truncationLength": 5
           }'>
         </px-vis-timeseries>
 
