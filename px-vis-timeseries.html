@@ -27,6 +27,10 @@
 <link rel="import" href="../px-vis/px-vis-striping.html"/>
 <link rel="import" href="../px-vis/px-vis-markers.html"/>
 <link rel="import" href="../px-vis/px-vis-annotations.html"/>
+<link rel="import" href="../px-vis/px-vis-reference-curve.html"/>
+<link rel="import" href="../px-vis/px-vis-central-tooltip-content.html"/>
+<link rel="import" href="../px-tooltip/px-tooltip.html"/>
+
 <link rel="import" href="css/px-vis-timeseries-styles.html"/>
 
 <!--
@@ -131,18 +135,21 @@ Custom property | Description
             id="register"
             dynamic-menu-config="[[dynamicMenuConfig]]"
             chart-width="[[width]]"
-            height="[[_verticalRegisterHeight]]"
             margin="[[_chartOrNavMargin(disableNavigator, _internalMargin.*, _internalMarginNav.*)]]"
             class$="{{_getHideClass(hideRegister)}}"
+            height="[[_registerHeight]]"
             units="[[units]]"
-            tooltip-data="[[tooltipData]]"
+            tooltip-data="[[_registerTooltipData]]"
             chart-data="[[chartData]]"
             complete-series-config="[[completeSeriesConfig]]"
             muted-series="{{mutedSeries}}"
             type="{{_registerType}}"
             x-axis-type="time"
             y-axis-type="[[yAxisType]]"
-            inert-register="[[hideRegister]]">
+            inert-register="[[hideRegister]]"
+            current-page="[[_registerCurrentPage]]"
+            total-pages="[[_registerTotalPages]]"
+            display-page-arrows="[[_registerDisplayPageArrows]]">
           </px-vis-register>
 
           <!-- chart + navigator -->
@@ -199,7 +206,6 @@ Custom property | Description
                 chart-extents="[[_navChartExtents]]"
                 nav-series-limit="[[navSeriesLimit]]"
                 chart-domain-x="[[_returnXDomain(domainChanged, disableDynamicUpdate)]]"
-                range="[[range]]"
                 disable-empty-render
                 selected-domain="{{_navSelectedDomain}}"
                 prevent-resize
@@ -255,7 +261,6 @@ Custom property | Description
             height="[[height]]"
             margin="[[_internalMargin]]"
             clip-path
-            stroke-width="[[_returnStrokeWidth(item, completeSeriesConfig)]]"
             interpolation-function="[[interpolationFunction]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-canvas>
@@ -273,7 +278,6 @@ Custom property | Description
             show-gaps="[[showGaps]]"
             clip-path="[[seriesClipPath]]"
             muted-series="[[mutedSeries]]"
-            stroke-width="[[_returnStrokeWidth(item, completeSeriesConfig)]]"
             interpolation-function="[[interpolationFunction]]"
             serie-to-redraw-on-top="[[serieToRedrawOnTop]]">
           </px-vis-line-svg>
@@ -329,24 +333,20 @@ Custom property | Description
       formats="[[formats]]">
     </px-vis-markers>
 
-    <template is="dom-repeat" items="[[eventData]]">
-      <px-vis-event
-        svg="[[layer.0]]"
-        x-axis-type="[[xAxisType]]"
-        x-key="time"
-        event-id="[[item.id]]"
-        event-data="[[item]]"
-        height="[[height]]"
-        margin="[[_internalMargin]]"
-        x="[[x]]"
-        event-config="[[eventConfig]]"
-        domain-changed="[[domainChanged]]"
-        clip-path="[[clipPath]]"
-        resources="[[resources]]"
-        language="[[language]]"
-        formats="[[formats]]">
-      </px-vis-event>
-    </template>
+    <px-vis-event
+      svg="[[layer.0]]"
+      x-axis-type="[[xAxisType]]"
+      event-data="[[eventData]]"
+      height="[[height]]"
+      margin="[[_internalMargin]]"
+      x="[[x]]"
+      event-config="[[eventConfig]]"
+      domain-changed="[[domainChanged]]"
+      clip-path="[[clipPath]]"
+      resources="[[resources]]"
+      language="[[language]]"
+      formats="[[formats]]">
+    </px-vis-event>
 
     <px-vis-threshold
       svg="[[layer.2]]"
@@ -467,7 +467,7 @@ Custom property | Description
       margin="[[_internalMargin]]"
       complete-series-config="[[completeSeriesConfig]]"
       chart-data="[[chartData]]"
-      tooltip-data="[[tooltipData]]"
+      tooltip-data="[[_registerTooltipData]]"
       clip-path="[[seriesClipPath]]"
       muted-series="[[mutedSeries]]"
       hard-mute="[[hardMute]]"
@@ -535,9 +535,38 @@ Custom property | Description
       stripe-config="[[stripeConfig]]"
       stripe-data="[[stripeData]]">
     </px-vis-striping>
+
+    <template id="ref" is="dom-if" if="[[_showRef(referenceData.*)]]" restamp>
+      <px-vis-reference-curve
+        id="referenceCurve"
+        chart-id="[[chartId]]"
+        svg="[[layer.2]]"
+        x="[[x]]"
+        y="[[y]]"
+        domain-changed="[[domainChanged]]"
+        reference-config="[[referenceConfig]]"
+        reference-data="[[referenceData]]"
+        clip-path="[[seriesClipPath]]">
+      </px-vis-reference-curve>
+    </template>
+
+    <px-tooltip
+      id="centralTooltip"
+      smart-orientation
+      ignore-target-events
+      orientation="[[tooltipOrientation]]">
+      <px-vis-central-tooltip-content
+        resources="[[resources]]"
+        use-key-if-missing="[[useKeyIfMissing]]"
+        language="[[language]]"
+        first-date-time-format="[[firstDateTimeFormat]]"
+        second-date-time-format="[[secondDateTimeFormat]]"
+        separator="[[separator]]"
+        timezone="[[timezone]]">
+      </px-vis-central-tooltip-content>
+    </px-tooltip>
   </template>
 </dom-module>
-
 <script>
 
   Polymer({
@@ -591,7 +620,6 @@ Custom property | Description
       PxVisBehaviorChart.chartToolbarConfig,
       PxVisBehaviorChart.showTooltip,
       PxVisBehaviorD3.interpolationFunction,
-      PxVisBehaviorChart.sizeVerticalRegister,
       PxVisBehaviorChart.tooltipFollowMouseCalculation,
       PxVisBehaviorChart.thresholdConfig,
       PxVisBehavior.selectionType,
@@ -604,7 +632,11 @@ Custom property | Description
       PxVisBehavior.markers,
       PxVisBehavior.updateStylesOverride,
       PxVisBehavior.annotationData,
-      PxVisBehaviorChart.cursorConfig
+      PxVisBehaviorChart.cursorConfig,
+      PxVisBehaviorChart.registerPagnation,
+      PxVisBehaviorChart.sizeVerticalRegister,
+      PxVisBehavior.referenceCurveProps,
+      PxVisBehaviorChart.centralTooltip
     ],
 
     /**
@@ -753,7 +785,9 @@ Custom property | Description
       },
       _navChartExtents: {
         type: Object,
-        computed: '_computeNavChartExtents(chartExtents)'
+        value: function() {
+          return undefined;
+        }
       },
       /**
        * List of key/values to be included for translating this component
@@ -829,6 +863,7 @@ Custom property | Description
       '_langChanged(language)',
       '_keepDataInSync(chartData.*, chartId)',
       '_mutedChanged(mutedSeries.*, hardMute)',
+      '_tooltipDataUpdated(tooltipData.*)',
 
       //renderer
       '_renderChartData(domainChanged, canvasContext, chartData.*, mutedSeries.*, completeSeriesConfig.*, preventInitialDrawing, renderToCanvas)',
@@ -839,7 +874,7 @@ Custom property | Description
 
     listeners: {
       'px-vis-interaction-space-mouse-coords': '_stripeCoords',
-      'iron-resize': '_onIronResize'
+      'px-vis-extents-applied': '_computeNavChartExtents'
     },
 
     created: function() {
@@ -1078,34 +1113,29 @@ Custom property | Description
     },
 
     /**
-     *
-     *
-     */
-    _onIronResize: function() {
-      if(this.preventResize) {
-        return;
+    *
+    *
+    */
+    _resizeCalculations: function() {
+      var wrapperRect = this.$.wrapper.getBoundingClientRect(),
+          navigatorHeight = this.disableNavigator ? 0 : this.$$('#navigator').height,
+          registerRect = this.$.register.getBoundingClientRect(),
+          toolbarRect = this.$.toolbar.getBoundingClientRect(),
+          widthDeduct = 0,
+          heightDeduct = 0;
+
+      if(this.$.register.type === 'horizontal') {
+        heightDeduct += registerRect.height;
+      } else {
+        widthDeduct += registerRect.width;
       }
-      this.debounce('ironresize', function() {
-        var wrapperRect = this.$.wrapper.getBoundingClientRect(),
-            navigatorHeight = this.disableNavigator ? 0 : this.$$('#navigator').height,
-            registerRect = this.$.register.getBoundingClientRect(),
-            toolbarRect = this.$.toolbar.getBoundingClientRect(),
-            widthDeduct = 0,
-            heightDeduct = 0;
 
-        if(this.$.register.type === 'horizontal') {
-          heightDeduct += registerRect.height;
-        } else {
-          widthDeduct += registerRect.width;
-        }
+      heightDeduct += toolbarRect.height;
+      heightDeduct += navigatorHeight;
 
-        heightDeduct += toolbarRect.height;
-        heightDeduct += navigatorHeight;
-
-        this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
-        this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
-        this._computeVerticalRegisterHeight([navigatorHeight, toolbarRect.height]);
-      }, this.debounceResizeTiming);
+      this.set('width', Math.max(wrapperRect.width - widthDeduct, 0));
+      this.set('height', Math.max(wrapperRect.height - heightDeduct, 0));
+      this._computeVerticalRegisterHeight([navigatorHeight, toolbarRect.height]);
     },
 
     /**
@@ -1189,7 +1219,7 @@ Custom property | Description
        return;
      }
 
-      if(this.domainChanged !== null && !this.disableDynamicUpdate && this.x) {
+      if(this.domainChanged && !this.disableDynamicUpdate && this.x) {
         return this.x.domain();
       }
     },
@@ -1226,8 +1256,8 @@ Custom property | Description
        return;
      }
 
-      if(this.domainChanged !== null & this._axisDomainChanged !== null) {
-        return !this.$.yAxes.domainChanged;
+      if(this.domainChanged && this._axisDomainChanged) {
+        return this.$.yAxes.domainChanged + 1;
       }
     },
 
@@ -1291,39 +1321,10 @@ Custom property | Description
      *
      *
      */
-    _computeNavChartExtents: function() {
-     if(this.hasUndefinedArguments(arguments)) {
-       return;
-     }
-
-      if(this.chartExtents.y) {
-        return {'y': this.chartExtents.y};
-      } else {
-
-        //find if we have axis extents defined
-        var keys = Object.keys(this.chartExtents),
-            min = Number.MAX_VALUE,
-            max = Number.MIN_VALUE,
-            current;
-
-        for(var i=0; i<keys.length; i++) {
-          if(keys[i] !== 'x') {
-
-            current = this.chartExtents[keys[i]];
-            if(current[0] !== 'dynamic' && current[0] < min) {
-              min = current[0];
-            }
-            if(current[1] !== 'dynamic' && current[1] > max) {
-              max = current[1];
-            }
-          }
-        }
-
-        if(min !== Number.MAX_VALUE && max !== Number.MIN_VALUE) {
-          return {'y': [min, max]};
-        } else {
-          return {'y': ['dynamic', 'dynamic']};
-        }
+    _computeNavChartExtents: function(e) {
+      if(Polymer.dom(e).rootTarget === this) {
+        this.set('_navChartExtents', e.detail);
+        this.set('_navSelectedDomain', e.detail);
       }
     },
 
@@ -1459,14 +1460,14 @@ Custom property | Description
       for(var i=0; i <dataset.length; i++) {
         // check if single vector
         if(!dataset[i][1] && dataset[i][1] !== 0) {
-          if(parseInt(this.x(dataset[i][0])) === mousePos[0]) {
-            this._hoverStripe(i);
+          if(~~this.x(dataset[i][0]) === ~~mousePos[0]) {
+            this._hoverSingleVectorStripe(i);
             break;
           }
 
         // checks if we are within the range of a stripe
         } else if(dataset[i][0] <= t && dataset[i][1] >= t) {
-          this._hoverStripe(i);
+          this._hoverEditableStripe(i);
 
           //there should only be one, so if found, stop checking
           break;
@@ -1487,7 +1488,7 @@ Custom property | Description
      * When a stripe is hovered over, set up our brush to capture other interactions
      *
      */
-    _hoverStripe: function(index) {
+    _hoverEditableStripe: function(index) {
       var x0 = this.x(this.stripeData[this.stripeType][index][0]),
           x1 = this.stripeData[this.stripeType][index][1] || this.stripeData[this.stripeType][index][1] === 0 ? this.x(this.stripeData[this.stripeType][index][1]) : this.x(this.stripeData[this.stripeType][index][0] + 1),
           w = x1 - x0;
@@ -1519,6 +1520,26 @@ Custom property | Description
 
       this._stripeDataIndex = index;
 
+    },
+
+    _hoverSingleVectorStripe: function(index) {
+      const x0 = this.x(this.stripeData[this.stripeType][index][0]);
+      const _this = this;
+      this.layer[4].append("line")
+        .attr('x1', x0)
+        .attr('x2', x0)
+        .attr('y1', this._internalMargin.top)
+        .attr('y2', this.height - this._internalMargin.top - this._internalMargin.bottom)
+        .attr('stroke', this.stripeConfig[this.stripeType]['fillColor'])
+        .attr('stroke-dasharray', this.stripeConfig[this.stripeType]['dash'])
+        .attr('stroke-width', 4)
+        .attr('shape-rendering','crispEdges')
+        .attr('pointer-events', 'all')
+        .on('click', function() {
+          _this._deleteStripe();
+          this.remove();
+        })
+        .on('mouseleave', function() { this.remove(); });
     },
 
     /**
@@ -1602,6 +1623,10 @@ Custom property | Description
           this._createStripe();
         }
       }, 10);
+    },
+
+    _showRef() {
+      return this.referenceData && this.referenceData.length ? true : false;
     }
   });
 </script>

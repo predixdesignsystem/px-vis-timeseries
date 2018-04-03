@@ -28,7 +28,7 @@
       <template id="template" is="dom-bind">
         <h2>Example of a timeseries with many options and using old data format with the data converter</h2>
 
-        <px-rangepicker
+        <!-- <px-rangepicker
           id="rangepicker"
           range="{{range}}"
           time-zone="UTC"
@@ -36,7 +36,7 @@
           time-format="hh:mm:ss A"
           show-buttons="true"
           show-time-zone="text">
-        </px-rangepicker>
+        </px-rangepicker> -->
         <br/>
         <span>Append image at the bottom of the page</span>
         <button id="btnSnap">Go</button>
@@ -65,27 +65,7 @@
             }
           }'
           show-tooltip
-          event-config= '{
-            "Recalibrate":{
-              "color": "blue",
-              "icon": "px-fea:deployments",
-              "type": "px",
-              "offset":[0,0],
-              "lineWeight": 5
-            },
-            "Fan start":{
-              "color": "green",
-              "icon": "px-obj:truck",
-              "type": "px",
-              "offset":[1,0]
-            },
-            "Fan stop":{
-              "icon": "ge_logo.png",
-              "type": "image",
-              "offset":[0,-20],
-              "size":"20"
-            }
-          }'
+
           navigator-config='{
            "xAxisConfig": {
               "tickFormat": "%b %d"
@@ -95,7 +75,6 @@
             "title": "Date"
           }'
           register-config='{
-              "height": 50,
               "type": "vertical",
               "timezone": "Asia/Dhaka",
               "FirstDateTimeFormat": "HH:mm:ss z"
@@ -164,18 +143,38 @@
           series-config="[[seriesConfig]]"
           chart-data="[[chartData]]"
           event-data="[[eventData]]"
-          range="[[range]]"
+          event-config= '{
+            "Recalibrate":{
+              "color": "blue",
+              "icon": "px-fea:deployments",
+              "type": "px",
+              "offset":[0,0],
+              "lineWeight": 5
+            },
+            "Fan start":{
+              "color": "green",
+              "icon": "px-obj:truck",
+              "type": "px",
+              "offset":[1,0]
+            },
+            "Fan stop":{
+              "icon": "ge_logo.png",
+              "type": "image",
+              "offset":[0,-20],
+              "size":"20"
+            }
+          }'
           chart-extents='{
             "axis1":[0,40]
           }'
           stripe-config='{
             "inclusion": {
                 "fillColor": "rgb(117,216,53)",
-                "fillOpacity": "0.5"
+                "markerFillOpacity": "0.5"
             },
             "exclusion": {
                 "fillColor": "rgb(255,92,92)",
-                "fillOpacity": "0.5"
+                "markerFillOpacity": "0.5"
             }
           }'>
         </px-vis-timeseries>
@@ -234,17 +233,63 @@
          <px-vis-timeseries
           width = "1000"
           height = "500"
-          include-all-series
+          series-config='{
+            "y":{
+              "name": "supder duper very long name"
+            }
+          }'
           selection-type= "xy"
           chart-data="[[chartData2]]"
           register-config='{
-              "height": 50,
-              "type": "vertical"}'
+            "type": "vertical"
+          }'
           x-axis-config='{
             "title": "Date"
           }'
           y-axis-config='{
             "title": "Widgets"
+          }'
+          reference-data='[{
+            "x":1397102460000,
+            "y":10
+          },{
+            "x":1400184306000,
+            "y":14
+          },{
+            "x":1403266152000,
+            "y":16
+          },{
+            "x":1406347998000,
+            "y":17
+          },{
+            "x":1409429844000,
+            "y":19
+          },{
+            "x":1412511690000,
+            "y":22
+          },{
+            "x":1415593536000,
+            "y":25
+          },{
+            "x":1418675382000,
+            "y":26
+          },{
+            "x":1421757228000,
+            "y":27
+          },{
+            "x":1424839074000,
+            "y":29
+          },{
+            "x":1427920920000,
+            "y":32
+          },{
+            "x":1427920920000,
+            "y":34
+          }]'
+          reference-config='{
+            "myCurve": {
+              "name": "boffidy bof bof bof"
+            }
           }'>
         </px-vis-timeseries>
         <iron-ajax
@@ -263,25 +308,31 @@
           width = "1000"
           height = "500"
           margin='{
-            "top": 50,
+            "top": 10,
             "bottom": 50,
             "left": 50,
             "right": 0
             }'
-          include-all-series
+            series-config='{
+              "y":{
+                "name": "supder duper very long name"
+              }
+            }'
           tooltip-config='{
             "tooltipStyle": "dark"
           }'
           show-tooltip
           prevent-resize
-
+          toolbar-config='{
+            "subToolbarAlignment": "above"
+          }'
           disable-navigator
           selection-type= "xy"
           chart-data="[[chartData2]]"
           marker-config='{
             "Recalibrate": {
               "color": "rgb(123,0,0)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "x",
               "markerSize": 64,
               "location": "top",
@@ -290,7 +341,7 @@
             },
             "Default": {
               "color": "rgb(0,255,0)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "thick-bar",
               "markerSize": 64,
               "location": "top",
@@ -299,7 +350,7 @@
             },
             "Fan start": {
               "color": "rgb(0,0,255)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "thin-bar",
               "markerSize": 64,
               "location": "bottom",
@@ -308,7 +359,7 @@
             },
             "Fan stop": {
               "color": "rgb(0,0,255)",
-              "fillOpacity": "0.5",
+              "markerFillOpacity": "0.5",
               "markerSymbol": "bar",
               "markerSize": 64,
               "location": "bottom",
@@ -318,13 +369,15 @@
           }'
           marker-data="[[eventData]]"
           register-config='{
-              "height": 50,
-              "type": "horizontal"}'
+            "type": "horizontal"
+          }'
           x-axis-config='{
             "title": "Date"
           }'
           y-axis-config='{
-            "title": "Units"
+            "title": "Units units so many units",
+            "titleTruncation": true,
+            "truncationLength": 5
           }'>
         </px-vis-timeseries>
 
@@ -339,6 +392,12 @@
           cursor-config='{
             "horizontalLine":"none"
           }'
+          toolbar-config='{"config": {
+            "advancedZoom": true,
+            "pan": true,
+            "tooltipWithSearchTypes": true,
+            "stripe": true
+          }}'
           render-to-canvas
           default-series-config='{
               "type": "line",
@@ -351,9 +410,19 @@
           chart-data="[[apmData]]"
           register-config='{
             "sortConfig": {
-              "default": "true",
-              "nameIgnoreCase": "true",
-              "muted": "true"
+              "default": {
+                "name": "default",
+                "sortFunction": "default",
+                "selected": "true"
+              },
+              "combined": {
+                "name": "Combined",
+                "sortFunction": ["nameIgnoreCase", "muted"]
+              },
+              "muted": {
+                "name": "Muted",
+                "sortFunction": "muted"
+              }
             }
           }'
           chart-extents='{
@@ -509,18 +578,22 @@
             processData(fetch4.lastResponse);
           }
 
-          rangepicker.set('range', {
-            "from":"2014-04-10T04:01:00.000Z",
-            "to":"2015-04-01T20:42:00.000Z"
-          });
+          // rangepicker.addEventListener('px-datetime-range-submitted', function(e) {
+          //   timeSerie.set('chartExtents', {
+          //     x: [e.detail.fromMoment.valueOf(), e.detail.toMoment.valueOf()]
+          //   });
+          // });
 
-          chart.svg.append('rect')
-            .attr("y", 200)
-            .attr("x", 0)
-            .attr("height", 100)
-            .attr("width", 1000)
-            .attr('opacity',0.25)
-            .attr('fill', 'rgb(70,173,0)');
+          // rangepicker.set('fromMoment', Px.moment("2014-04-10T04:01:00.000Z"));
+          // rangepicker.set('toMoment', Px.moment("2015-04-01T20:42:00.000Z"));
+
+          // chart.svg.append('rect')
+          //   .attr("y", 200)
+          //   .attr("x", 0)
+          //   .attr("height", 100)
+          //   .attr("width", 1000)
+          //   .attr('opacity',0.25)
+          //   .attr('fill', 'rgb(70,173,0)');
 
 
 

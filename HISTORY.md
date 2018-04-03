@@ -1,3 +1,12 @@
+v4.0.0
+==================
+* Upgraded to vis 5.x
+* Added refence curve component
+* Added centralized tooltip
+* BREAKING CHANGE
+  * `range` property has been removed. use `chartExtents.x` to control the timespan
+  * See px-vis for other potential breaking changes
+
 v3.4.4
 ==================
 * Fix demo for IE
