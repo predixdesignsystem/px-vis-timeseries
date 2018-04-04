@@ -448,7 +448,8 @@ function runCustomTests() {
       //selectedDomain can be empty or have the actual X domain
       if(configChart.selectedDomain.x.length > 0) {
 
-        assert.deepEqual(configChart.selectedDomain.x, [1397102460000,1397219100000]);
+        assert.equal(Number(configChart.selectedDomain.x[0]), 1397102460000);
+        assert.equal(Number(configChart.selectedDomain.x[1]), 1397219100000);
       } else {
         assert.deepEqual(configChart.selectedDomain.x, []);
       }
