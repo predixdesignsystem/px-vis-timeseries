@@ -447,9 +447,10 @@ function runCustomTests() {
 
       //selectedDomain can be empty or have the actual X domain
       if(configChart.selectedDomain.x.length > 0) {
-        assert.equal(JSON.stringify(configChart.selectedDomain), '{"x":[1397102460000,1397219100000],"y":{"defaultAxis":[1,20]}}');
+
+        assert.deepEqual(configChart.selectedDomain.x, [1397102460000,1397219100000]);
       } else {
-        assert.deepEqual(configChart.selectedDomain, {"x":[],"y":[]});
+        assert.deepEqual(configChart.selectedDomain.x, []);
       }
     });
 
