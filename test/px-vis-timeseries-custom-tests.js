@@ -273,9 +273,11 @@ function runCustomTests() {
 
       //selectedDomain can be empty or have the actual X domain
       if(IASChart.selectedDomain.x.length > 0) {
-        assert.equal(JSON.stringify(IASChart.selectedDomain), '{"x":["2014-04-10T04:01:00.000Z","2014-04-11T12:25:00.000Z"],"y":[]}');
+
+        assert.equal(IASChart.selectedDomain.x[0], "2014-04-10T04:01:00.000Z");
+        assert.equal(IASChart.selectedDomain.x[1], "2014-04-11T12:25:00.000Z");
       } else {
-        assert.deepEqual(IASChart.selectedDomain, {"x":[],"y":[]});
+        assert.deepEqual(IASChart.selectedDomain.x, []);
       }
 
     });
