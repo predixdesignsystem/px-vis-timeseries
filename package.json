@@ -7,7 +7,7 @@
     "extName": null,
     "repository": {
         "type": "git",
-        "url": "https://github.com/PredixDev/px-vis-timeseries.git"
+        "url": "https://github.com/predixdesignsystem/px-vis-timeseries.git"
     },
     "homepage": "https://www.predix-ui.com/",
     "devDependencies": {
