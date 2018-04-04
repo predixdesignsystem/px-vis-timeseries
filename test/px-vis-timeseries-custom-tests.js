@@ -274,8 +274,8 @@ function runCustomTests() {
       //selectedDomain can be empty or have the actual X domain
       if(IASChart.selectedDomain.x.length > 0) {
 
-        assert.equal(IASChart.selectedDomain.x[0], "2014-04-10T04:01:00.000Z");
-        assert.equal(IASChart.selectedDomain.x[1], "2014-04-11T12:25:00.000Z");
+        assert.equal(Number(IASChart.selectedDomain.x[0]), 1397102460000);
+        assert.equal(Number(IASChart.selectedDomain.x[1]), 1397219100000);
       } else {
         assert.deepEqual(IASChart.selectedDomain.x, []);
       }
