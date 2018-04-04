@@ -256,6 +256,7 @@ function runCustomTests() {
           {"name":"y","value":null},
           {"name":"y1","value":null}
         ],
+        "seriesObj":{},
         "mouse":null,
         "xArr":null,
         "yArr":null
@@ -432,7 +433,8 @@ function runCustomTests() {
         },{
           "name": "config2",
           "value": null
-        }]
+        }],
+        "seriesObj": {}
       }
       assert.deepEqual(configChart.tooltipData, ttD);
     });
@@ -445,7 +447,7 @@ function runCustomTests() {
 
       //selectedDomain can be empty or have the actual X domain
       if(configChart.selectedDomain.x.length > 0) {
-        assert.equal(JSON.stringify(configChart.selectedDomain), '{"x":["2014-04-10T04:01:00.000Z","2014-04-11T12:25:00.000Z"],"y":[]}');
+        assert.equal(JSON.stringify(configChart.selectedDomain), '{"x":[1397102460000,1397219100000],"y":{"defaultAxis":[1,20]}}');
       } else {
         assert.deepEqual(configChart.selectedDomain, {"x":[],"y":[]});
       }
