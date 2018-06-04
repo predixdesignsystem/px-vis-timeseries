@@ -1273,7 +1273,9 @@ Custom property | Description
      }
 
       if(this.domainChanged && this._axisDomainChanged) {
-        return this.$.yAxes.domainChanged + 1;
+     	// check if 'this.$.yAxes.domainChanged' is undefined use
+        // 'this.domainChanged' to initialize 'domainChanged' property on 'px-vis-multi-axis'
+        return this.$.yAxes.domainChanged ? (this.$.yAxes.domainChanged + 1) : (this.domainChanged + 1);
       }
     },
 
