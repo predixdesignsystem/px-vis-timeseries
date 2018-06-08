@@ -74,6 +74,7 @@ limitations under the License.
           tooltip-config='{{props.tooltipConfig.value}}'
           show-tooltip='{{props.showTooltip.value}}'
           hide-register='{{props.hideRegister.value}}'
+          hide-toolbar='{{props.hideToolbar.value}}'
           hide-gridlines-x='{{props.hideGridlinesX.value}}'
           hide-gridlines-y='{{props.hideGridlinesY.value}}'
           series-config='{{props.seriesConfig.value}}'
@@ -407,6 +408,12 @@ limitations under the License.
       },
 
       hideRegister: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      hideToolbar: {
         type: Boolean,
         defaultValue: false,
         inputType: 'toggle'

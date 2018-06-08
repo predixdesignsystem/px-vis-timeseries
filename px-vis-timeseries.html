@@ -763,6 +763,14 @@ Custom property | Description
         observer: '_disableNavigatorChanged'
       },
       /**
+       * Whether to hide the toolbar
+       */
+      hideToolbar: {
+        type: Boolean,
+        value: false,
+        observer: '_hideToolbarChanged'
+      },
+      /**
        * Whether to hide the gridlines perpendicular to the X axis
        */
       hideGridlinesX: {
@@ -1191,6 +1199,19 @@ Custom property | Description
         //make sure dom if is rendered
         this.$.navTemplate.render();
         this._navigatorConfigChanged();
+      }
+    },
+
+    /**
+     *
+     *
+     */
+    _hideToolbarChanged: function() {
+      if(this.hideToolbar) {
+        this.$.toolbar.style.display = 'none';
+      }
+      else {
+        this.$.toolbar.style.display = '';
       }
     },
 
