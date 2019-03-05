@@ -2,7 +2,7 @@
   "name": "px-vis-timeseries",
   "author": "General Electric",
   "description": "A Px visualization timeseries chart",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "private": false,
   "extName": null,
   "repository": {
