@@ -22,43 +22,80 @@ limitations under the License.
     <title>Web Component Test : Fixture for px-vis-timeseries</title>
 
     <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
     <!-- web-component-tester automatically provides local copy of brower.js below
          for any URL ending with "/web-component-tester/browser.js"
          when wct is run from the command line -->
-    <script src="../../web-component-tester/browser.js"></script>
-    <link rel="import" href="../px-vis-timeseries.html" />
+    <script src="../../wct-browser-legacy/browser.js"></script>
+    <script type="module" src="../px-vis-timeseries.js"></script>
     <!-- Retain this link for px-theme.html -->
     <!-- px-theme is needed for WCT to run without errors -->
-    <link rel="import" href="../../px-theme/px-theme-styles.html">
-    <custom-style>
+    <script type="module" src="../../px-theme/px-theme-styles.js"></script>
+    <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
       <style include="px-theme-styles" is="custom-style"></style>
-    </custom-style>
+    </custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
     <!-- This script link will contain the generated script stub for custom, developer-added test cases -->
-    <script src="px-vis-timeseries-custom-tests.js"></script>
+    <script src="./px-vis-timeseries-custom-tests.js"></script>
   </head>
 
   <body>
-    <h3>Web Component Test : Fixture for px-vis-timeseries</h3>
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.innerHTML = `<h3>Web Component Test : Fixture for px-vis-timeseries</h3>`;
+document.body.appendChild($_documentContainer.content);
+</script>
 
-    <div style="height: 200px">
-      <px-vis-timeseries
-        id="IASChart"
-        prevent-resize
-        include-all-series>
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div style="height: 200px">
+      <px-vis-timeseries id="IASChart" prevent-resize="" include-all-series="">
       </px-vis-timeseries>
-    </div>
-    <div style="height: 200px">
-      <px-vis-timeseries
-        id="configChart"
-        prevent-resize>
+    </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div style="height: 200px">
+      <px-vis-timeseries id="configChart" prevent-resize="">
       </px-vis-timeseries>
-    </div>
-    <div style="height: 200px">
-      <px-vis-timeseries id="configFile" prevent-resize></px-vis-timeseries>
-    </div>
-    <div style="height: 200px">
-      <px-vis-timeseries id="margin"  prevent-resize include-all-series></px-vis-timeseries>
-    </div>
+    </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div style="height: 200px">
+      <px-vis-timeseries id="configFile" prevent-resize=""></px-vis-timeseries>
+    </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div style="height: 200px">
+      <px-vis-timeseries id="margin" prevent-resize="" include-all-series=""></px-vis-timeseries>
+    </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
   </body>
 </html>
